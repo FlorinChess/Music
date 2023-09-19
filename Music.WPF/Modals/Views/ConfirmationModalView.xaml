@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Music.WPF.Modals.Views.ConfirmationModalView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:modalvm="clr-namespace:Music.WPF.Modals.ViewModels"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance {x:Type modalvm:ConfirmationModalViewModel}, IsDesignTimeCreatable=False}"
+             d:DesignHeight="200" d:DesignWidth="500"
+             Height="200" Width="500"
+             Background="{StaticResource NavigationBarBrush}">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock 
+            HorizontalAlignment="Center"
+            Style="{StaticResource Header1Text}"
+            TextWrapping="WrapWithOverflow"
+            VerticalAlignment="Center">
+            Are you sure you want to <TextBlock Text="{Binding ConfirmationText, FallbackValue='remove Playlist Name'}" Foreground="{DynamicResource Primary}"/>?
+        </TextBlock>
+        <StackPanel 
+            Grid.Row="1" 
+            HorizontalAlignment="Center" 
+            Orientation="Horizontal" 
+            VerticalAlignment="Bottom">
+            <Button 
+                Command="{Binding SaveCommand}" 
+                Content="Confirm"
+                Style="{StaticResource ModalButton}" 
+                />
+            <Button  
+                Command="{Binding CloseModalCommand}" 
+                Content="Cancel"
+                Style="{StaticResource ModalButton}" 
+                />
+        </StackPanel>
+    </Grid>
+</UserControl>

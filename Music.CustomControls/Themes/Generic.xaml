@@ -1,0 +1,395 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animatedListView="clr-namespace:Music.CustomControls.AnimatedListView"
+    xmlns:hambugerMenu="clr-namespace:Music.CustomControls.HamburgerMenu"
+    xmlns:loadingSpinner="clr-namespace:Music.CustomControls.LoadingSpinner"
+    xmlns:converters="clr-namespace:Music.CustomControls.Converters"
+    xmlns:dropdownMenu="clr-namespace:Music.CustomControls.DropdownMenu"
+    xmlns:waveform="clr-namespace:Music.CustomControls.Waveform"
+    xmlns:modal="clr-namespace:Music.CustomControls.Modal"
+    xmlns:placeholderTextBox="clr-namespace:Music.CustomControls.PlaceholderTextBox"
+    xmlns:hoverCard="clr-namespace:Music.CustomControls.HoverCard"
+    xmlns:equalizer="clr-namespace:Music.CustomControls.EqualizerSlider">
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <Style TargetType="{x:Type hambugerMenu:HamburgerMenu}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type hambugerMenu:HamburgerMenu}">
+                    <Border 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentControl Content="{TemplateBinding Content}" IsTabStop="False" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type hambugerMenu:HamburgerMenuItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type hambugerMenu:HamburgerMenuItem}">
+                    <Border 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentControl Content="{TemplateBinding Content}" IsTabStop="False" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type animatedListView:AnimatedScrollViewer}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type animatedListView:AnimatedScrollViewer}">
+                    <Grid x:Name="Grid" Background="{TemplateBinding Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Rectangle 
+							Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
+							x:Name="Corner" 
+							Grid.Column="1" 
+							Grid.Row="1"
+                            />
+                        <ScrollContentPresenter 
+							Margin="{TemplateBinding Padding}" 
+							x:Name="PART_ScrollContentPresenter" 
+							Grid.Column="0" 
+							Grid.Row="0" 
+							Content="{TemplateBinding Content}" 
+							ContentTemplate="{TemplateBinding ContentTemplate}" 
+							CanContentScroll="{TemplateBinding CanContentScroll}" 
+							CanHorizontallyScroll="False" 
+							CanVerticallyScroll="False"
+                            />
+                        <ScrollBar 
+							Cursor="Arrow" 
+							x:Name="PART_VerticalScrollBar" 
+							Visibility="Collapsed" 
+							Grid.Column="1" 
+							Grid.Row="0" 
+							ViewportSize="{TemplateBinding ViewportHeight}" 
+							Maximum="{TemplateBinding ScrollableHeight}" 
+							Minimum="0" 
+							Value="{Binding Path=VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" 
+							AutomationProperties.AutomationId="VerticalScrollBar"
+                            />
+                        <ScrollBar 
+							Cursor="Arrow" 
+							x:Name="PART_AnimatedVerticalScrollBar" 
+							Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" 
+							Grid.Column="1" 
+							Grid.Row="0" 
+							ViewportSize="{TemplateBinding ViewportHeight}" 
+							Maximum="{TemplateBinding ScrollableHeight}" 
+							Minimum="0"							
+							Value="0"
+							AutomationProperties.AutomationId="VerticalScrollBar"
+                            />
+                        <ScrollBar 
+							Cursor="Arrow" 
+							x:Name="PART_HorizontalScrollBar" 
+							Visibility="Collapsed" 
+							Grid.Column="0" 
+							Grid.Row="1" 
+							Orientation="Horizontal" 
+							ViewportSize="{TemplateBinding ViewportWidth}" 
+							Maximum="{TemplateBinding ScrollableWidth}" 
+							Minimum="0" 
+							Value="{Binding Path=HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" 
+							AutomationProperties.AutomationId="HorizontalScrollBar"
+                            />
+                        <ScrollBar 
+							Cursor="Arrow" 
+							x:Name="PART_AnimatedHorizontalScrollBar" 
+							Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" 
+							Orientation="Horizontal" 
+							ViewportSize="{TemplateBinding ViewportWidth}" 
+							Maximum="{TemplateBinding ScrollableWidth}" 
+							Minimum="0"
+							Value="0"
+							AutomationProperties.AutomationId="HorizontalScrollBar" Grid.Row="1"
+                            />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type animatedListView:AnimatedListView}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type animatedListView:AnimatedListView}">
+                    <Border 
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        SnapsToDevicePixels="True">
+                        <animatedListView:AnimatedScrollViewer 
+							x:Name="PART_AnimatedScrollViewer"
+							Padding="{TemplateBinding Padding}" 
+							Focusable="False"
+							ScrollingSpline="0 0.50 0.50 1">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </animatedListView:AnimatedScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type loadingSpinner:LoadingSpinner}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type loadingSpinner:LoadingSpinner}">
+                    <ControlTemplate.Resources>
+                        <converters:DiameterAndThicknessToStrokeDashArrayConverter x:Key="DiameterAndThicknessToStrokeDashArrayConverter"/>
+                    </ControlTemplate.Resources>
+                    <Grid Background="{TemplateBinding Background}">
+                        <Ellipse 
+                            Width="{TemplateBinding Diameter}" 
+                            Height="{TemplateBinding Diameter}"
+                            Stroke="{TemplateBinding Color}"
+                            StrokeThickness="{TemplateBinding Thickness}"
+                            StrokeDashCap="Round"
+                            RenderTransformOrigin="0.5 0.5"
+                            Visibility="{TemplateBinding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Ellipse.StrokeDashArray>
+                                <MultiBinding Converter="{StaticResource DiameterAndThicknessToStrokeDashArrayConverter}">
+                                    <Binding Path="Diameter" RelativeSource="{RelativeSource TemplatedParent}" />
+                                    <Binding Path="Thickness" RelativeSource="{RelativeSource TemplatedParent}" />
+                                </MultiBinding>
+                            </Ellipse.StrokeDashArray>
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="Rotation" Angle="0"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation 
+                                                From="0" To="360"
+                                                Storyboard.TargetName="Rotation"
+                                                Storyboard.TargetProperty="Angle"
+                                                />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type modal:Modal}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type modal:Modal}">
+                    <ControlTemplate.Resources>
+                        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                    </ControlTemplate.Resources>
+                    <Grid
+                        Background="{TemplateBinding Background}"                        
+                        Visibility="{TemplateBinding IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Border 
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            UseLayoutRounding="True"
+                            Margin="6">
+                            <ContentControl Content="{TemplateBinding Content}" IsTabStop="False" />
+                            <Border.Effect>
+                                <DropShadowEffect 
+                                    BlurRadius="10"
+                                    ShadowDepth="10"
+                                    Color="Gray" 
+                                    />
+                            </Border.Effect>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type dropdownMenu:DropdownMenu}">
+        <Setter Property="Width" Value="45" />
+        <Setter Property="Height" Value="45" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type dropdownMenu:DropdownMenu}">
+                    <Border 
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="5"
+                        Height="{TemplateBinding Height}"
+                        Width="{TemplateBinding Width}">
+                        <Grid>
+                            <CheckBox 
+                                Focusable="False"
+                                IsChecked="{Binding IsOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                IsTabStop="False">
+                                <CheckBox.Template>
+                                    <ControlTemplate>
+                                        <Grid Background="Transparent">
+                                            <Path 
+                                                Width="25" Height="25"
+                                                Stretch="Uniform" Fill="White"
+                                                Data="M202.34-429.37q-20.797 0-35.634-14.896-14.837-14.897-14.837-35.816 0-21.114 14.915-35.831 14.914-14.717 35.857-14.717 20.72 0 35.724 14.799 15.005 14.8 15.005 35.794 0 20.994-15.117 35.831-15.116 14.836-35.913 14.836Zm277.697 0q-20.994 0-35.831-14.896-14.836-14.897-14.836-35.816 0-21.114 14.896-35.831 14.897-14.717 35.816-14.717 21.114 0 35.831 14.799 14.717 14.8 14.717 35.794 0 20.994-14.799 35.831-14.8 14.836-35.794 14.836Zm277.33 0q-21.046 0-35.891-14.896-14.846-14.897-14.846-35.816 0-21.114 14.988-35.831 14.987-14.717 36.032-14.717 21.046 0 35.883 14.799 14.837 14.8 14.837 35.794 0 20.994-14.979 35.831-14.978 14.836-36.024 14.836Z" 
+                                            />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </CheckBox.Template>
+                            </CheckBox>
+
+                            <Popup 
+                                x:Name="PART_Popup"
+                                AllowsTransparency="True"
+                                Placement="{TemplateBinding PopupPlacement}"
+                                IsOpen="{Binding IsOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" 
+                                StaysOpen="False">
+                                <Border>
+                                    <ContentControl Content="{TemplateBinding Content}"/>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#2D2D2D" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type waveform:Waveform}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type waveform:Waveform}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Canvas Name="PART_Waveform" ClipToBounds="True" Background="{TemplateBinding Background}"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type placeholderTextBox:PlaceholderTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type placeholderTextBox:PlaceholderTextBox}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                            <Border Padding="3 0 0 0">
+                                <TextBlock 
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    IsHitTestVisible="False"
+                                    Opacity="0.5"
+                                    Padding="{TemplateBinding Padding}"
+                                    Text="{TemplateBinding Placeholder}" 
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Visibility="{TemplateBinding IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    />
+                            </Border>                                
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type hoverCard:HoverCard}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type hoverCard:HoverCard}">
+                    <Border 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Height="{TemplateBinding Height}"
+                        Width="{TemplateBinding Width}">
+                        <Grid>
+                            <Image Source="{TemplateBinding Source}"
+                                />
+                            <Border
+                                x:Name="shadow"
+                                Background="Black"
+                                Opacity="0">
+                                <Border.Effect>
+                                    <BlurEffect Radius="20" KernelType="Gaussian" />
+                                </Border.Effect>
+                            </Border>
+                            <ContentPresenter 
+                                x:Name="content"
+                                Content="{TemplateBinding Content}"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                Visibility="Collapsed"
+                                />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Resources>
+                        <Storyboard x:Key="OnHover">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="shadow" Storyboard.TargetProperty="Opacity">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2500000" Value="0.4"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                        <Storyboard x:Key="OnLeave">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="shadow" Storyboard.TargetProperty="Opacity">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2500000" Value="0"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </ControlTemplate.Resources>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource OnHover}" />
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource OnLeave}" />
+                            </Trigger.ExitActions>
+                            <Setter Property="Visibility" Value="Visible" TargetName="content" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type equalizer:EqualizerSlider}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type equalizer:EqualizerSlider}">
+                    <Slider 
+                        Maximum="{TemplateBinding Maximum}"
+                        Minimum="{TemplateBinding Minimum}"
+                        Value="{TemplateBinding Value}"
+                        />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

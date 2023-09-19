@@ -1,0 +1,119 @@
+﻿<UserControl x:Class="Music.WPF.Components.NavigationBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:Music.WPF.ViewModels" 
+             xmlns:custom="clr-namespace:Music.CustomControls.HamburgerMenu;assembly=Music.CustomControls"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance {x:Type viewmodels:NavigationBarViewModel}, IsDesignTimeCreatable=False}"
+             d:DesignHeight="550" d:DesignWidth="50"
+             Background="{StaticResource NavigationBarBrush}"
+             IsEnabled="{Binding IsEnabled}"
+             IsTabStop="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <!-- Hamburger Menu CheckBox -->
+        <CheckBox 
+            x:Name="HamburgerCheckBox" 
+            Style="{StaticResource HamburgerMenuCheckBox}"
+            TabIndex="4"
+            ToolTip="Menu"
+            />
+
+        <!-- Hamburger Menu -->
+        <custom:HamburgerMenu 
+            Grid.Row="1" 
+            Focusable="False"
+            IconWidth="50"
+            IsOpen="{Binding IsChecked, ElementName=HamburgerCheckBox}"
+            IsTabStop="False" 
+            HorizontalAlignment="Left"
+            OpenCloseDuration="0:0:0.25">
+            <custom:HamburgerMenu.Resources>
+                <Style TargetType="{x:Type custom:HamburgerMenuItem}">
+                    <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
+                    <Setter Property="FocusVisualStyle" Value="{StaticResource DefaultFocusVisualStyle}" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ButtonHoverBrush}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </custom:HamburgerMenu.Resources>
+            <!-- Hamburger Menu Items -->
+            <custom:HamburgerMenu.Content>
+                <DockPanel Focusable="False">
+                    <DockPanel.Resources>
+                        <!-- Selected Item Indicator -->
+                        <Style TargetType="{x:Type Rectangle}">
+                            <Setter Property="Fill" Value="{StaticResource TransparentBrush}" />
+                            <Setter Property="Width" Value="4" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type custom:HamburgerMenuItem}}}" Value="True">
+                                    <Setter Property="Fill" Value="{DynamicResource Primary}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <!-- Image -->
+                        <Style TargetType="{x:Type Path}">
+                            <Setter Property="Stretch" Value="Fill" />
+                            <Setter Property="Fill" Value="{StaticResource WhiteBrush}" />
+                            <Setter Property="Width" Value="25" />
+                            <Setter Property="Height" Value="25" />
+                            <Setter Property="Margin" Value="8.5 10 12.5 10" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type custom:HamburgerMenuItem}}}" Value="True">
+                                    <Setter Property="Fill" Value="{DynamicResource Primary}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <!-- Menu Text -->
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="FontSize" Value="16" />
+                            <Setter Property="Padding" Value="10 10 40 10" />
+                            <Setter Property="Foreground" Value="{StaticResource WhiteBrush}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type custom:HamburgerMenuItem}}}" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource Primary}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DockPanel.Resources>
+                    <custom:HamburgerMenuItem Command="{Binding NavigateSearchCommand}" DockPanel.Dock="Top" ToolTip="Search" TabIndex="5">
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle />
+                            <Path Data="M39.8 41.95 26.65 28.8q-1.5 1.3-3.5 2.025-2 .725-4.25.725-5.4 0-9.15-3.75T6 18.75q0-5.3 3.75-9.05 3.75-3.75 9.1-3.75 5.3 0 9.025 3.75 3.725 3.75 3.725 9.05 0 2.15-.7 4.15-.7 2-2.1 3.75L42 39.75Zm-20.95-13.4q4.05 0 6.9-2.875Q28.6 22.8 28.6 18.75t-2.85-6.925Q22.9 8.95 18.85 8.95q-4.1 0-6.975 2.875T9 18.75q0 4.05 2.875 6.925t6.975 2.875Z" />
+                            <TextBlock Text="Search" />
+                        </StackPanel>
+                    </custom:HamburgerMenuItem>
+                    <custom:HamburgerMenuItem Command="{Binding NavigateMyMusicCommand}" DockPanel.Dock="Top" IsChecked="True" ToolTip="My Music" TabIndex="6">
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle />
+                            <Path Data="M19.65 42q-3.15 0-5.325-2.175Q12.15 37.65 12.15 34.5q0-3.15 2.175-5.325Q16.5 27 19.65 27q1.4 0 2.525.4t1.975 1.1V6h11.7v6.75h-8.7V34.5q0 3.15-2.175 5.325Q22.8 42 19.65 42Z" Width="20" Height="25" Margin="11 10 15 10" />
+                            <TextBlock Text="My Music" />
+                        </StackPanel>
+                    </custom:HamburgerMenuItem>
+                    <custom:HamburgerMenuItem Command="{Binding NavigatePlaylistCollectionCommand}" DockPanel.Dock="Top" ToolTip="Playlists" TabIndex="7">
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle />
+                            <Path Data="M24.3 31.35q2.05 0 3.5-1.425 1.45-1.425 1.45-3.475v-12.6h5.8v-3h-7.8V22.7q-.55-.45-1.325-.7-.775-.25-1.625-.25-1.95 0-3.3 1.375-1.35 1.375-1.35 3.325 0 2 1.35 3.45 1.35 1.45 3.3 1.45ZM13 38q-1.2 0-2.1-.9-.9-.9-.9-2.1V7q0-1.2.9-2.1.9-.9 2.1-.9h28q1.2 0 2.1.9.9.9.9 2.1v28q0 1.2-.9 2.1-.9.9-2.1.9Zm0-3h28V7H13v28Zm-6 9q-1.2 0-2.1-.9Q4 42.2 4 41V10h3v31h31v3Zm6-37v28V7Z" />
+                            <TextBlock Text="My Playlists" />
+                        </StackPanel>
+                    </custom:HamburgerMenuItem>
+                    <custom:HamburgerMenuItem Command="{Binding NavigateSettingsCommand}" VerticalAlignment="Bottom" ToolTip="Settings" TabIndex="8">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                            <Rectangle />
+                            <Path Data="m19.4 44-1-6.3q-.95-.35-2-.95t-1.85-1.25l-5.9 2.7L4 30l5.4-3.95q-.1-.45-.125-1.025Q9.25 24.45 9.25 24q0-.45.025-1.025T9.4 21.95L4 18l4.65-8.2 5.9 2.7q.8-.65 1.85-1.25t2-.9l1-6.35h9.2l1 6.3q.95.35 2.025.925Q32.7 11.8 33.45 12.5l5.9-2.7L44 18l-5.4 3.85q.1.5.125 1.075.025.575.025 1.075t-.025 1.05q-.025.55-.125 1.05L44 30l-4.65 8.2-5.9-2.7q-.8.65-1.825 1.275-1.025.625-2.025.925l-1 6.3ZM24 30.5q2.7 0 4.6-1.9 1.9-1.9 1.9-4.6 0-2.7-1.9-4.6-1.9-1.9-4.6-1.9-2.7 0-4.6 1.9-1.9 1.9-1.9 4.6 0 2.7 1.9 4.6 1.9 1.9 4.6 1.9Z" />
+                            <TextBlock Text="Settings" />
+                        </StackPanel>
+                    </custom:HamburgerMenuItem>
+                </DockPanel>
+            </custom:HamburgerMenu.Content>
+        </custom:HamburgerMenu>
+    </Grid>
+</UserControl>

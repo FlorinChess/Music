@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Storyboard x:Key="OnClick">
+        <ColorAnimation 
+            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+            From="DarkGray" To="{StaticResource TransparentBrush}" 
+            FillBehavior="Stop"
+            Duration="0:0:0.7"
+            />
+    </Storyboard>
+</ResourceDictionary>

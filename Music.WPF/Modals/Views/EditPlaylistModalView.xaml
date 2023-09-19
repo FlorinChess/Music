@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="Music.WPF.Modals.Views.EditPlaylistModalView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:modalvm="clr-namespace:Music.WPF.Modals.ViewModels" 
+             xmlns:placeholder="clr-namespace:Music.CustomControls.PlaceholderTextBox;assembly=Music.CustomControls" 
+             xmlns:hoverCard="clr-namespace:Music.CustomControls.HoverCard;assembly=Music.CustomControls"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance {x:Type modalvm:EditPlaylistModalViewModel}, IsDesignTimeCreatable=False}"
+             d:DesignHeight="300" d:DesignWidth="500"
+             Background="{StaticResource NavigationBarBrush}"
+             Height="300"
+             IsTabStop="False"
+             Loaded="UserControl_Loaded"
+             MaxWidth="500">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <placeholder:PlaceholderTextBox
+            x:Name="playlistNameTextBox" 
+            Grid.Row="0" 
+            Placeholder="Playlist name..."
+            Text="{Binding PlaylistName}"
+            />
+
+        <placeholder:PlaceholderTextBox 
+            Grid.Row="1"
+            IsReadOnly="True"
+            Placeholder="No playlist image" 
+            Text="{Binding PlaylistImagePath}"
+            />
+
+        <hoverCard:HoverCard 
+            Grid.Column="1" Grid.RowSpan="2"
+            Height="120"
+            HorizontalAlignment="Center"
+            IsTabStop="False"
+            Source="{Binding PlaylistImagePath, Converter={StaticResource FilePathToImageConverter}}"
+            VerticalAlignment="Center"
+            Width="120">
+            <StackPanel Orientation="Horizontal">
+                <Button 
+                    Command="{Binding SelectPlaylistImage}" 
+                    Style="{StaticResource ImageSelectionButton}"
+                    ToolTip="Add playlist art">
+                    <Path 
+                        Data="M22.5 38V25.5H10v-3h12.5V10h3v12.5H38v3H25.5V38Z"
+                        Width="20" Height="20" Stretch="Fill"
+                        Fill="{StaticResource WhiteBrush}"
+                        />
+                </Button>
+                <Button 
+                    ToolTip="Remove playlist art"
+                    Command="{Binding RemovePlaylistImage}" 
+                    Style="{StaticResource ImageSelectionButton}"
+                    Visibility="{Binding IsRemoveButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+                    <Path 
+                        Data="M261-120q-24.75 0-42.375-17.625T201-180v-570h-41v-60h188v-30h264v30h188v60h-41v570q0 24-18 42t-42 18H261Zm438-630H261v570h438v-570ZM367-266h60v-399h-60v399Zm166 0h60v-399h-60v399ZM261-750v570-570Z"
+                        Width="20" Height="20" Stretch="Fill"
+                        Fill="{StaticResource WhiteBrush}"
+                        />
+                </Button>
+            </StackPanel>
+        </hoverCard:HoverCard>
+
+        <StackPanel 
+            Grid.Row="2" Grid.ColumnSpan="2" 
+            HorizontalAlignment="Center" 
+            Orientation="Horizontal" 
+            VerticalAlignment="Bottom">
+            <Button 
+                Command="{Binding SaveCommand}" 
+                Content="Save"
+                Style="{StaticResource ModalButton}" 
+                />
+            <Button  
+                Command="{Binding CloseModalCommand}" 
+                Content="Close"
+                Style="{StaticResource ModalButton}" 
+                />
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:p="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options" 
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="p">
+    <SolidColorBrush x:Key="TransparentBrush" Color="Transparent" p:Freeze="True" />
+    <SolidColorBrush x:Key="WhiteBrush" Color="#FFFFFF" p:Freeze="True" />
+    <SolidColorBrush x:Key="Transparent85WhiteBrush" Color="#FFFFFF" Opacity="0.85" p:Freeze="True" />
+    <SolidColorBrush x:Key="Transparent85BlackBrush" Color="#000000" Opacity="0.85" p:Freeze="True" />
+    <SolidColorBrush x:Key="Transparent60BlackBrush" Color="#000000" Opacity="0.6" p:Freeze="True" />
+    <SolidColorBrush x:Key="GrayBrush" Color="Gray" p:Freeze="True" />
+    <SolidColorBrush x:Key="LightGrayBrush" Color="LightGray" p:Freeze="True" />
+    <SolidColorBrush x:Key="MusicPlayerGraySurfaceBrush" Color="#1D1D1D" p:Freeze="True" />
+    <Color x:Key="MyMusicBackgroundColor">#121212</Color>
+    <SolidColorBrush x:Key="MainBackgroundBrush" Color="{StaticResource MyMusicBackgroundColor}" p:Freeze="True" />
+    <SolidColorBrush x:Key="ButtonHoverBrush" Color="#2D2D2D" p:Freeze="True" />
+    <SolidColorBrush x:Key="ButtonHoverBrushTransparent" Color="#2D2D2D" Opacity=".6" p:Freeze="True" />
+    <SolidColorBrush x:Key="NavigationBarBrush" Color="#191919" p:Freeze="True" />
+    <SolidColorBrush x:Key="MenuItemHoverBrush" Color="#404040" p:Freeze="True" />
+    <SolidColorBrush x:Key="BlackBrush" Color="Black" p:Freeze="True" />
+</ResourceDictionary>

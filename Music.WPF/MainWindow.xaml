@@ -1,0 +1,217 @@
+﻿<Window x:Class="Music.WPF.MainWindow" x:Name="BaseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:Music.WPF.Views"
+        xmlns:viewmodels="clr-namespace:Music.WPF.ViewModels"
+        xmlns:components="clr-namespace:Music.WPF.Components"
+        xmlns:modalbase="clr-namespace:Music.CustomControls.Modal;assembly=Music.CustomControls"
+        xmlns:modalvm="clr-namespace:Music.WPF.Modals.ViewModels"
+        xmlns:modals="clr-namespace:Music.WPF.Modals.Views"
+        mc:Ignorable="d" IsTabStop="False" Focusable="False"
+        d:DataContext="{d:DesignInstance {x:Type viewmodels:MainViewModel}, IsDesignTimeCreatable=False}"
+        AllowsTransparency="True"
+        MinHeight="600" MinWidth="800"
+        Background="{StaticResource MainBackgroundBrush}"
+        BorderBrush="{StaticResource GrayBrush}"
+        Height="{Binding WindowWidth, Mode=OneWayToSource, TargetNullValue=700, FallbackValue=700}" 
+        Title="Music"
+        Width="{Binding WindowWidth, Mode=OneWayToSource, FallbackValue=1200}"
+        WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Window.Resources>
+        <LinearGradientBrush x:Key="HeaderGradient" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="{DynamicResource PrimaryColor}" Offset="-2.0" />
+            <GradientStop Color="{StaticResource MyMusicBackgroundColor}" Offset="0.8" />
+        </LinearGradientBrush>
+    </Window.Resources>
+    
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="35"  />
+    </WindowChrome.WindowChrome>
+        
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo>
+            <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfoCollection>
+                    <ThumbButtonInfo
+                        Command="{Binding PlayPreviousCommand}"
+                        Description="Previous"
+                        ImageSource="/Icons/skip_previous.png"
+                        IsEnabled="{Binding MusicPlayerViewModel.CommandButtonsEnabled}"
+                        />
+                    <ThumbButtonInfo
+                        Command="{Binding PlayPauseCommand}"
+                        Description="{Binding MusicPlayerViewModel.PlayPauseButtonToolTip}"
+                        ImageSource="{Binding PlayPauseImage, Mode=TwoWay, NotifyOnSourceUpdated=True}"
+                        IsEnabled="{Binding MusicPlayerViewModel.CommandButtonsEnabled}"
+                        />
+                    <ThumbButtonInfo
+                        Command="{Binding PlayNextCommand}"
+                        Description="Next"
+                        ImageSource="/Icons/skip_next.png"
+                        IsEnabled="{Binding MusicPlayerViewModel.CommandButtonsEnabled}"
+                        />
+                </ThumbButtonInfoCollection>
+            </TaskbarItemInfo.ThumbButtonInfos>
+        </TaskbarItemInfo>
+    </Window.TaskbarItemInfo>
+
+    <Window.InputBindings>
+        <KeyBinding Key="Space" Command="{Binding PlayPauseCommand}" />
+    </Window.InputBindings>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" MinWidth="50"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Button 
+            Command="{Binding NavigateBackCommand}"
+            Style="{StaticResource WindowControlButton}"
+            IsEnabled="{Binding IsMainEnabled}"
+            TabIndex="3"
+            ToolTip="Go back" 
+            Width="50" 
+            WindowChrome.IsHitTestVisibleInChrome="True">
+            <Path 
+                Data="M480 896 160 576l320-320 42 42-248 248h526v60H274l248 248-42 42Z" 
+                Style="{StaticResource DefaultIcon}"              
+                />
+        </Button>
+
+        <!-- Window Control Buttons -->
+        <StackPanel 
+            Grid.ColumnSpan="2"
+            Background="{StaticResource TransparentBrush}" 
+            HorizontalAlignment="Right"
+            Orientation="Horizontal"
+            Panel.ZIndex="10"
+            WindowChrome.IsHitTestVisibleInChrome="True">
+            <Button 
+                x:Name="MinimizeButton"
+                Style="{StaticResource WindowControlButton}" 
+                TabIndex="0"
+                ToolTip="Minimize">
+                <TextBlock 
+                    FontWeight="ExtraBold"
+                    Margin="0 0 0 12"
+                    Text="__" 
+                    />
+            </Button>
+            <Button 
+                x:Name="MaximizeButton"
+                Style="{StaticResource WindowControlButton}" 
+                TabIndex="1" 
+                ToolTip="Restore down">
+                <TextBlock 
+                    FontSize="18" FontWeight="Medium"
+                    Margin="0 0 0 5"
+                    Text="🗖" 
+                    />
+            </Button>
+            <Button 
+                x:Name="CloseButton" 
+                Style="{StaticResource WindowControlCloseButton}" 
+                TabIndex="2"
+                ToolTip="Close">
+                <Path 
+                    Width="13" Height="13" Stretch="Fill"
+                    Data="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z" 
+                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" 
+                    />
+            </Button>
+        </StackPanel>
+
+        <!-- Navigation Bar -->
+        <components:NavigationBar 
+            Grid.Row="1" 
+            DataContext="{Binding NavigationBarViewModel}"
+            />
+
+        <Rectangle 
+            Grid.Column="1" Grid.RowSpan="2" 
+            Fill="{DynamicResource HeaderGradient}"
+            Height="100"
+            VerticalAlignment="Top"
+            />
+        
+        <!-- Current Menu -->
+        <Grid 
+            Grid.Column="1" Grid.Row="1" 
+            Background="{StaticResource TransparentBrush}"
+            IsEnabled="{Binding IsMainEnabled}">
+            <ContentControl 
+                Content="{Binding CurrentViewModel}"
+                IsTabStop="False"
+                Margin="20 0 0 0">
+                <ContentControl.Resources>
+                    <DataTemplate DataType="{x:Type viewmodels:SearchViewModel}">
+                        <views:SearchView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:MyMusicViewModel}">
+                        <views:MyMusicView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:PlaylistCollectionViewModel}">
+                        <views:PlaylistCollectionView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:SelectedPlaylistViewModel}">
+                        <views:SelectedPlaylistView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
+                        <views:SettingsView />
+                    </DataTemplate>
+                </ContentControl.Resources>
+            </ContentControl>
+        </Grid>
+
+        <!-- Current Modal -->
+        <modalbase:Modal 
+            Grid.RowSpan="2" Grid.ColumnSpan="2" 
+            Content="{Binding CurrentModalViewModel}" 
+            IsOpen="{Binding IsModalOpen}"
+            IsTabStop="False"
+            Panel.ZIndex="9"
+            WindowChrome.IsHitTestVisibleInChrome="True">
+            <modalbase:Modal.Resources>
+                <DataTemplate DataType="{x:Type modalvm:EditPlaylistModalViewModel}">
+                    <modals:EditPlaylistModalView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type modalvm:AddToPlaylistModalViewModel}">
+                    <modals:AddToPlaylistModalView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type modalvm:NewPlaylistModalViewModel}">
+                    <modals:NewPlaylistModalView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type modalvm:ConfirmationModalViewModel}">
+                    <modals:ConfirmationModalView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type modalvm:EqualizerModalViewModel}">
+                    <modals:EqualizerModalView />
+                </DataTemplate>
+            </modalbase:Modal.Resources>
+        </modalbase:Modal>
+        
+        <!-- Music Player -->
+        <components:MusicPlayer 
+            Grid.Row="2" Grid.ColumnSpan="2" 
+            DataContext="{Binding MusicPlayerViewModel}" 
+            IsTabStop="False" 
+            />
+        
+        <!-- Now playing View-->
+        <views:NowPlayingView 
+            Grid.ColumnSpan="2" Grid.RowSpan="3" 
+            DataContext="{Binding NowPlayingViewModel}"
+            IsTabStop="False"
+            ShowWindow="{Binding ShowWindow}"
+            Visibility="Collapsed" 
+            />
+    </Grid>
+</Window>

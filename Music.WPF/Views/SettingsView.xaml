@@ -1,0 +1,119 @@
+﻿<UserControl x:Class="Music.WPF.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:Music.WPF.ViewModels"
+             mc:Ignorable="d" IsTabStop="False"
+             d:DataContext="{d:DesignInstance {x:Type viewmodels:SettingsViewModel}, IsDesignTimeCreatable=False}"
+             d:DesignHeight="800" d:DesignWidth="700"
+             d:Background="{StaticResource MainBackgroundBrush}">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Settings" Style="{StaticResource TitleText}" />
+        <ScrollViewer>
+            <StackPanel>
+                
+                <TextBlock 
+                    Text="Tell us where to find your music files" 
+                    Style="{StaticResource Header1Text}"
+                    />
+                <Button 
+                    Command="{Binding SelectMusicFilesFolderCommand}" 
+                    Style="{StaticResource CommandButton}">
+                    <StackPanel Orientation="Horizontal" Margin="2">
+                        <Path 
+                            Data="M22.5 38V25.5H10v-3h12.5V10h3v12.5H38v3H25.5V38Z"
+                            Style="{StaticResource CommandButtonIcon}"
+                            />
+                        <TextBlock 
+                            Style="{StaticResource CommandButtonText}" 
+                            Text="Add music folder" 
+                            />
+                    </StackPanel>
+                </Button>
+                <Border 
+                    BorderBrush="{StaticResource GrayBrush}"
+                    BorderThickness="1"
+                    CornerRadius="5"
+                    HorizontalAlignment="Left"
+                    Margin="0 5"
+                    MinHeight="40"
+                    Padding="0 5"
+                    Width="400">
+                    <ListView 
+                        ItemsSource="{Binding MusicFolders}" d:ItemsSource="{d:SampleData ItemCount=4}"
+                        SelectedItem="{Binding SelectedMusicFolder}"
+                        Style="{StaticResource SettingsListView}">
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding RemoveMusicFolderCommand}" Header="Remove folder" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                    </ListView>
+                </Border>            
+                <TextBlock 
+                    Text="Select audio output device" 
+                    Style="{StaticResource Header1Text}"
+                    />
+                <ComboBox 
+                    HorizontalAlignment="Left"
+                    ItemsSource="{Binding OutputDevices}" 
+                    SelectedItem="{Binding CurrentOutputDevice}"
+                    Style="{StaticResource SortComboBox}"
+                    Width="400"
+                    />
+                <TextBlock Text="Select your favorite theme" Style="{StaticResource Header1Text}" />
+                <WrapPanel>
+                    <RadioButton Background="#EE0202" Command="{Binding ChangeThemeCommand}" CommandParameter="Red" />
+                    <RadioButton Background="#7e3ff2" Command="{Binding ChangeThemeCommand}" CommandParameter="Purple" />
+                    <RadioButton Background="#05ac05" Command="{Binding ChangeThemeCommand}" CommandParameter="Green" />
+                    <RadioButton Background="#0256EE" Command="{Binding ChangeThemeCommand}" CommandParameter="Blue" />
+                    <RadioButton Background="#EEEE02" Command="{Binding ChangeThemeCommand}" CommandParameter="Yellow" />
+                </WrapPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox 
+                        Content="Autoplay"
+                        IsChecked="{Binding IsAutoPlayEnabled, FallbackValue=True}" 
+                        Style="{StaticResource SwitchCheckBox}"
+                        VerticalContentAlignment="Center"
+                        />
+                    <TextBlock 
+                        Margin="6 0"
+                        Style="{StaticResource Header1Text}" 
+                        Text="Autoplay" 
+                        VerticalAlignment="Center"
+                        />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox 
+                        IsChecked="{Binding IsMetadataAutocompleteEnabled, FallbackValue=False}"
+                        Style="{StaticResource SwitchCheckBox}"
+                        VerticalContentAlignment="Center"
+                        />
+                    <TextBlock 
+                        Margin="6 0"
+                        Style="{StaticResource Header1Text}" 
+                        Text="Autocomplete music metadata" 
+                        VerticalAlignment="Center"
+                        />
+                </StackPanel>
+                <Button 
+                    Command="{Binding OpenEqualizerCommand}" 
+                    Style="{StaticResource CommandButton}">
+                    <StackPanel Orientation="Horizontal" Margin="2">
+                        <Path 
+                            Data="M200-160v-280h-80v-80h240v80h-80v280h-80Zm0-440v-200h80v200h-80Zm160 0v-80h80v-120h80v120h80v80H360Zm80 440v-360h80v360h-80Zm240 0v-120h-80v-80h240v80h-80v120h-80Zm0-280v-360h80v360h-80Z"
+                            Style="{StaticResource CommandButtonIcon}"/>
+                        <TextBlock Style="{StaticResource CommandButtonText}" Text="Equalizer" />
+                    </StackPanel>
+                </Button>
+                <TextBlock 
+                    Margin="0 20"
+                    Text="© 2023 Florin Zamfir" 
+                    Style="{StaticResource Header1Text}"
+                    />
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

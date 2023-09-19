@@ -1,0 +1,172 @@
+﻿<UserControl x:Class="Music.WPF.Views.NowPlayingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:Music.WPF.ViewModels"
+             xmlns:extensions="clr-namespace:Music.WPF.Extensions"
+             xmlns:tracklist="clr-namespace:Music.WPF.Components"
+             xmlns:waveform="clr-namespace:Music.CustomControls.Waveform;assembly=Music.CustomControls"
+             xmlns:components="clr-namespace:Music.WPF.Components"
+             mc:Ignorable="d" IsTabStop="False" Focusable="False"
+             d:DataContext="{d:DesignInstance {x:Type viewmodels:NowPlayingViewModel}}"
+             d:Height="500" d:Width="800"
+             WindowChrome.IsHitTestVisibleInChrome="True">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition MinWidth="200" Width="0.7*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Border 
+            x:Name="background" 
+            Grid.ColumnSpan="2" Grid.RowSpan="2"
+            Background="{StaticResource BlackBrush}" 
+            IsHitTestVisible="False">
+            <Image 
+                HorizontalAlignment="Center"
+                Source="{Binding CurrentTrack.FilePath, Converter={StaticResource FilePathToImageConverter}}" 
+                Stretch="UniformToFill"
+                VerticalAlignment="Center">
+                <Image.Effect>
+                    <BlurEffect Radius="180" KernelType="Gaussian" />
+                </Image.Effect>
+            </Image>
+        </Border>
+
+        <Border 
+            Grid.ColumnSpan="2" Grid.RowSpan="2"
+            Background="{StaticResource BlackBrush}"
+            IsHitTestVisible="False"
+            Opacity="0.4"
+            />
+
+        <Button 
+            Command="{Binding CloseCommand}"
+            Panel.ZIndex="10"
+            Style="{StaticResource WindowControlButton}"
+            TabIndex="4"
+            ToolTip="Go back" 
+            VerticalAlignment="Top"
+            Width="50">
+            <Path 
+                Data="M480 896 160 576l320-320 42 42-248 248h526v60H274l248 248-42 42Z" 
+                Style="{StaticResource DefaultIcon}"
+                />
+        </Button>
+
+        <Border 
+            Grid.Column="1"
+            Background="{StaticResource Transparent60BlackBrush}"
+            CornerRadius="5"
+            Margin="10 40 10 10"
+            Padding="0 5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock 
+                        Padding="5 0"
+                        Style="{StaticResource Header1Text}" 
+                        Text="{Binding TrackListComponentViewModel.Count, FallbackValue='20'}"
+                        />
+                    <TextBlock 
+                        Text="tracks in queue"
+                        Style="{StaticResource Header1Text}"
+                        />
+                </StackPanel>
+                <CheckBox 
+                    Grid.Column="1"
+                    Command="{Binding ReorderCommand}"
+                    HorizontalAlignment="Right"
+                    IsChecked="{Binding TrackListComponentViewModel.IsReorderEnabled}"
+                    Style="{StaticResource MusicPlayerCheckBox}"
+                    ToolTip="{Binding ReorderToolTip, FallbackValue='Reorder'}"
+                    VerticalAlignment="Center">
+                    <Path 
+                        Data="M480-80 240-320l57-57 183 183 183-183 57 57L480-80ZM298-584l-58-56 240-240 240 240-58 56-182-182-182 182Z" 
+                        Style="{StaticResource DefaultIcon}"
+                        />
+                </CheckBox>
+                <tracklist:TrackListComponent 
+                    Grid.ColumnSpan="2" Grid.Row="1"
+                    extensions:DragDropExtension.ScrollOnDragDrop="True"
+                    Background="{StaticResource TransparentBrush}"
+                    DataContext="{Binding TrackListComponentViewModel}"
+                    DragOverCommand="{Binding ReceiveItemCommand}" 
+                    Foreground="{StaticResource WhiteBrush}"
+                    IncomingItem="{Binding IncomingItem}"
+                    InsertedItem="{Binding InsertedItem}"
+                    InsertItemCommand="{Binding InsertItemCommand}"
+                    IsReorderEnabled="{Binding IsReorderEnabled}"
+                    RemovedItem="{Binding RemovedItem}"
+                    RemoveItemCommand="{Binding RemoveItemCommand}"
+                    TargetItem="{Binding TargetItem}"
+                    />
+            </Grid>
+        </Border>
+
+        <StackPanel 
+            HorizontalAlignment="Left"
+            Margin="20"
+            Orientation="Horizontal"
+            VerticalAlignment="Bottom">
+            <Border 
+                CornerRadius="5"
+                Height="160"
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"
+                Width="160">
+                <Border.Background>
+                    <ImageBrush ImageSource="{Binding CurrentTrack.FilePath, Converter={StaticResource FilePathToImageConverter}}" />
+                </Border.Background>
+            </Border>
+            <Grid VerticalAlignment="Bottom" Margin="10 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Border 
+                    Grid.RowSpan="2"
+                    Background="{StaticResource Transparent60BlackBrush}">
+                    <Border.Effect>
+                        <BlurEffect Radius="60" KernelType="Gaussian" />
+                    </Border.Effect>
+                </Border>
+
+                <TextBlock 
+                    Background="{StaticResource TransparentBrush}"
+                    Style="{StaticResource TitleText}" 
+                    Text="{Binding CurrentTrack.Title, FallbackValue='Current track title.'}"
+                    />
+                <TextBlock
+                    Grid.Row="1"
+                    Background="{StaticResource TransparentBrush}"
+                    Style="{StaticResource SubtitleText}" 
+                    Text="{Binding CurrentTrack.Artist, FallbackValue='Current track title.'}"
+                    />
+            </Grid>
+        </StackPanel>
+        <!--<waveform:Waveform 
+            Grid.ColumnSpan="2" Grid.Row="1"
+            IsTabStop="False"
+            LeftLevelBrush="{DynamicResource PrimaryLight}"
+            MinHeight="100" MaxHeight="150"
+            RightLevelBrush="{DynamicResource PrimaryDark}"
+            VerticalAlignment="Bottom" 
+            WaveformData="{Binding WaveformData, Mode=TwoWay, NotifyOnSourceUpdated=True}" 
+            />-->
+        <!--<components:NowPlayingMusicPlayer Grid.Row="1" />-->
+    </Grid>
+</UserControl>

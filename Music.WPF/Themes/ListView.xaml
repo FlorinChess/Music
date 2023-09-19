@@ -1,0 +1,213 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- PlaylistCollection ListView -->
+    <ItemsPanelTemplate x:Key="PlaylistCollectionItemsPanelTemplate">
+        <WrapPanel />
+    </ItemsPanelTemplate>
+
+    <Style x:Key="PlaylistCollectionListViewItem" TargetType="{x:Type ListViewItem}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RoundFocusVisualStyle}" />
+        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}" />
+        <Setter Property="Margin" Value="0 10 10 10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                    <Border
+                        BorderThickness="1" 
+                        BorderBrush="{StaticResource GrayBrush}"
+                        Background="{StaticResource NavigationBarBrush}"
+                        CornerRadius="5"
+                        Height="250" 
+                        Width="250">
+                        <Grid>
+                            <Image 
+                                Height="210" Width="210" 
+                                Source="{Binding ImagePath, Converter={StaticResource FilePathToImageConverter}}" 
+                                VerticalAlignment="Bottom"
+                                />
+                            <Border 
+                                x:Name="shadow" 
+                                Height="250" Width="250" 
+                                Opacity="0" Background="{StaticResource BlackBrush}">
+                                <Border.Effect>
+                                    <BlurEffect Radius="20" KernelType="Gaussian" />
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="16" 
+                                    Margin="4" 
+                                    Text="{Binding Name, FallbackValue='Playlist name'}"
+                                    />
+                                <TextBlock 
+                                    FontSize="16" 
+                                    Margin="4" 
+                                    Text="{Binding Tracks.Count, Converter={StaticResource TrackCountToStringConverter}, FallbackValue='3 Tracks'}"
+                                    />
+                            </StackPanel>
+                            <TextBlock 
+                                x:Name="text"
+                                HorizontalAlignment="Center" 
+                                Text="View playlist" 
+                                VerticalAlignment="Center" 
+                                Visibility="Collapsed"
+                                />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Resources>
+                        <Storyboard x:Key="OnHover">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="shadow" Storyboard.TargetProperty="Opacity">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2500000" Value="0.4"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                        <Storyboard x:Key="OnLeave">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="shadow" Storyboard.TargetProperty="Opacity">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2500000" Value="0"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </ControlTemplate.Resources>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource OnHover}" />
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource OnLeave}" />
+                            </Trigger.ExitActions>
+                            <Setter Property="Visibility" Value="Visible" TargetName="text" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="PlaylistCollectionListView" TargetType="{x:Type ListView}">
+        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
+        <Setter Property="ItemsPanel" Value="{StaticResource PlaylistCollectionItemsPanelTemplate}" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource PlaylistCollectionListViewItem}" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListView}">
+                    <Border Background="{StaticResource TransparentBrush}" BorderThickness="0" SnapsToDevicePixels="True">
+                        <ScrollViewer Focusable="False" Padding="{TemplateBinding Padding}">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Settings ListView -->
+    <Style x:Key="SettingsListViewItem" TargetType="{x:Type ListViewItem}">
+        <Setter Property="Height" Value="40" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RoundFocusVisualStyle}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                    <Border 
+                        x:Name="main"
+                        Background="{StaticResource TransparentBrush}"
+                        CornerRadius="5">
+                        <TextBlock 
+                            Style="{StaticResource ListViewItemText}"
+                            Text="{Binding Path}" 
+                            />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ButtonHoverBrush}" TargetName="main" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SettingsListView" TargetType="{x:Type ListView}">
+        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource SettingsListViewItem}"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListView}">
+                    <Border Background="{StaticResource TransparentBrush}" SnapsToDevicePixels="True">
+                        <ScrollViewer Focusable="False" Padding="{TemplateBinding Padding}">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ListComponent ListView -->
+    <Style x:Key="ListComponentListViewItem" TargetType="{x:Type ListViewItem}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RoundFocusVisualStyle}" />
+        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}" />
+        <Setter Property="Height" Value="50" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                    <Border 
+                        x:Name="main" 
+                        Background="{StaticResource TransparentBrush}"
+                        CornerRadius="5"
+                        Height="50">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <DockPanel>
+                                <Grid 
+                                    Background="{StaticResource TransparentBrush}" 
+                                    ToolTip="{Binding ErrorMessage, FallbackValue=Error}"
+                                    Visibility="{Binding HasErrors, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                                    <Path 
+                                        Data="M480 985q-11 0-21.963-4.435Q447.073 976.13 438 968L88 618q-8.13-9.073-12.565-20.037Q71 587 71 576q0-11 4.435-22.341Q79.87 542.317 88 534l350-350q9.073-8.87 20.037-12.935Q469 167 480 167q11 0 22.341 4.065Q513.683 175.13 522 184l350 350q8.87 8.317 12.935 19.659Q889 565 889 576q0 11-4.065 21.963Q880.87 608.927 872 618L522 968q-8.317 8.13-19.659 12.565Q491 985 480 985Zm0-60 349-349-349-349-349 349 349 349Zm-30-309h60V376h-60v240Zm30 110q12 0 21-9t9-21q0-12-9-21t-21-9q-12 0-21 9t-9 21q0 12 9 21t21 9Zm0-150Z" 
+                                        Fill="#cc0000" Height="22" Width="22" Margin="4 0" Stretch="Fill"                                                                                                       
+                                        />
+                                </Grid>
+                                <TextBlock x:Name="trackTitle" Grid.Column="0" Text="{Binding Title}" Style="{StaticResource ListViewItemText}" />
+
+                            </DockPanel>
+                            <TextBlock x:Name="trackArtist" Grid.Column="1" Text="{Binding Artist}" Style="{StaticResource ListViewItemText}" />
+                            <TextBlock x:Name="trackLength" Grid.Column="2" Text="{Binding Length, Converter={StaticResource TimeSpanToStringConverter}}" Style="{StaticResource ListViewItemText}" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ButtonHoverBrush}" TargetName="main" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding IsCurrentlyPlaying}" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource Primary}" TargetName="trackTitle" />
+                            <Setter Property="Foreground" Value="{DynamicResource Primary}" TargetName="trackArtist" />
+                            <Setter Property="Foreground" Value="{DynamicResource Primary}" TargetName="trackLength" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ListComponentListView" TargetType="{x:Type ListView}">
+        <Setter Property="Padding" Value="0 0 10 0" />
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ListComponentListViewItem}" />
+    </Style>
+</ResourceDictionary>

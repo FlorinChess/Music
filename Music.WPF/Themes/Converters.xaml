@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:Music.WPF.Converters">
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <converters:FilePathToImageConverter x:Key="FilePathToImageConverter" />
+    <converters:TrackCountToStringConverter x:Key="TrackCountToStringConverter" />
+    <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
+    <converters:DoubleToVectorConverter x:Key="DoubleToVectorConverter" />
+</ResourceDictionary>
