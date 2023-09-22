@@ -39,6 +39,19 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
+    # Create virtual audio device, otherwise NAudio tests won't work https://github.com/actions/runner-images/issues/2528
+    - name: Audio device
+      run: Get-CimInstance Win32_SoundDevice | fl *
+    - name: Install Scream
+      shell: powershell
+      run: |
+          Invoke-WebRequest https://github.com/duncanthrax/scream/releases/download/3.8/Scream3.8.zip -OutFile Scream3.8.zip
+          Expand-Archive -Path Scream3.8.zip -DestinationPath Scream
+          Import-Certificate -FilePath Scream\Install\driver\x64\Scream.cat -CertStoreLocation Cert:\LocalMachine\TrustedPublisher 
+          Scream\Install\helpers\devcon-x64.exe install Scream\Install\driver\x64\Scream.inf *Scream
+    - name: Audio device
+      run: Get-CimInstance Win32_SoundDevice | fl *
+
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test
