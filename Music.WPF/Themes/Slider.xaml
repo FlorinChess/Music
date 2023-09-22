@@ -72,7 +72,7 @@
 
     <Style x:Key="RepeatButtonTransparent" TargetType="{x:Type RepeatButton}">
         <Setter Property="OverridesDefaultStyle" Value="true"/>
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Background" Value="{StaticResource TransparentBrush}"/>
         <Setter Property="Focusable" Value="false"/>
         <Setter Property="IsTabStop" Value="false"/>
         <Setter Property="Template">
@@ -160,6 +160,7 @@
     </ControlTemplate>
     <Style x:Key="EqualizerSlider" TargetType="{x:Type Slider}">
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+        <Setter Property="AutoToolTipPlacement" Value="TopLeft" />
         <Setter Property="Background" Value="{StaticResource TransparentBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource TransparentBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource GrayBrush}"/>
