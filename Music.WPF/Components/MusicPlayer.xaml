@@ -171,9 +171,10 @@
             <custom:DropdownMenu 
                 IsOpen="{Binding IsDropDownOpen, Mode=TwoWay}"
                 FocusVisualStyle="{StaticResource RoundFocusVisualStyle}"
+                PopupBorderBrush="{StaticResource MainBackgroundBrush}"
                 PopupPlacement="Top"
                 ToolTip="More options">
-                <StackPanel Margin="0 5">
+                <StackPanel>
                     <Button
                         Command="{Binding ClearQueueCommand}"
                         Content="Clear queue"

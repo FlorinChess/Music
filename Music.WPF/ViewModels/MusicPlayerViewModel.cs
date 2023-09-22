@@ -44,6 +44,8 @@ namespace Music.WPF.ViewModels
 
         #region Properties
 
+        public bool IsAutoplayEnabled { get; set; }
+
         private bool _isDropDownOpen = false;
         public bool IsDropDownOpen
         {
@@ -135,7 +137,7 @@ namespace Music.WPF.ViewModels
             get => _volume;
             set
             {
-                if (value == _volume) return;
+                if (_volume == value) return;
 
                 _volume = value;
 
@@ -298,6 +300,7 @@ namespace Music.WPF.ViewModels
 
             LeftPanelVisible = CurrentTrack is not null;
 
+            IsAutoplayEnabled = Properties.Settings.Default.AutoplayEnabled;
             Volume = Properties.Settings.Default.Volume;
 
             MuteButtonToolTip = Volume == 0 ? "Unmute" : "Mute";
@@ -368,7 +371,8 @@ namespace Music.WPF.ViewModels
                 PlayNextTrackInQueue();
             }
 
-            PlayPause();
+            if (IsAutoplayEnabled)
+                PlayPause();
         }
 
         private void OnSeekDragCompleted()

@@ -4,6 +4,11 @@
     <!-- Default TextBlock style -->
     <Style x:Key="TextBase" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{StaticResource WhiteBrush}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource GrayBrush}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
     
     <Style x:Key="CommandButtonText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBase}">

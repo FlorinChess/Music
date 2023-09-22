@@ -8,6 +8,15 @@ namespace Music.CustomControls.DropdownMenu
     [TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
     public sealed class DropdownMenu : ContentControl
     {
+        public Brush PopupBorderBrush
+        {
+            get { return (Brush)GetValue(PopupBorderBrushProperty); }
+            set { SetValue(PopupBorderBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty PopupBorderBrushProperty =
+            DependencyProperty.Register("PopupBorderBrush", typeof(Brush), typeof(DropdownMenu), new PropertyMetadata(null));
+
         public PlacementMode PopupPlacement
         {
             get { return (PlacementMode)GetValue(PopupPlacementProperty); }

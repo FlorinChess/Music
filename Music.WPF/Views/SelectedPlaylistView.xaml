@@ -70,21 +70,20 @@
                 HorizontalAlignment="Right"
                 HoverBrush="{StaticResource ButtonHoverBrush}"
                 IsOpen="{Binding IsDropDownOpen, Mode=TwoWay}"
+                PopupBorderBrush="{StaticResource MainBackgroundBrush}"
                 ToolTip="More options">
-                <Border CornerRadius="5" Padding="0 5" >
-                    <StackPanel>
-                        <Button 
-                            Command="{Binding EditPlaylistCommand}"
-                            Content="Edit playlist" 
-                            Style="{StaticResource DropdownTextButton}" 
-                            />
-                        <Button 
-                            Command="{Binding DeletePlaylistCommand}"
-                            Content="Delete playlist"
-                            Style="{StaticResource DropdownTextButton}" 
-                            />
-                    </StackPanel>
-                </Border>
+                <StackPanel>
+                    <Button 
+                        Command="{Binding EditPlaylistCommand}"
+                        Content="Edit playlist" 
+                        Style="{StaticResource DropdownTextButton}" 
+                        />
+                    <Button 
+                        Command="{Binding DeletePlaylistCommand}"
+                        Content="Delete playlist"
+                        Style="{StaticResource DropdownTextButton}" 
+                        />
+                </StackPanel>
             </custom:DropdownMenu>
         </DockPanel>
         <components:ListComponent 

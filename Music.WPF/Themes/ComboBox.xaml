@@ -37,8 +37,11 @@
                     <Border 
                         CornerRadius="5"
                         Background="{TemplateBinding Background}"
-                        Padding="5">
-                        <ContentPresenter />
+                        Padding="8 10">
+                        <ContentPresenter
+                            TextElement.FontSize="14"
+                            TextElement.FontWeight="DemiBold"
+                            />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -66,20 +69,22 @@
                 <ControlTemplate TargetType="{x:Type ComboBox}">
                     <Grid>
                         <ToggleButton 
-                            Name="ToggleButton" 
+                            Name="toggleButton" 
                             ClickMode="Press"
                             Focusable="False"
                             IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
                             Template="{StaticResource ComboBoxToggleButton}">
                         </ToggleButton>
                         <ContentPresenter 
-                            Name="ContentSite" 
+                            Name="contentPresenter" 
                             Content="{TemplateBinding SelectionBoxItem}"
                             ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                             ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                             HorizontalAlignment="Left" 
                             IsHitTestVisible="False"  
                             Margin="10,3,23,3"
+                            TextElement.FontSize="16"
+                            TextElement.FontWeight="Thin"
                             VerticalAlignment="Center"
                             />
                         <TextBox x:Name="PART_EditableTextBox" Visibility="Collapsed" />
@@ -97,12 +102,12 @@
                                 MinWidth="{TemplateBinding ActualWidth}"
                                 SnapsToDevicePixels="True">
                                 <Border 
-                                    x:Name="DropDownBorder"
+                                    x:Name="dropDownBorder"
                                     Background="{StaticResource ButtonHoverBrush}"
                                     BorderBrush="{StaticResource MainBackgroundBrush}"
                                     BorderThickness="0.5"
                                     CornerRadius="5"
-                                    Padding="5"
+                                    Padding="2"
                                     />
                                 <ScrollViewer Margin="2 4">
                                     <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
@@ -111,11 +116,8 @@
                         </Popup>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="HasItems" Value="False">
-                            <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
-                        </Trigger>
-                        <Trigger Property="IsGrouping" Value="True">
-                            <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="TextElement.Foreground" Value="{StaticResource GrayBrush}" TargetName="contentPresenter" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

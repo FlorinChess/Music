@@ -1,0 +1,71 @@
+# This workflow will build and test a WPF desktop application
+# built on .NET Core.
+
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "master", "development" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: windows-latest 
+
+    env:
+      Solution_Name: Music.sln 
+      Test_Project_Path: Music.Tests\Music.Tests.csproj
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    # Enable Windows Audio Engine
+    - name: Enable Audio Engine
+      run: net start audiosrv
+
+    # Create virtual audio device, otherwise NAudio tests won't work https://github.com/actions/runner-images/issues/2528
+    - name: Audio device
+      run: Get-CimInstance Win32_SoundDevice | fl *
+
+    # Install virutal audio device
+    - name: Install Scream
+      shell: powershell
+      run: |
+          Start-Service audio*
+          Invoke-WebRequest https://github.com/duncanthrax/scream/releases/download/3.6/Scream3.6.zip -OutFile C:\Scream3.6.zip
+          Extract-7Zip -Path C:\Scream3.6.zip -DestinationPath C:\Scream
+          $cert = (Get-AuthenticodeSignature C:\Scream\Install\driver\Scream.sys).SignerCertificate
+          $store = [System.Security.Cryptography.X509Certificates.X509Store]::new("TrustedPublisher", "LocalMachine")
+          $store.Open("ReadWrite")
+          $store.Add($cert)
+          $store.Close()
+          cd C:\Scream\Install\driver
+          C:\Scream\Install\helpers\devcon install Scream.inf *Scream
+    - name: Audio device
+      run: Get-CimInstance Win32_SoundDevice | fl *
+    - name: Audio device
+      run: Get-CimInstance Win32_SoundDevice | fl *
+
+    # Execute all unit tests in the solution
+    - name: Execute unit tests
+      run: dotnet test

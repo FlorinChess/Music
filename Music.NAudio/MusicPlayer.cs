@@ -19,14 +19,37 @@ namespace Music.NAudio
         #endregion Private Members
 
         #region Properties
+        public PlaybackState PlaybackState => _player.PlaybackState;
 
         private static EqualizerBand[] _bands;
         public static EqualizerBand[] Bands 
         {
             get => _bands ??= CreateEqaulizerBands();
         }
-        public PlaybackState PlaybackState => _player.PlaybackState;
-        public string FilePath { get; set; }
+
+        private float _volume = 0f;
+        public float Volume 
+        {
+            get
+            {
+                return _player is not null ? _player.Volume : _volume;
+            }
+            private set
+            {
+                if(_volume == value) return;
+
+                // Limit 100
+                if (value > 100f) value = 100f;
+
+                float newVolume = value / 100f;
+                _volume = newVolume;
+
+                if (_player is null) return;
+
+                _player.Volume = newVolume;
+            }
+        }
+        public string FilePath { get; private set; }
 
         #endregion
 
@@ -56,11 +79,14 @@ namespace Music.NAudio
 
         private void CreatePlayer(float volume, Equalizer equalizer)
         {
+            Volume = volume;
+
             _player?.Dispose();
-            _player = new WaveOutEvent() { Volume = volume / 100f };
+            _player = new WaveOutEvent() { Volume = Volume};
             _player.Init(equalizer);
             _player.OutputWaveFormat.AsStandardWaveFormat();
             _player.PlaybackStopped += OnPlaybackStopped;
+
         }
 
         private static EqualizerBand[] CreateEqaulizerBands()
@@ -85,19 +111,8 @@ namespace Music.NAudio
             PlaybackStopped?.Invoke();
         }
 
-        public static Dictionary<Guid, string> GetOutputDevices()
-        {
-            Dictionary<Guid, string> outputDevices = new();
-            
-            foreach (var device in DirectSoundOut.Devices)
-            {
-                if (device.Description == "Primary Sound Driver") continue;
+        #region Public Methods
 
-                outputDevices.Add(device.Guid, device.Description);
-            }
-
-            return outputDevices;
-        }
 
         public void Stop() => _player?.Stop();
 
@@ -120,7 +135,7 @@ namespace Music.NAudio
 
         public void SetPosition(double value)
         {
-            if (_reader is null) return;
+            if (_reader is null || value > _reader.TotalTime.TotalSeconds || value < 0.0) return;
 
             _reader.CurrentTime = TimeSpan.FromSeconds(value);
         }
@@ -129,7 +144,7 @@ namespace Music.NAudio
         {
             if (_player is null) return;
 
-            _player.Volume = value / 100f;
+            Volume = value;
         }
 
         public void UpdateEqualizer()
@@ -148,6 +163,22 @@ namespace Music.NAudio
             var enumerator = new MMDeviceEnumerator();
             return enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
         }
+
+        public static Dictionary<Guid, string> GetOutputDevices()
+        {
+            Dictionary<Guid, string> outputDevices = new();
+
+            foreach (var device in DirectSoundOut.Devices)
+            {
+                if (device.Description == "Primary Sound Driver") continue;
+
+                outputDevices.Add(device.Guid, device.Description);
+            }
+
+            return outputDevices;
+        }
+
+        #endregion Public Methods
 
         public void Dispose()
         {
