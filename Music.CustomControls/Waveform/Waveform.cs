@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -232,6 +233,8 @@ namespace Music.CustomControls.Waveform
             List<double> rectTopHeights = new();
             List<double> rectBottomHeights = new();
 
+            int countZero = 0;
+
             int rectCount = 0;
             for (int i = 0; i < WaveformData.Length; i += 2)
             {
@@ -240,6 +243,20 @@ namespace Music.CustomControls.Waveform
 
                 rightRenderHeight = ((WaveformData[i + 1] - minimumValue) / dbScale) * waveformMaxHeight;
                 rectBottomHeights.Add(rightRenderHeight);
+
+                if (leftRenderHeight < 0.0)
+                {
+                    countZero++;
+                }
+                else
+                {
+                    countZero = 0; // Reset
+                }
+
+                if (countZero >= 3) // After 3 consecutive empty samples break;
+                {
+                    Debug.WriteLine($"i = { i }");
+                }
 
                 // Because we cut the number of samples, every 'multiplier' times (default = 3) add a new Rectangle
                 if (rectTopHeights.Count % multiplier == 0)

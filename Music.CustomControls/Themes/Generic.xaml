@@ -9,9 +9,9 @@
     xmlns:waveform="clr-namespace:Music.CustomControls.Waveform"
     xmlns:modal="clr-namespace:Music.CustomControls.Modal"
     xmlns:placeholderTextBox="clr-namespace:Music.CustomControls.PlaceholderTextBox"
-    xmlns:hoverCard="clr-namespace:Music.CustomControls.HoverCard"
-    xmlns:equalizer="clr-namespace:Music.CustomControls.EqualizerSlider">
+    xmlns:hoverCard="clr-namespace:Music.CustomControls.HoverCard">
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <SolidColorBrush x:Key="PopupBackgroundBrush" Color="#2D2D2D" />
     <Style TargetType="{x:Type hambugerMenu:HamburgerMenu}">
         <Setter Property="Template">
             <Setter.Value>
@@ -248,7 +248,7 @@
                                                 Width="25" Height="25"
                                                 Stretch="Uniform" Fill="White"
                                                 Data="M202.34-429.37q-20.797 0-35.634-14.896-14.837-14.897-14.837-35.816 0-21.114 14.915-35.831 14.914-14.717 35.857-14.717 20.72 0 35.724 14.799 15.005 14.8 15.005 35.794 0 20.994-15.117 35.831-15.116 14.836-35.913 14.836Zm277.697 0q-20.994 0-35.831-14.896-14.836-14.897-14.836-35.816 0-21.114 14.896-35.831 14.897-14.717 35.816-14.717 21.114 0 35.831 14.799 14.717 14.8 14.717 35.794 0 20.994-14.799 35.831-14.8 14.836-35.794 14.836Zm277.33 0q-21.046 0-35.891-14.896-14.846-14.897-14.846-35.816 0-21.114 14.988-35.831 14.987-14.717 36.032-14.717 21.046 0 35.883 14.799 14.837 14.8 14.837 35.794 0 20.994-14.979 35.831-14.978 14.836-36.024 14.836Z" 
-                                            />
+                                                />
                                         </Grid>
                                     </ControlTemplate>
                                 </CheckBox.Template>
@@ -257,12 +257,20 @@
                             <Popup 
                                 x:Name="PART_Popup"
                                 AllowsTransparency="True"
-                                Placement="{TemplateBinding PopupPlacement}"
                                 IsOpen="{Binding IsOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" 
+                                Placement="{TemplateBinding PopupPlacement}"
+                                PopupAnimation="Fade"
                                 StaysOpen="False">
-                                <Border>
-                                    <ContentControl Content="{TemplateBinding Content}"/>
-                                </Border>
+                                <Grid SnapsToDevicePixels="True">
+                                    <Border 
+                                        Background="{StaticResource PopupBackgroundBrush}"
+                                        BorderBrush="{TemplateBinding PopupBorderBrush}"
+                                        BorderThickness="0.5"
+                                        CornerRadius="5" 
+                                        Padding="2">
+                                        <ContentControl Content="{TemplateBinding Content}" />
+                                    </Border>
+                                </Grid>
                             </Popup>
                         </Grid>
                     </Border>
@@ -332,7 +340,8 @@
                         Height="{TemplateBinding Height}"
                         Width="{TemplateBinding Width}">
                         <Grid>
-                            <Image Source="{TemplateBinding Source}"
+                            <Image 
+                                Source="{TemplateBinding Source}"
                                 />
                             <Border
                                 x:Name="shadow"
@@ -374,20 +383,6 @@
                             <Setter Property="Visibility" Value="Visible" TargetName="content" />
                         </Trigger>
                     </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style TargetType="{x:Type equalizer:EqualizerSlider}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type equalizer:EqualizerSlider}">
-                    <Slider 
-                        Maximum="{TemplateBinding Maximum}"
-                        Minimum="{TemplateBinding Minimum}"
-                        Value="{TemplateBinding Value}"
-                        />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
