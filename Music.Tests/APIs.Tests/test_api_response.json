@@ -1,0 +1,107 @@
+{
+  "tracks": {
+    "href": "https://api.spotify.com/v1/search?query=track%3ALevitating&type=track&locale=en-US%2Cen%3Bq%3D0.9%2Cde%3Bq%3D0.8&offset=0&limit=1",
+    "items": [
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/6M2wZ9GZgrQXHCFfjv46we"
+              },
+              "href": "https://api.spotify.com/v1/artists/6M2wZ9GZgrQXHCFfjv46we",
+              "id": "6M2wZ9GZgrQXHCFfjv46we",
+              "name": "Dua Lipa",
+              "type": "artist",
+              "uri": "spotify:artist:6M2wZ9GZgrQXHCFfjv46we"
+            }
+          ],
+          "available_markets": [
+            "AT",
+            "CH",
+            "DE"
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/0nRVAnU410D5nOyVWCadJh"
+          },
+          "href": "https://api.spotify.com/v1/albums/0nRVAnU410D5nOyVWCadJh",
+          "id": "0nRVAnU410D5nOyVWCadJh",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b2731f7c48d7efee22e04ce91917",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e021f7c48d7efee22e04ce91917",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d000048511f7c48d7efee22e04ce91917",
+              "width": 64
+            }
+          ],
+          "name": "Future Nostalgia",
+          "release_date": "2020-03-27",
+          "release_date_precision": "day",
+          "total_tracks": 13,
+          "type": "album",
+          "uri": "spotify:album:0nRVAnU410D5nOyVWCadJh"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/6M2wZ9GZgrQXHCFfjv46we"
+            },
+            "href": "https://api.spotify.com/v1/artists/6M2wZ9GZgrQXHCFfjv46we",
+            "id": "6M2wZ9GZgrQXHCFfjv46we",
+            "name": "Dua Lipa",
+            "type": "artist",
+            "uri": "spotify:artist:6M2wZ9GZgrQXHCFfjv46we"
+          },
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/4r63FhuTkUYltbVAg5TQnk"
+            },
+            "href": "https://api.spotify.com/v1/artists/4r63FhuTkUYltbVAg5TQnk",
+            "id": "4r63FhuTkUYltbVAg5TQnk",
+            "name": "DaBaby",
+            "type": "artist",
+            "uri": "spotify:artist:4r63FhuTkUYltbVAg5TQnk"
+          }
+        ],
+        "available_markets": [
+          "AT",
+          "CH",
+          "DE"
+        ],
+        "disc_number": 1,
+        "duration_ms": 203064,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "GBAHT2000942"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/49gruEYzuJZoy4R2q5xVlT"
+        },
+        "href": "https://api.spotify.com/v1/tracks/49gruEYzuJZoy4R2q5xVlT",
+        "id": "49gruEYzuJZoy4R2q5xVlT",
+        "is_local": false,
+        "name": "Levitating (feat. DaBaby)",
+        "popularity": 65,
+        "preview_url": null,
+        "track_number": 12,
+        "type": "track",
+        "uri": "spotify:track:49gruEYzuJZoy4R2q5xVlT"
+      }
+    ],
+    "limit": 1,
+    "next": "https://api.spotify.com/v1/search?query=track%3ALevitating&type=track&locale=en-US%2Cen%3Bq%3D0.9%2Cde%3Bq%3D0.8&offset=1&limit=1",
+    "offset": 0,
+    "previous": null,
+    "total": 1000
+  }
+}
