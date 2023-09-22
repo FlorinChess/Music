@@ -1,6 +1,6 @@
 ﻿namespace Music.WPF.Modals.Models
 {
-    public sealed record EqualizerProfile
+    public record EqualizerProfile
     {
         public string Name { get; set; }
         public float Band1 { get; set; }

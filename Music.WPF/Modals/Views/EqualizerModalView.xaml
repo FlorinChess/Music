@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:modalvm="clr-namespace:Music.WPF.Modals.ViewModels"
+             xmlns:extensions="clr-namespace:Music.WPF.Extensions"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance {x:Type modalvm:EqualizerModalViewModel}}"
              d:DesignHeight="450" d:DesignWidth="800"
@@ -24,7 +25,7 @@
                 IsEnabled="{Binding IsEqualizerEnabled}"
                 ItemsSource="{Binding EqualizerProfiles}"
                 Margin="0 0 10 0"
-                SelectedValue="{Binding SelectedEqualizerProfile}"
+                SelectedValue="{Binding SelectedEqualizerProfile, Mode=TwoWay, NotifyOnSourceUpdated=True}"
                 Style="{StaticResource SortComboBox}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -84,16 +85,94 @@
             </Grid>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" IsEnabled="{Binding IsEqualizerEnabled}">
-                <Slider Tag="32" Style="{StaticResource EqualizerSlider}" Minimum="{Binding Minimum, FallbackValue=-20}" Maximum="{Binding Maximum, FallbackValue=20}" Value="{Binding Band1, FallbackValue=18}" />
-                <Slider Tag="64" Style="{StaticResource EqualizerSlider}" Minimum="{Binding Minimum, FallbackValue=-20}" Maximum="{Binding Maximum, FallbackValue=20}" Value="{Binding Band2, FallbackValue=12}" />
-                <Slider Tag="125" Style="{StaticResource EqualizerSlider}" Minimum="{Binding Minimum, FallbackValue=-20}" Maximum="{Binding Maximum, FallbackValue=20}" Value="{Binding Band3, FallbackValue=7}" />
-                <Slider Tag="250" Style="{StaticResource EqualizerSlider}" Minimum="{Binding Minimum, FallbackValue=-20}" Maximum="{Binding Maximum, FallbackValue=20}" Value="{Binding Band4, FallbackValue=5}" />
-                <Slider Tag="500" Style="{StaticResource EqualizerSlider}" Minimum="{Binding Minimum, FallbackValue=-20}" Maximum="{Binding Maximum, FallbackValue=20}" Value="{Binding Band5, FallbackValue=-5}" />
-                <Slider Tag="1K" Style="{StaticResource EqualizerSlider}" Minimum="{Binding Minimum, FallbackValue=-20}" Maximum="{Binding Maximum, FallbackValue=20}" Value="{Binding Band6, FallbackValue=1}" />
-                <Slider Tag="2K" Style="{StaticResource EqualizerSlider}" Minimum="{Binding Minimum, FallbackValue=-20}" Maximum="{Binding Maximum, FallbackValue=20}" Value="{Binding Band7, FallbackValue=3}" />
-                <Slider Tag="4K" Style="{StaticResource EqualizerSlider}" Minimum="{Binding Minimum, FallbackValue=-20}" Maximum="{Binding Maximum, FallbackValue=20}" Value="{Binding Band8, FallbackValue=6}" />
-                <Slider Tag="8K" Style="{StaticResource EqualizerSlider}" Minimum="{Binding Minimum, FallbackValue=-20}" Maximum="{Binding Maximum, FallbackValue=20}" Value="{Binding Band9, FallbackValue=7}" />
-                <Slider Tag="16K" Style="{StaticResource EqualizerSlider}" Minimum="{Binding Minimum, FallbackValue=-20}" Maximum="{Binding Maximum, FallbackValue=20}" Value="{Binding Band10, FallbackValue=10}" />
+                <Slider 
+                    extensions:SliderExtension.DragCompletedCommand="{Binding DragCompletedCommand}"
+                    extensions:SliderExtension.DragStartedCommand="{Binding DragStartedCommand}"
+                    Maximum="{Binding Maximum, FallbackValue=20}" 
+                    Minimum="{Binding Minimum, FallbackValue=-20}" 
+                    Style="{StaticResource EqualizerSlider}" 
+                    Tag="32" 
+                    Value="{Binding Band1, FallbackValue=18}"
+                    />
+                <Slider 
+                    extensions:SliderExtension.DragCompletedCommand="{Binding DragCompletedCommand}"
+                    extensions:SliderExtension.DragStartedCommand="{Binding DragStartedCommand}"
+                    Maximum="{Binding Maximum, FallbackValue=20}" 
+                    Minimum="{Binding Minimum, FallbackValue=-20}"
+                    Style="{StaticResource EqualizerSlider}" 
+                    Tag="64" 
+                    Value="{Binding Band2, FallbackValue=12}"
+                    />
+                <Slider 
+                    extensions:SliderExtension.DragCompletedCommand="{Binding DragCompletedCommand}"
+                    extensions:SliderExtension.DragStartedCommand="{Binding DragStartedCommand}"
+                    Maximum="{Binding Maximum, FallbackValue=20}" 
+                    Minimum="{Binding Minimum, FallbackValue=-20}" 
+                    Style="{StaticResource EqualizerSlider}" 
+                    Tag="125" 
+                    Value="{Binding Band3, FallbackValue=7}" 
+                    />
+                <Slider 
+                    extensions:SliderExtension.DragCompletedCommand="{Binding DragCompletedCommand}"
+                    extensions:SliderExtension.DragStartedCommand="{Binding DragStartedCommand}"
+                    Maximum="{Binding Maximum, FallbackValue=20}" 
+                    Minimum="{Binding Minimum, FallbackValue=-20}" 
+                    Style="{StaticResource EqualizerSlider}" 
+                    Tag="250" 
+                    Value="{Binding Band4, FallbackValue=5}" 
+                    />
+                <Slider 
+                    extensions:SliderExtension.DragCompletedCommand="{Binding DragCompletedCommand}"
+                    extensions:SliderExtension.DragStartedCommand="{Binding DragStartedCommand}"
+                    Maximum="{Binding Maximum, FallbackValue=20}" 
+                    Minimum="{Binding Minimum, FallbackValue=-20}" 
+                    Style="{StaticResource EqualizerSlider}" 
+                    Tag="500" 
+                    Value="{Binding Band5, FallbackValue=-5}" />
+                <Slider 
+                    extensions:SliderExtension.DragCompletedCommand="{Binding DragCompletedCommand}"
+                    extensions:SliderExtension.DragStartedCommand="{Binding DragStartedCommand}"
+                    Maximum="{Binding Maximum, FallbackValue=20}" 
+                    Minimum="{Binding Minimum, FallbackValue=-20}" 
+                    Tag="1K" 
+                    Style="{StaticResource EqualizerSlider}" 
+                    Value="{Binding Band6, FallbackValue=1}" 
+                    />
+                <Slider 
+                    extensions:SliderExtension.DragCompletedCommand="{Binding DragCompletedCommand}"
+                    extensions:SliderExtension.DragStartedCommand="{Binding DragStartedCommand}"
+                    Maximum="{Binding Maximum, FallbackValue=20}" 
+                    Minimum="{Binding Minimum, FallbackValue=-20}" 
+                    Style="{StaticResource EqualizerSlider}" 
+                    Tag="2K" 
+                    Value="{Binding Band7, FallbackValue=3}" 
+                    />
+                <Slider 
+                    extensions:SliderExtension.DragCompletedCommand="{Binding DragCompletedCommand}"
+                    extensions:SliderExtension.DragStartedCommand="{Binding DragStartedCommand}"
+                    Maximum="{Binding Maximum, FallbackValue=20}"
+                    Minimum="{Binding Minimum, FallbackValue=-20}" 
+                    Style="{StaticResource EqualizerSlider}" 
+                    Tag="4K" 
+                    Value="{Binding Band8, FallbackValue=6}" 
+                    />
+                <Slider 
+                    extensions:SliderExtension.DragCompletedCommand="{Binding DragCompletedCommand}"
+                    extensions:SliderExtension.DragStartedCommand="{Binding DragStartedCommand}"
+                    Maximum="{Binding Maximum, FallbackValue=20}" 
+                    Minimum="{Binding Minimum, FallbackValue=-20}" 
+                    Style="{StaticResource EqualizerSlider}" 
+                    Tag="8K" 
+                    Value="{Binding Band9, FallbackValue=7}" />
+                <Slider 
+                    extensions:SliderExtension.DragCompletedCommand="{Binding DragCompletedCommand}"
+                    extensions:SliderExtension.DragStartedCommand="{Binding DragStartedCommand}"
+                    Maximum="{Binding Maximum, FallbackValue=20}" 
+                    Minimum="{Binding Minimum, FallbackValue=-20}" 
+                    Style="{StaticResource EqualizerSlider}" 
+                    Tag="16K" 
+                    Value="{Binding Band10, FallbackValue=10}" 
+                    />
             </StackPanel>
         </StackPanel>
 
