@@ -44,9 +44,6 @@ jobs:
       run: net start audiosrv
 
     # Create virtual audio device, otherwise NAudio tests won't work https://github.com/actions/runner-images/issues/2528
-    - name: Audio device
-      run: Get-CimInstance Win32_SoundDevice | fl *
-
     # Install virutal audio device
     - name: Install Scream
       shell: powershell
@@ -61,8 +58,6 @@ jobs:
           $store.Close()
           cd C:\Scream\Install\driver
           C:\Scream\Install\helpers\devcon install Scream.inf *Scream
-    - name: Audio device
-      run: Get-CimInstance Win32_SoundDevice | fl *
     - name: Audio device
       run: Get-CimInstance Win32_SoundDevice | fl *
 
