@@ -13,7 +13,7 @@ namespace Music.WPF.Modals.ViewModels
     {
         #region Properties
 
-        public ObservableCollection<PlaylistListViewItem> Playlists { get; set; } = new();
+        public ObservableCollection<PlaylistListViewItem> Playlists { get; private set; } = new();
         public TrackModel SelectedTrack { get; }
 
         #endregion
@@ -37,6 +37,15 @@ namespace Music.WPF.Modals.ViewModels
             SelectedTrack = selectedTrack;
         }
 
+        #region Private Methods
+
+        private void Save()
+        {
+            AddTrackToPlaylists(SelectedTrack, Playlists);
+
+            CloseModalCommand.Execute(null);
+        }
+
         private void CheckIfTrackIsInPlaylists(TrackModel selectedTrack)
         {
             for (int i = 0; i < Playlists.Count; i++)
@@ -50,21 +59,12 @@ namespace Music.WPF.Modals.ViewModels
             }
         }
 
-        #region Private Methods
-
         private void CreateListViewItems(IList<PlaylistModel> playlists)
         {
             for (int i = 0; i < playlists.Count; i++)
             {
                 Playlists.Add(new PlaylistListViewItem(playlists[i], SelectedTrack));
             }
-        }
-
-        private void Save()
-        {
-            AddTrackToPlaylists(SelectedTrack, Playlists);
-
-            CloseModalCommand.Execute(null);
         }
 
         private static void AddTrackToPlaylists(TrackModel track, Collection<PlaylistListViewItem> playlistItems)

@@ -3,9 +3,7 @@ using Music.WPF.Commands;
 using Music.WPF.Modals.Models;
 using Music.WPF.Store;
 using Music.WPF.ViewModels;
-using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows.Input;
 
 namespace Music.WPF.Modals.ViewModels
@@ -40,17 +38,6 @@ namespace Music.WPF.Modals.ViewModels
                 OnPropertyChanged(nameof(IsEqualizerEnabled));
 
                 EqualizerStatusText = IsEqualizerEnabled ? "On" : "Off";
-            }
-        }
-
-        private EqualizerProfile _customEqualizerProfile;
-        public EqualizerProfile CustomEqualizerProfile
-        {
-            get => _customEqualizerProfile;
-            set
-            {
-                _customEqualizerProfile = value;
-                OnPropertyChanged(nameof(CustomEqualizerProfile));
             }
         }
 
@@ -189,28 +176,7 @@ namespace Music.WPF.Modals.ViewModels
                     ApplyEqualizerProfile(_selectedEqualizerProfile);
 
                 OnPropertyChanged(nameof(SelectedEqualizerProfile));
-
-                PrinAll();
             }
-        }
-
-        private void PrinAll()
-        {
-            foreach(var e in EqualizerProfiles)
-            {
-                Debug.Write(e.Name + ", ");
-                Debug.Write(e.Band1 + ", ");
-                Debug.Write(e.Band2 + ", ");
-                Debug.Write(e.Band3 + ", ");
-                Debug.Write(e.Band4 + ", ");
-                Debug.Write(e.Band5 + ", ");
-                Debug.Write(e.Band6 + ", ");
-                Debug.Write(e.Band7 + ", ");
-                Debug.Write(e.Band8 + ", ");
-                Debug.Write(e.Band9 + ", ");
-                Debug.WriteLine(e.Band10);
-            }
-                Debug.WriteLine("");
         }
 
         #endregion Properties
@@ -247,13 +213,15 @@ namespace Music.WPF.Modals.ViewModels
 
                 if (SelectedEqualizerProfile.Name != "Manual")
                 {
-                    EqualizerProfiles[3] = EqualizerProfiles[3] with { Name = "Manual"};
+                    EqualizerProfiles[3] = SelectedEqualizerProfile with { Name = "Manual"};
                     SelectedEqualizerProfile = EqualizerProfiles[3];
                 }
             });
 
             DragCompletedCommand = new RelayCommand(_ => 
             {
+                // This creates a new instance of EqualizerProfile with the specified property changes
+                // NOTE: the name property preservs its initial value ('Manual')
                 EqualizerProfiles[3] = EqualizerProfiles[3] with 
                 { 
                     Band1 = Band1,
@@ -309,16 +277,7 @@ namespace Music.WPF.Modals.ViewModels
 
         private void ResetEqualizer()
         {
-            Band1 = 0f;
-            Band2 = 0f;
-            Band3 = 0f;
-            Band4 = 0f;
-            Band5 = 0f;
-            Band6 = 0f;
-            Band7 = 0f;
-            Band8 = 0f;
-            Band9 = 0f;
-            Band10 = 0f;
+            SelectedEqualizerProfile = EqualizerProfiles[0];
         }
 
         #endregion Private Methods

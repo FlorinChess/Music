@@ -8,14 +8,14 @@
              d:DataContext="{d:DesignInstance {x:Type modalvm:AddToPlaylistModalViewModel}, IsDesignTimeCreatable=False}"
              d:DesignHeight="500" d:DesignWidth="400"
              MaxWidth="450" MaxHeight="700"
-             Background="{StaticResource NavigationBarBrush}">
-    <Grid>
+             Background="{StaticResource MainBackgroundBrush}">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
-        <TextBlock Style="{StaticResource Header1Text}">
+        <TextBlock Style="{StaticResource TitleText}">
             Add <TextBlock Foreground="{DynamicResource Primary}" Text="{Binding SelectedTrack.Title, FallbackValue='Selected Track'}" /> to:
         </TextBlock>
 
@@ -34,30 +34,32 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                <Grid Background="{TemplateBinding Background}">
-                                    <TextBlock 
-                                        Style="{StaticResource ListViewItemText}"
-                                        Text="{Binding Playlist.Name}" 
-                                        />
-                                    <Border 
-                                        x:Name="checkBox" 
-                                        Background="{StaticResource PrimaryDark}"   
-                                        Height="20" 
-                                        CornerRadius="5" 
-                                        HorizontalAlignment="Right"
-                                        Margin="10"
-                                        SnapsToDevicePixels="True"
-                                        UseLayoutRounding="True"
-                                        Width="20">
-                                        <Path 
-                                            Data="M18.9 35.7 7.7 24.5l2.15-2.15 9.05 9.05 19.2-19.2 2.15 2.15Z" 
-                                            Fill="{StaticResource BlackBrush}" 
-                                            Height="12" 
-                                            Stretch="Fill"
-                                            Width="15" 
+                                <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                                    <Grid>
+                                        <TextBlock 
+                                            Style="{StaticResource ListViewItemText}"
+                                            Text="{Binding Playlist.Name}" 
                                             />
-                                    </Border>
-                                </Grid>
+                                        <Border 
+                                            x:Name="checkBox" 
+                                            Background="{StaticResource PrimaryDark}"   
+                                            Height="20" 
+                                            CornerRadius="5" 
+                                            HorizontalAlignment="Right"
+                                            Margin="10"
+                                            SnapsToDevicePixels="True"
+                                            UseLayoutRounding="True"
+                                            Width="20">
+                                            <Path 
+                                                Data="M18.9 35.7 7.7 24.5l2.15-2.15 9.05 9.05 19.2-19.2 2.15 2.15Z" 
+                                                Fill="{StaticResource BlackBrush}" 
+                                                Height="12" 
+                                                Stretch="Fill"
+                                                Width="15" 
+                                                />
+                                        </Border>
+                                    </Grid>
+                                </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="False">
                                         <Setter Property="Visibility" Value="Collapsed" TargetName="checkBox" />

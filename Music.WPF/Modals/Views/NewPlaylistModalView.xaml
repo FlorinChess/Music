@@ -19,14 +19,12 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock 
-            Margin="0 4"
-            Style="{StaticResource Header1Text}"
-            Text="Add new playlist modal" 
+            Style="{StaticResource TitleText}"
+            Text="New playlist" 
             />
 
         <TextBlock 
             Grid.Row="2" 
-            Margin="0 4"
             Text="Playlist name:" 
             Style="{StaticResource Header1Text}"
             />
@@ -34,7 +32,6 @@
         <custom:PlaceholderTextBox 
             x:Name="playlistNameTextBox"
             Grid.Row="3" 
-            Margin="0 4"
             Placeholder="Playlist name..."
             TabIndex="7"
             Text="{Binding PlaylistName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -43,7 +40,6 @@
         <StackPanel 
             Grid.Row="4" 
             HorizontalAlignment="Center" 
-            Margin="0 4"
             Orientation="Horizontal" 
             VerticalAlignment="Bottom">
             <Button 

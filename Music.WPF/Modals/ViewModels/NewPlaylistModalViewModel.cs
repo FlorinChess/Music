@@ -12,8 +12,12 @@ namespace Music.WPF.Modals.ViewModels
     {
         public event EventHandler<FocusRequestedEventArgs> FocusRequested;
 
+        #region Private Members
+
         private readonly ModalNavigationStore _modalNavigationStore;
         private readonly TrackStore _trackStore;
+
+        #endregion Private Members
 
         private string _playlistName = string.Empty;
         public string PlaylistName
@@ -31,7 +35,7 @@ namespace Music.WPF.Modals.ViewModels
         public CloseModalCommand CloseModalCommand { get; set; }
         public ICommand SaveCommand { get; set; }
 
-        #endregion
+        #endregion Commands
 
         public NewPlaylistModalViewModel(ModalNavigationStore modalNavigationStore, TrackStore trackStore)
         {

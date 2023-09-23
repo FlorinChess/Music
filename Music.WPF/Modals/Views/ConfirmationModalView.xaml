@@ -19,7 +19,7 @@
             Style="{StaticResource Header1Text}"
             TextWrapping="WrapWithOverflow"
             VerticalAlignment="Center">
-            Are you sure you want to <TextBlock Text="{Binding ConfirmationText, FallbackValue='remove Playlist Name'}" Foreground="{DynamicResource Primary}"/>?
+            Are you sure you want to <TextBlock Foreground="{DynamicResource Primary}" Text="{Binding ConfirmationText, FallbackValue='remove Playlist Name'}" />?
         </TextBlock>
         <StackPanel 
             Grid.Row="1" 

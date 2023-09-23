@@ -8,7 +8,7 @@ namespace Music.WPF.Modals.ViewModels
 {
     public sealed class ConfirmationModalViewModel : BaseViewModel, IModal
     {
-        public string ConfirmationText { get; set; }
+        public string ConfirmationText { get; }
 
         #region Commands
 
