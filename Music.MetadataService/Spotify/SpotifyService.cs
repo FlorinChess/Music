@@ -1,10 +1,10 @@
 ﻿using Music.APIs.Extensions;
 using Music.APIs.Spotify.Models;
 using Newtonsoft.Json;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
 using System.Timers;
 using System.Web;
@@ -17,8 +17,8 @@ namespace Music.APIs.Spotify
 
         private const int MAX_RETRY_RETRY_COUNT = 10;
         private const string TOKEN_URL = "https://accounts.spotify.com/api/token";
-        private const string CLIENT_ID = "ef143bdcc8fc4d88950e2ecdab4a9b73";
-        private const string CLIENT_SECRET = "d34beb6158cc4da897c066947d1fbdfb";
+        private string _clientId;
+        private string _clientSecret;
 
         private int _retryCount = 0;
         private string _accessToken = string.Empty;
@@ -32,6 +32,8 @@ namespace Music.APIs.Spotify
             _httpClientFactory = httpClientFactory;
 
             _timer.Elapsed += OnTokenExpired;
+
+            GetClientCredentials();
         }
 
         ~SpotifyService()
@@ -52,6 +54,22 @@ namespace Music.APIs.Spotify
             _timer.Start();
         }
 
+        private void GetClientCredentials()
+        {
+            try
+            {
+                string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"api_credentials.txt");
+                string[] lines = File.ReadAllLines(path);
+
+                _clientId = lines[0];
+                _clientSecret = lines[1];
+            }
+            catch
+            {
+                throw new InvalidOperationException("No credentials found!");
+            }
+        }
+
         /// <summary>
         /// Creates a POST request to the token endpoint of the Spotify API.
         /// On success it starts an internal timer for token refresh.
@@ -60,7 +78,7 @@ namespace Music.APIs.Spotify
         /// <exception cref="InvalidOperationException">If the maximum number of retries is succeded.</exception>
         private async Task<string> GetAccessTokenAsync()
         {
-            var authenticationHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", CLIENT_ID, CLIENT_SECRET)));
+            var authenticationHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", _clientId, _clientSecret)));
 
             var client = _httpClientFactory.CreateClient("AuthorizationClient");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationHeader);
