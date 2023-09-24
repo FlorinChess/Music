@@ -2,7 +2,6 @@ using Moq;
 using Moq.Protected;
 using Music.APIs.Spotify;
 using System.Net;
-using FluentAssertions;
 
 namespace Music.Tests.APIs.Tests
 {

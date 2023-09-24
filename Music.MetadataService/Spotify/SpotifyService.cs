@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Text;
 using System.Timers;
 using System.Web;
@@ -17,8 +16,8 @@ namespace Music.APIs.Spotify
 
         private const int MAX_RETRY_RETRY_COUNT = 10;
         private const string TOKEN_URL = "https://accounts.spotify.com/api/token";
-        private string _clientId;
-        private string _clientSecret;
+        private string? _clientId;
+        private string? _clientSecret;
 
         private int _retryCount = 0;
         private string _accessToken = string.Empty;
@@ -45,6 +44,8 @@ namespace Music.APIs.Spotify
             }
         }
 
+        #region Private Methods
+
         private async void OnTokenExpired(object? sender, ElapsedEventArgs e)
         {
             _timer.Stop();
@@ -54,15 +55,18 @@ namespace Music.APIs.Spotify
             _timer.Start();
         }
 
+        /// <summary>
+        /// Sets the client id and client secret using predefined environment variables.
+        /// </summary>
+        /// <exception cref="InvalidOperationException"></exception>
         private void GetClientCredentials()
         {
             try
             {
-                string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"api_credentials.txt");
-                string[] lines = File.ReadAllLines(path);
+                _clientId = Environment.GetEnvironmentVariable("API_CLIENT_ID");
+                _clientSecret = Environment.GetEnvironmentVariable("API_CLIENT_SECRET");
 
-                _clientId = lines[0];
-                _clientSecret = lines[1];
+                if (string.IsNullOrEmpty(_clientId) || string.IsNullOrEmpty(_clientSecret)) throw new Exception(); 
             }
             catch
             {
@@ -118,18 +122,40 @@ namespace Music.APIs.Spotify
             return token.AccessToken;
         }
 
-        public async Task<Tracks?> SearchTrackAsync(string track, string artist = "", int limit = 1)
+        private static string BuildQuery(string track, string artist)
+        {
+            var builder = new StringBuilder();
+            builder.Append("track:");
+            builder.Append(track.NormalizeString());
+
+            if (string.IsNullOrEmpty(artist))
+                return HttpUtility.UrlEncode(builder.ToString());
+
+            builder.Append(" artist:");
+            builder.Append(artist.NormalizeString());
+
+            return HttpUtility.UrlEncode(builder.ToString());
+        }
+
+        #endregion Private Methods
+
+        /// <summary>
+        /// Queries the Spotify API for tracks that match the inputted track name and artist.
+        /// </summary>
+        /// <param name="trackName"></param>
+        /// <param name="artist"></param>
+        /// <param name="limit"></param>
+        /// <returns>An instance of <see cref="Tracks"/> if any matching track are found, else <see langword="null"/>.</returns>
+        public async Task<Tracks?> SearchTrackAsync(string trackName, string artist = "", int limit = 1)
         {
             try
             {
                 var client = _httpClientFactory.CreateClient("SearchClient");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                string query = BuildQuery(track, artist);
+                string query = BuildQuery(trackName, artist);
 
                 using HttpResponseMessage response = await client.GetAsync($"https://api.spotify.com/v1/search?q={query}&type=track&limit={limit}");
-
-                response.WriteRequestToConsole();
 
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
@@ -157,41 +183,9 @@ namespace Music.APIs.Spotify
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex);
                 throw;
             }
         }
-
-        private static string BuildQuery(string track, string artist)
-        {
-            var builder = new StringBuilder();
-            builder.Append("track:");
-            builder.Append(track.NormalizeString());
-
-            if (string.IsNullOrEmpty(artist))
-                return HttpUtility.UrlEncode(builder.ToString());
-
-            builder.Append(" artist:");
-            builder.Append(artist.NormalizeString());
-
-            return HttpUtility.UrlEncode(builder.ToString());
-
-        }
     }
-    internal static class HttpResponseMessageExtensions
-    {
-        internal static void WriteRequestToConsole(this HttpResponseMessage response)
-        {
-            if (response is null)
-            {
-                return;
-            }
-
-            var request = response.RequestMessage;
-            Debug.Write($"{request?.Method} ");
-            Debug.Write($"{request?.RequestUri} ");
-            Debug.WriteLine($"HTTP/{request?.Version}");
-        }
-    }
-
 }
