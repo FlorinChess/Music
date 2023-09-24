@@ -3,24 +3,12 @@ using Music.WPF.Extensions;
 using Music.WPF.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Music.WPF.ViewModels
 {
     public abstract class BaseViewModel : ObservableObject
     {
-        private string _title;
-        public string Title
-        {
-            get => _title ??= string.Empty;
-            set
-            {
-                _title = value;
-                OnPropertyChanged(nameof(Title));
-            }
-        }
-
         protected static IList<TrackModel> Sort(IEnumerable<TrackModel> tracks, string sortOptionString)
         {
             SortOption sortOption = EnumExtension.GetValueFromDescription<SortOption>(sortOptionString);

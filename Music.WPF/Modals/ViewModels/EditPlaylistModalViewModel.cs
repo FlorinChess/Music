@@ -15,10 +15,10 @@ namespace Music.WPF.Modals.ViewModels
 
         #region Properties
 
-        public ObservableCollection<string> PlaylistTags { get; set; }
+        public ObservableCollection<string> PlaylistTags { get; private set; }
         public PlaylistModel OriginalPlaylist { get; private set; }
-        public PlaylistModel SelectedPlaylist { get; set; }
-        public string PlaylistName { get; set; }
+        public PlaylistModel SelectedPlaylist { get; private set; }
+        public string PlaylistName { get; private set; }
 
         private bool _isRemoveButtonVisible;
         public bool IsRemoveButtonVisible
@@ -47,9 +47,9 @@ namespace Music.WPF.Modals.ViewModels
         #region Commands
 
         public CloseModalCommand CloseModalCommand { get; set; }
-        public ICommand RemovePlaylistImage { get; set; }
+        public ICommand RemovePlaylistImage { get; private set; }
         public ICommand SaveCommand { get; set; }
-        public ICommand SelectPlaylistImage { get; set; }
+        public ICommand SelectPlaylistImage { get; private set; }
 
         #endregion
 
@@ -78,6 +78,14 @@ namespace Music.WPF.Modals.ViewModels
 
         #region Private Methods
 
+        private void Save()
+        {
+            OriginalPlaylist.Name = PlaylistName;
+            OriginalPlaylist.ImagePath = PlaylistImagePath;
+
+            _trackStore.PlaylistUpdated();
+        }
+
         private void RemoveImage()
         {
             PlaylistImagePath = string.Empty;
@@ -100,14 +108,6 @@ namespace Music.WPF.Modals.ViewModels
                 PlaylistImagePath = openFileDialog.FileName;
                 IsRemoveButtonVisible = true;
             }
-        }
-
-        private void Save()
-        {
-            OriginalPlaylist.Name = PlaylistName;
-            OriginalPlaylist.ImagePath = PlaylistImagePath;
-
-            _trackStore.PlaylistUpdated();
         }
 
         private void SetInitialValues()

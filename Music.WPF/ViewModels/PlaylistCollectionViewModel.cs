@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Music.WPF.Commands;
+using Music.WPF.Extensions;
 using Music.WPF.Modals.ViewModels;
 using Music.WPF.Models;
 using Music.WPF.Store;
@@ -22,9 +23,9 @@ namespace Music.WPF.ViewModels
 
         #region Properties
 
-        public ObservableCollection<PlaylistModel> Playlists { get; set; } = new();
+        public ObservableCollection<PlaylistModel> Playlists { get; private set; } = new();
 
-        public PlaylistModel? SelectedPlaylist
+        public PlaylistModel SelectedPlaylist
         {
             get => null;
             set 
@@ -61,7 +62,7 @@ namespace Music.WPF.ViewModels
             _trackStore = trackStore;
             _trackStore.AvailablePlaylistsChanged += OnAvailablePlaylistsChanged;
 
-            LoadPlaylists();
+            Playlists.AddRange(_trackStore.AvailablePlaylists);
 
             UpdateNumberOfPlaylists(Playlists.Count);
 
@@ -69,20 +70,12 @@ namespace Music.WPF.ViewModels
         }
 
         #region Private Methods
-        
-        private void LoadPlaylists()
-        {
-            for (int i = 0; i < _trackStore.AvailablePlaylists.Count; i++)
-            {
-                Playlists.Add(_trackStore.AvailablePlaylists[i]);
-            }
-        }
 
         private void OnAvailablePlaylistsChanged()
         {
             Playlists.Clear();
 
-            LoadPlaylists();
+            Playlists.AddRange(_trackStore.AvailablePlaylists);
 
             UpdateNumberOfPlaylists(Playlists.Count);
         }

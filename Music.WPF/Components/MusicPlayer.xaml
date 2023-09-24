@@ -12,15 +12,6 @@
              Background="{StaticResource MusicPlayerGraySurfaceBrush}"
              IsEnabled="{Binding IsEnabled}"
              IsTabStop="False">
-    <UserControl.Resources>
-        <!-- Button Content Styles -->
-        <Style TargetType="{x:Type Path}">
-            <Setter Property="Stretch" Value="Fill" />
-            <Setter Property="Width" Value="20" />
-            <Setter Property="Height" Value="20" />
-            <Setter Property="Fill" Value="{StaticResource WhiteBrush}" />
-        </Style>
-    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -111,15 +102,15 @@
                 Command="{Binding PlayPauseCommand}" 
                 IsChecked="{Binding IsPlaying, FallbackValue=False}" 
                 IsEnabled="{Binding CommandButtonsEnabled}"
-                ToolTip="{Binding PlayPauseButtonToolTip}"
                 Style="{StaticResource MusicPlayerPlayPauseCheckBox}"
+                ToolTip="{Binding PlayPauseButtonToolTip}"
                 />
 
             <Button 
                 Command="{Binding PlayNextCommand}" 
                 IsEnabled="{Binding CommandButtonsEnabled}"
-                ToolTip="Next"
-                Style="{StaticResource MusicPlayerButton}">
+                Style="{StaticResource MusicPlayerButton}"
+                ToolTip="Next">
                 <Path 
                     Data="M34 36V12h3v24Zm-23 0V12l17.3 12Z" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"
                     Style="{StaticResource DefaultIcon}"
@@ -141,14 +132,14 @@
         <StackPanel 
             x:Name="rightPanel" 
             Grid.Column="2" 
-            Margin="0 0 30 0"
-            Orientation="Horizontal" 
-            HorizontalAlignment="Right">
+            HorizontalAlignment="Right"
+            Margin="0 0 10 0"
+            Orientation="Horizontal">
             <CheckBox 
-                ToolTip="{Binding MuteButtonToolTip}"
                 Command="{Binding MuteCommand}" 
                 IsChecked="{Binding IsMuted}"
-                Style="{DynamicResource MusicPlayerCheckBox}">
+                Style="{DynamicResource MusicPlayerCheckBox}"
+                ToolTip="{Binding MuteButtonToolTip}">
                 <Path 
                     Data="{Binding Value, ElementName=VolumeSlider, Converter={StaticResource DoubleToVectorConverter}}" 
                     Stretch="Uniform"
@@ -161,6 +152,7 @@
                 extensions:SliderExtension.DragStartedCommand="{Binding VolumeDragStartedCommand}"
                 HorizontalAlignment="Right"
                 IsMoveToPointEnabled="True"
+                IsTabStop="True"
                 Maximum="100" 
                 Margin="0 0 10 0"
                 Style="{StaticResource MusicPlayerSlider}"

@@ -18,7 +18,10 @@
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Style="{StaticResource TitleText}" Text="Equalizer" />
+        <TextBlock 
+            Style="{StaticResource TitleText}" 
+            Text="Equalizer"
+            />
 
         <DockPanel Grid.Row="1">
             <ComboBox

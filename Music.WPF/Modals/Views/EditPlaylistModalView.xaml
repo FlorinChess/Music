@@ -21,32 +21,38 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <placeholder:PlaceholderTextBox
-            x:Name="playlistNameTextBox" 
-            Grid.Row="0" 
-            Placeholder="Playlist name..."
-            Text="{Binding PlaylistName}"
-            />
+        <StackPanel>
+            <TextBlock 
+                Style="{StaticResource TitleText}"
+                Text="Edit playlist"
+                />
 
-        <placeholder:PlaceholderTextBox 
-            Grid.Row="1"
-            IsReadOnly="True"
-            Placeholder="No playlist image" 
-            Text="{Binding PlaylistImagePath}"
-            />
+            <placeholder:PlaceholderTextBox
+                x:Name="playlistNameTextBox" 
+                Margin="0 6"
+                Placeholder="Playlist name..."
+                Text="{Binding PlaylistName}"
+                />
+
+            <placeholder:PlaceholderTextBox 
+                IsReadOnly="True"
+                Margin="0 6"
+                Placeholder="No playlist image" 
+                Text="{Binding PlaylistImagePath}"
+                />
+        </StackPanel>
 
         <hoverCard:HoverCard 
-            Grid.Column="1" Grid.RowSpan="2"
-            Height="120"
+            Grid.Column="1"
+            Height="130"
             HorizontalAlignment="Center"
             IsTabStop="False"
             Source="{Binding PlaylistImagePath, Converter={StaticResource FilePathToImageConverter}}"
             VerticalAlignment="Center"
-            Width="120">
+            Width="130">
             <StackPanel Orientation="Horizontal">
                 <Button 
                     Command="{Binding SelectPlaylistImage}" 
@@ -54,19 +60,17 @@
                     ToolTip="Add playlist art">
                     <Path 
                         Data="M22.5 38V25.5H10v-3h12.5V10h3v12.5H38v3H25.5V38Z"
-                        Width="20" Height="20" Stretch="Fill"
-                        Fill="{StaticResource WhiteBrush}"
+                        Style="{StaticResource DefaultIcon}"
                         />
                 </Button>
                 <Button 
-                    ToolTip="Remove playlist art"
                     Command="{Binding RemovePlaylistImage}" 
                     Style="{StaticResource ImageSelectionButton}"
+                    ToolTip="Remove playlist art"
                     Visibility="{Binding IsRemoveButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
                     <Path 
                         Data="M261-120q-24.75 0-42.375-17.625T201-180v-570h-41v-60h188v-30h264v30h188v60h-41v570q0 24-18 42t-42 18H261Zm438-630H261v570h438v-570ZM367-266h60v-399h-60v399Zm166 0h60v-399h-60v399ZM261-750v570-570Z"
-                        Width="20" Height="20" Stretch="Fill"
-                        Fill="{StaticResource WhiteBrush}"
+                        Style="{StaticResource DefaultIcon}"
                         />
                 </Button>
             </StackPanel>

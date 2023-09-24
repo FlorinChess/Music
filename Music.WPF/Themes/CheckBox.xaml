@@ -4,6 +4,7 @@
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource RoundFocusVisualStyle}" />
+        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}" />
         <Setter Property="Height" Value="45" />
         <Setter Property="Margin" Value="5" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -12,6 +13,9 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{StaticResource ButtonHoverBrush}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource GrayBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -22,7 +26,7 @@
                 <ControlTemplate TargetType="{x:Type CheckBox}">
                     <Border Background="{TemplateBinding Background}" CornerRadius="5">
                         <Grid>
-                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                             <Ellipse
                                 x:Name="CheckMark" 
                                 Width="8" Height="8"
@@ -67,7 +71,6 @@
     <Style TargetType="{x:Type CheckBox}" x:Key="MusicPlayerPlayPauseCheckBox" BasedOn="{StaticResource CheckBoxBase}">
         <Setter Property="Height" Value="45" />
         <Setter Property="Width" Value="45" />
-        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
@@ -87,11 +90,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{StaticResource GrayBrush}" />
-            </Trigger>
-        </Style.Triggers>
     </Style>
     
     <Style TargetType="{x:Type CheckBox}" x:Key="HamburgerMenuCheckBox" BasedOn="{StaticResource CheckBoxBase}">

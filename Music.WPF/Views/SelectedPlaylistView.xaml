@@ -31,11 +31,8 @@
                     Style="{StaticResource TitleText}"
                     Text="{Binding SelectedPlaylist.Name, FallbackValue='Selected playlist name'}"
                     />
-                <StackPanel 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock 
-                        Name="numberOfTracks"
                         Style="{StaticResource SubtitleText}"
                         Text="{Binding NumberOfTracks, FallbackValue='10 Tracks'}"
                         />
