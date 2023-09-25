@@ -8,6 +8,15 @@ namespace Music.CustomControls.DropdownMenu
     [TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
     public sealed class DropdownMenu : ContentControl
     {
+        public int CheckBoxTabIndex
+        {
+            get { return (int)GetValue(CheckBoxTabIndexProperty); }
+            set { SetValue(CheckBoxTabIndexProperty, value); }
+        }
+
+        public static readonly DependencyProperty CheckBoxTabIndexProperty =
+            DependencyProperty.Register("CheckBoxTabIndex", typeof(int), typeof(DropdownMenu), new PropertyMetadata(0));
+
         public Brush PopupBorderBrush
         {
             get { return (Brush)GetValue(PopupBorderBrushProperty); }
