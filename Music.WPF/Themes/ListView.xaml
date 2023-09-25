@@ -9,6 +9,7 @@
     <Style x:Key="PlaylistCollectionListViewItem" TargetType="{x:Type ListViewItem}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource RoundFocusVisualStyle}" />
         <Setter Property="Foreground" Value="{StaticResource WhiteBrush}" />
+        <Setter Property="KeyboardNavigation.AcceptsReturn" Value="True" />
         <Setter Property="Margin" Value="0 10 10 10" />
         <Setter Property="Template">
             <Setter.Value>
@@ -87,6 +88,7 @@
         <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
         <Setter Property="ItemsPanel" Value="{StaticResource PlaylistCollectionItemsPanelTemplate}" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource PlaylistCollectionListViewItem}" />
+        <Setter Property="KeyboardNavigation.AcceptsReturn" Value="True" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
         <Setter Property="ScrollViewer.PanningMode" Value="Both"/>

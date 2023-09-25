@@ -76,7 +76,7 @@
             Command="{Binding NavigateBackCommand}"
             Style="{StaticResource WindowControlButton}"
             IsEnabled="{Binding IsMainEnabled}"
-            TabIndex="3"
+            TabIndex="0"
             ToolTip="Go back" 
             Width="50" 
             WindowChrome.IsHitTestVisibleInChrome="True">
@@ -97,7 +97,7 @@
             <Button 
                 x:Name="MinimizeButton"
                 Style="{StaticResource WindowControlButton}" 
-                TabIndex="0"
+                TabIndex="42"
                 ToolTip="Minimize">
                 <TextBlock 
                     FontWeight="ExtraBold"
@@ -108,7 +108,7 @@
             <Button 
                 x:Name="MaximizeButton"
                 Style="{StaticResource WindowControlButton}" 
-                TabIndex="1" 
+                TabIndex="43" 
                 ToolTip="Restore down">
                 <TextBlock 
                     FontSize="18" FontWeight="Medium"
@@ -119,7 +119,7 @@
             <Button 
                 x:Name="CloseButton" 
                 Style="{StaticResource WindowControlCloseButton}" 
-                TabIndex="2"
+                TabIndex="44"
                 ToolTip="Close">
                 <Path 
                     Width="13" Height="13" Stretch="Fill"

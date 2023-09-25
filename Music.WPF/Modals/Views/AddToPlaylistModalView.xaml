@@ -24,7 +24,8 @@
             Background="{StaticResource TransparentBrush}"
             BorderThickness="0"
             ItemsSource="{Binding Playlists}"
-            SelectionMode="Multiple">
+            SelectionMode="Multiple"
+            TabIndex="10">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
@@ -79,11 +80,13 @@
                 Command="{Binding SaveCommand}" 
                 Content="Save"
                 Style="{StaticResource ModalButton}" 
+                TabIndex="11"
                 />
             <Button
                 Command="{Binding CloseModalCommand}" 
                 Content="Close"
                 Style="{StaticResource ModalButton}" 
+                TabIndex="12"
                 />
         </StackPanel>
     </Grid>

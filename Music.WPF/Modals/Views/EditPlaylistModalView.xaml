@@ -34,6 +34,7 @@
                 x:Name="playlistNameTextBox" 
                 Margin="0 6"
                 Placeholder="Playlist name..."
+                TabIndex="10"
                 Text="{Binding PlaylistName}"
                 />
 
@@ -85,11 +86,13 @@
                 Command="{Binding SaveCommand}" 
                 Content="Save"
                 Style="{StaticResource ModalButton}" 
+                TabIndex="11"
                 />
             <Button  
                 Command="{Binding CloseModalCommand}" 
                 Content="Close"
                 Style="{StaticResource ModalButton}" 
+                TabIndex="12"
                 />
         </StackPanel>
     </Grid>

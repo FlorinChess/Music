@@ -50,7 +50,7 @@
             Command="{Binding CloseCommand}"
             Panel.ZIndex="10"
             Style="{StaticResource WindowControlButton}"
-            TabIndex="4"
+            TabIndex="8"
             ToolTip="Go back" 
             VerticalAlignment="Top"
             Width="50">
@@ -92,6 +92,7 @@
                     HorizontalAlignment="Right"
                     IsChecked="{Binding TrackListComponentViewModel.IsReorderEnabled}"
                     Style="{StaticResource MusicPlayerCheckBox}"
+                    TabIndex="6"
                     ToolTip="{Binding ReorderToolTip, FallbackValue='Reorder'}"
                     VerticalAlignment="Center">
                     <Path 

@@ -33,6 +33,7 @@
             Command="{Binding NewPlaylistCommand}"
             HorizontalAlignment="Left"
             Style="{StaticResource CommandButton}"
+            TabIndex="6"
             ToolTip="New playlist">
             <StackPanel Orientation="Horizontal" Margin="2">
                 <Path 
@@ -51,6 +52,7 @@
             ItemsSource="{Binding Playlists}" d:ItemsSource="{d:SampleData ItemCount=2}"
             SelectedItem="{Binding SelectedPlaylist}"
             Style="{StaticResource PlaylistCollectionListView}"
+            TabIndex="7"
             />
     </Grid>
 </UserControl>

@@ -14,7 +14,8 @@
             ItemsSource="{Binding Tracks}"
             Padding="0 0 10 0"
             SelectedItem="{Binding SelectedTrack}"
-            Style="{StaticResource ListComponentListView}">
+            Style="{StaticResource ListComponentListView}"
+            TabIndex="9">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding PlayCommand}"/>

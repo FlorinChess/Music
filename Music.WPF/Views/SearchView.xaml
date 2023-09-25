@@ -30,6 +30,7 @@
                 x:Name="searchTextBox"
                 Focusable="True"
                 Placeholder="Search..."
+                TabIndex="6"
                 Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <custom:PlaceholderTextBox.InputBindings>
                     <KeyBinding Key="Return" Command="{Binding SearchCommand}" />
@@ -46,6 +47,7 @@
                     ItemsSource="{Binding SortOptions}"
                     SelectedValue="{Binding SelectedSortOption}"
                     Style="{StaticResource SortComboBox}"
+                    TabIndex="7"
                     />
             </StackPanel>
         </Grid>

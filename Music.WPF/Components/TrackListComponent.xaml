@@ -16,6 +16,7 @@
             DragOver="AnimatedListView_DragOver"
             DragLeave="AnimatedListView_DragLeave"
             ItemsSource="{Binding Tracks}"
+            TabIndex="7"
             VirtualizingPanel.IsVirtualizing="True">
             <custom:AnimatedListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">

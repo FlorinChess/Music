@@ -29,7 +29,8 @@
                 ItemsSource="{Binding EqualizerProfiles}"
                 Margin="0 0 10 0"
                 SelectedValue="{Binding SelectedEqualizerProfile, Mode=TwoWay, NotifyOnSourceUpdated=True}"
-                Style="{StaticResource SortComboBox}">
+                Style="{StaticResource SortComboBox}"
+                TabIndex="10">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" />
@@ -40,7 +41,8 @@
             <Button 
                 Command="{Binding ResetEqualizerCommand}"
                 IsEnabled="{Binding IsEqualizerEnabled}"
-                Style="{StaticResource CommandButton}">
+                Style="{StaticResource CommandButton}"
+                TabIndex="11">
                 <TextBlock Text="Reset" Style="{StaticResource CommandButtonText}" />
             </Button>
 
@@ -58,6 +60,7 @@
                     IsChecked="{Binding IsEqualizerEnabled, FallbackValue=True}"
                     HorizontalAlignment="Right"
                     Style="{StaticResource SwitchCheckBox}"
+                    TabIndex="12"
                     VerticalContentAlignment="Center"
                     VerticalAlignment="Center"
                     />
@@ -94,6 +97,7 @@
                     Maximum="{Binding Maximum, FallbackValue=20}" 
                     Minimum="{Binding Minimum, FallbackValue=-20}" 
                     Style="{StaticResource EqualizerSlider}" 
+                    TabIndex="13"
                     Tag="32" 
                     Value="{Binding Band1, FallbackValue=18}"
                     />
@@ -103,6 +107,7 @@
                     Maximum="{Binding Maximum, FallbackValue=20}" 
                     Minimum="{Binding Minimum, FallbackValue=-20}"
                     Style="{StaticResource EqualizerSlider}" 
+                    TabIndex="14"
                     Tag="64" 
                     Value="{Binding Band2, FallbackValue=12}"
                     />
@@ -112,6 +117,7 @@
                     Maximum="{Binding Maximum, FallbackValue=20}" 
                     Minimum="{Binding Minimum, FallbackValue=-20}" 
                     Style="{StaticResource EqualizerSlider}" 
+                    TabIndex="15"
                     Tag="125" 
                     Value="{Binding Band3, FallbackValue=7}" 
                     />
@@ -121,6 +127,7 @@
                     Maximum="{Binding Maximum, FallbackValue=20}" 
                     Minimum="{Binding Minimum, FallbackValue=-20}" 
                     Style="{StaticResource EqualizerSlider}" 
+                    TabIndex="16"
                     Tag="250" 
                     Value="{Binding Band4, FallbackValue=5}" 
                     />
@@ -130,6 +137,7 @@
                     Maximum="{Binding Maximum, FallbackValue=20}" 
                     Minimum="{Binding Minimum, FallbackValue=-20}" 
                     Style="{StaticResource EqualizerSlider}" 
+                    TabIndex="17"
                     Tag="500" 
                     Value="{Binding Band5, FallbackValue=-5}" />
                 <Slider 
@@ -137,6 +145,7 @@
                     extensions:SliderExtension.DragStartedCommand="{Binding DragStartedCommand}"
                     Maximum="{Binding Maximum, FallbackValue=20}" 
                     Minimum="{Binding Minimum, FallbackValue=-20}" 
+                    TabIndex="18"
                     Tag="1K" 
                     Style="{StaticResource EqualizerSlider}" 
                     Value="{Binding Band6, FallbackValue=1}" 
@@ -147,6 +156,7 @@
                     Maximum="{Binding Maximum, FallbackValue=20}" 
                     Minimum="{Binding Minimum, FallbackValue=-20}" 
                     Style="{StaticResource EqualizerSlider}" 
+                    TabIndex="19"
                     Tag="2K" 
                     Value="{Binding Band7, FallbackValue=3}" 
                     />
@@ -156,6 +166,7 @@
                     Maximum="{Binding Maximum, FallbackValue=20}"
                     Minimum="{Binding Minimum, FallbackValue=-20}" 
                     Style="{StaticResource EqualizerSlider}" 
+                    TabIndex="20"
                     Tag="4K" 
                     Value="{Binding Band8, FallbackValue=6}" 
                     />
@@ -165,6 +176,7 @@
                     Maximum="{Binding Maximum, FallbackValue=20}" 
                     Minimum="{Binding Minimum, FallbackValue=-20}" 
                     Style="{StaticResource EqualizerSlider}" 
+                    TabIndex="21"
                     Tag="8K" 
                     Value="{Binding Band9, FallbackValue=7}" />
                 <Slider 
@@ -173,6 +185,7 @@
                     Maximum="{Binding Maximum, FallbackValue=20}" 
                     Minimum="{Binding Minimum, FallbackValue=-20}" 
                     Style="{StaticResource EqualizerSlider}" 
+                    TabIndex="22"
                     Tag="16K" 
                     Value="{Binding Band10, FallbackValue=10}" 
                     />
@@ -184,11 +197,13 @@
                 Command="{Binding SaveCommand}" 
                 Content="Save"
                 Style="{StaticResource ModalButton}" 
+                TabIndex="23"
                 />
             <Button 
                 Command="{Binding CloseModalCommand}" 
                 Content="Close"
                 Style="{StaticResource ModalButton}" 
+                TabIndex="24"
                 />
         </StackPanel>
     </Grid>

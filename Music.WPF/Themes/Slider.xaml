@@ -43,8 +43,10 @@
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource RoundFocusVisualStyle}" />
         <Setter Property="IsSnapToTickEnabled" Value="False" />
+        <Setter Property="Minimum" Value="0" />
         <Setter Property="MinWidth" Value="100" />
         <Setter Property="MinHeight" Value="4" />
+        <Setter Property="SmallChange" Value="1" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Orientation" Value="Horizontal" />
         <Setter Property="Template">
