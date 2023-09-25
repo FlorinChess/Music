@@ -21,6 +21,7 @@ namespace Music.WPF.ViewModels
 
         private readonly ResourceDictionary _resourceDictionary = new();
         private readonly IServiceProvider _serviceProvider;
+        private readonly TrackStore _trackStore;
         private readonly MusicMetadataService _musicMetadataService;
         private readonly BackgroundWorker _worker = new();
         private Uri _dictionarySource;
@@ -29,9 +30,20 @@ namespace Music.WPF.ViewModels
 
         #region Properties
 
-        public ObservableCollection<MusicFolderModel> MusicFolders { get; set; } = new ObservableCollection<MusicFolderModel>();
+        public ObservableCollection<MusicFolderModel> MusicFolders { get; private set; } = new ObservableCollection<MusicFolderModel>();
         public ObservableCollection<string> OutputDevices { get; set; } = new ObservableCollection<string>();
         public MusicFolderModel SelectedMusicFolder { get; set; }
+
+        private bool _placeholderVisibility;
+        public bool PlaceholderVisibility
+        {
+            get => _placeholderVisibility;
+            set
+            {
+                _placeholderVisibility = value;
+                OnPropertyChanged(nameof(PlaceholderVisibility));
+            }
+        }
 
         private bool _isAutoPlayEnabled = Properties.Settings.Default.AutoplayEnabled;
         public bool IsAutoPlayEnabled
@@ -83,6 +95,7 @@ namespace Music.WPF.ViewModels
         public SettingsViewModel(IServiceProvider serviceProvider, TrackStore trackStore, MusicMetadataService musicMetadataService)
         {
             _serviceProvider = serviceProvider;
+            _trackStore = trackStore;
             _musicMetadataService = musicMetadataService;
 
             _worker.DoWork += OnBackgroundWorkerDoWork;
@@ -99,6 +112,8 @@ namespace Music.WPF.ViewModels
             {
                 _musicMetadataService.AddMusicFiles(trackStore.AvailableTracks.Select(t => t.FilePath));
             }
+
+            PlaceholderVisibility = MusicFolders.Count == 0;
         }
 
         #region Private Methods
@@ -121,6 +136,8 @@ namespace Music.WPF.ViewModels
                 Properties.Settings.Default.Save();
 
                 MusicFolders.Remove(SelectedMusicFolder);
+
+                PlaceholderVisibility = MusicFolders.Count == 0;
             }
             catch (Exception ex)
             {
@@ -128,21 +145,6 @@ namespace Music.WPF.ViewModels
             }
         }
 
-        private void SelectMusicFolder()
-        {
-            var newFolder = MusicFilesService.AddNewMusicFolder();
-
-            if (!string.IsNullOrEmpty(newFolder))
-            {
-                // Check if the new folder is already contained in the music folders
-                for (int i = 0; i < MusicFolders.Count; i++)
-                    if (newFolder == MusicFolders[i].Path) return;
-
-                MusicFolders.Add(new MusicFolderModel { Path = newFolder });
-                Properties.Settings.Default.MusicFolder.Add(newFolder);
-                Properties.Settings.Default.Save();
-            }
-        }
 
         private async void OnBackgroundWorkerDoWork(object? sender, DoWorkEventArgs e)
         {
@@ -202,6 +204,27 @@ namespace Music.WPF.ViewModels
         }
 
         #endregion
+
+        public void SelectMusicFolder()
+        {
+            var newFolder = MusicFilesService.AddNewMusicFolder();
+
+            if (!string.IsNullOrEmpty(newFolder))
+            {
+                // Check if the new folder is already contained in the music folders
+                for (int i = 0; i < MusicFolders.Count; i++)
+                    if (newFolder == MusicFolders[i].Path) return;
+
+                var newMusicFolder = new MusicFolderModel { Path = newFolder };
+
+                _trackStore.AddMusicFolder(newMusicFolder);
+                MusicFolders.Add(newMusicFolder);
+                Properties.Settings.Default.MusicFolder.Add(newFolder);
+                Properties.Settings.Default.Save();
+
+                PlaceholderVisibility = MusicFolders.Count == 0;
+            }
+        }
 
         public override void Dispose()
         {
