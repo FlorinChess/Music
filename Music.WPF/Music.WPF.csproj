@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Music.Common\Music.Common.csproj" />
     <ProjectReference Include="..\Music.CustomControls\Music.CustomControls.csproj" />
     <ProjectReference Include="..\Music.MetadataService\Music.APIs.csproj" />
     <ProjectReference Include="..\Music.NAudio\Music.NAudio.csproj" />
