@@ -36,9 +36,9 @@ namespace Music.WPF.Services
         /// <param name="files">The file paths</param>
         /// <returns>A collection of <see cref="TrackModel"/> with data from the tags of the files</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static IEnumerable<TrackModel> CreateTracks(IEnumerable<string> files)
+        public static IList<TrackModel> CreateTracks(IEnumerable<string> files)
         {
-            if (files is null || !files.Any()) return Enumerable.Empty<TrackModel>();
+            if (files is null || !files.Any()) return new List<TrackModel>();
 
             var output =
                 files.AsParallel()
@@ -50,7 +50,7 @@ namespace Music.WPF.Services
                     {
                         FilePath = file,
                         Title = musicFile.Tag.Title,
-                        Artist = musicFile.Tag.Performers.MakeString(),
+                        Artist = musicFile.Tag.Performers.SplitAndConcat(),
                         Length = MusicPlayer.GetLengthInSeconds(file)
                     };
                 })
@@ -59,7 +59,7 @@ namespace Music.WPF.Services
             return output;
         }
 
-        public static string MakeString(this string[] stringArray)
+        private static string SplitAndConcat(this string[] stringArray)
         {
             var result = string.Empty;
 
