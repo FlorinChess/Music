@@ -2,6 +2,7 @@
 using Music.APIs;
 using Music.NAudio;
 using Music.WPF.Commands;
+using Music.WPF.Core;
 using Music.WPF.Models;
 using Music.WPF.Services;
 using Music.WPF.Store;
@@ -15,7 +16,7 @@ using System.Windows.Input;
 
 namespace Music.WPF.ViewModels
 {
-    public sealed class SettingsViewModel : BaseViewModel
+    public sealed class SettingsViewModel : BaseViewModel, INavigation
     {
         #region Private Members
 
@@ -205,6 +206,8 @@ namespace Music.WPF.ViewModels
 
         #endregion
 
+        #region Public Methods
+
         public void SelectMusicFolder()
         {
             var newFolder = MusicFilesService.AddNewMusicFolder();
@@ -226,6 +229,8 @@ namespace Music.WPF.ViewModels
             }
         }
 
+        public override PageIndex GetPageIndex() => PageIndex.Settings;
+
         public override void Dispose()
         {
             Properties.Settings.Default.AutoplayEnabled = IsAutoPlayEnabled;
@@ -233,5 +238,7 @@ namespace Music.WPF.ViewModels
             Properties.Settings.Default.Save();
             base.Dispose();
         }
+
+        #endregion Public Methods
     }
 }

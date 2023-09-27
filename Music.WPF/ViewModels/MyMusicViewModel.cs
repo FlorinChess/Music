@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Music.WPF.Commands;
+using Music.WPF.Core;
 using Music.WPF.Extensions;
 using Music.WPF.Models;
 using Music.WPF.Store;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace Music.WPF.ViewModels
 {
-    public sealed class MyMusicViewModel : BaseViewModel
+    public sealed class MyMusicViewModel : BaseViewModel, INavigation
     {
         #region Private Members
 
@@ -151,6 +152,8 @@ namespace Music.WPF.ViewModels
         }
 
         #endregion
+
+        public override PageIndex GetPageIndex() => PageIndex.MyMusic;
 
         public override void Dispose()
         {

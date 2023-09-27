@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Music.WPF.Commands;
+using Music.WPF.Core;
 using Music.WPF.Extensions;
 using Music.WPF.Modals.ViewModels;
 using Music.WPF.Models;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace Music.WPF.ViewModels
 {
-    public sealed class PlaylistCollectionViewModel : BaseViewModel
+    public sealed class PlaylistCollectionViewModel : BaseViewModel, INavigation
     {
         #region Private Members
 
@@ -97,11 +98,17 @@ namespace Music.WPF.ViewModels
 
         #endregion
 
+        #region Public Methods
+
+        public override PageIndex GetPageIndex() => PageIndex.PlaylistCollection;
+
         public override void Dispose()
         {
             _trackStore.AvailablePlaylistsChanged -= OnAvailablePlaylistsChanged;
 
             base.Dispose();
         }
+
+        #endregion Public Methods
     }
 }

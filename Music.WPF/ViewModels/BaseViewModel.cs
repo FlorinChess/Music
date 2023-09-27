@@ -1,6 +1,7 @@
 ﻿using Music.WPF.Core;
 using Music.WPF.Extensions;
 using Music.WPF.Models;
+using Music.WPF.Store;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Music.WPF.ViewModels
 {
     public abstract class BaseViewModel : ObservableObject
     {
+        public virtual PageIndex GetPageIndex() => PageIndex.None;
+
         protected static IList<TrackModel> Sort(IEnumerable<TrackModel> tracks, string sortOptionString)
         {
             SortOption sortOption = EnumExtension.GetValueFromDescription<SortOption>(sortOptionString);

@@ -72,7 +72,7 @@ namespace Music.WPF.ViewModels
             }
         }
 
-        private bool _navigateBackButtonVisible;
+        private bool _navigateBackButtonVisible = false;
         public bool NavigateBackButtonVisible
         {
             get => _navigateBackButtonVisible;
@@ -93,7 +93,6 @@ namespace Music.WPF.ViewModels
                 OnPropertyChanged(nameof(NowPlayingViewModelVisibility));
             }
         }
-
 
         #endregion
 
@@ -171,6 +170,8 @@ namespace Music.WPF.ViewModels
         private void OnCurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
+
+            NavigateBackButtonVisible = _navigationStore.Count() > 1;
         }
 
         private void OnWindowWidthChanged(double windowWidth)

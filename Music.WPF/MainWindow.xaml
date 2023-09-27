@@ -78,6 +78,7 @@
             IsEnabled="{Binding IsMainEnabled}"
             TabIndex="0"
             ToolTip="Go back" 
+            Visibility="{Binding NavigateBackButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
             Width="50" 
             WindowChrome.IsHitTestVisibleInChrome="True">
             <Path 

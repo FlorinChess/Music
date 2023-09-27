@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace Music.WPF.ViewModels
 {
-    public sealed class SearchViewModel : BaseViewModel, ISortable
+    public sealed class SearchViewModel : BaseViewModel, ISortable, INavigation
     {
         private readonly TrackStore _trackStore;
 
@@ -143,5 +143,7 @@ namespace Music.WPF.ViewModels
         }
 
         #endregion
+
+        public override PageIndex GetPageIndex() => PageIndex.Search;
     }
 }
