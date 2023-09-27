@@ -9,9 +9,10 @@ namespace Music.WPF.Store
     {
         #region Public Events
 
-        public event Action CurrentTrackChanged;
-        public event Action QueueChanged;
         public event Action AvailablePlaylistsChanged;
+        public event Action CurrentTrackChanged;
+        public event Action MusicFoldersChanged;
+        public event Action QueueChanged;
 
         #endregion Public Events
 
@@ -48,6 +49,7 @@ namespace Music.WPF.Store
         public List<TrackModel> Queue { get; private set; } = new();
         public List<TrackModel> AvailableTracks { get; private set; } = new();
         public List<PlaylistModel> AvailablePlaylists { get; private set; } = new();
+        public List<MusicFolderModel> MusicFolders { get; private set; } = new();
         public bool PlaylistsChanged { get; private set; } = false;
 
         #endregion
@@ -180,6 +182,13 @@ namespace Music.WPF.Store
         public TrackModel GetTrackByFilePath(string filePath)
         {
             return AvailableTracks.Where(t => t.FilePath == filePath).Single();
+        }
+
+        public void AddMusicFolder(MusicFolderModel musicFolder)
+        {
+            MusicFolders.Add(musicFolder);
+
+            MusicFoldersChanged?.Invoke();
         }
 
         #endregion
