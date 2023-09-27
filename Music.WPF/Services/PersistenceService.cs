@@ -12,10 +12,14 @@ namespace Music.WPF.Services
 {
     public sealed class PersistenceService : IPersistenceService
     {
+        #region Private Members
+
         private readonly string _saveFolderPath;
         private readonly string _saveFilePath;
         private readonly TrackStore _trackStore;
         private readonly XmlSerializer _serializer;
+
+        #endregion Private Members
 
         public PersistenceService(TrackStore trackStore)
         {
