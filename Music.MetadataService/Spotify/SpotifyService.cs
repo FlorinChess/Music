@@ -26,6 +26,8 @@ namespace Music.APIs.Spotify
 
         #endregion Private Members
 
+        #region Constructors / Destructors
+
         public SpotifyService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
@@ -43,6 +45,8 @@ namespace Music.APIs.Spotify
                 _timer.Dispose();
             }
         }
+
+        #endregion Constructors / Destructors
 
         #region Private Methods
 

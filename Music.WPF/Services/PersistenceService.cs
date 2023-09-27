@@ -12,7 +12,8 @@ namespace Music.WPF.Services
 {
     public sealed class PersistenceService : IPersistenceService
     {
-        private const string SAVEFILE_PATH = @"Playlists/playlists.xml";
+        private readonly string _saveFolderPath;
+        private readonly string _saveFilePath;
         private readonly TrackStore _trackStore;
         private readonly XmlSerializer _serializer;
 
@@ -20,6 +21,9 @@ namespace Music.WPF.Services
         {
             _trackStore = trackStore;
             _serializer = new(typeof(PersistenceObjectList));
+
+            _saveFolderPath = string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "\\Music\\Playlists\\");
+            _saveFilePath = string.Concat(_saveFolderPath, "playlists.xml");
         }
 
         #region Private Methods
@@ -72,7 +76,9 @@ namespace Music.WPF.Services
 
         public void Parse()
         {
-            using var fileStream = new StreamReader(SAVEFILE_PATH);
+            if (!File.Exists(_saveFilePath)) return;
+
+            using var fileStream = new StreamReader(_saveFilePath);
 
             var persistenceObjectList = (PersistenceObjectList?)_serializer.Deserialize(fileStream);
 
@@ -104,7 +110,7 @@ namespace Music.WPF.Services
             {
                 var persistenceObjectList = new PersistenceObjectList() { Playlists = CreatePersistenceObjects(_trackStore.AvailablePlaylists) };
 
-                var fileStream = new FileStream(SAVEFILE_PATH, FileMode.Create);
+                var fileStream = new FileStream(_saveFilePath, FileMode.Create);
 
                 var writer = new XmlTextWriter(fileStream, Encoding.Unicode);
 
