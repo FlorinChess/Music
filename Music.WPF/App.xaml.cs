@@ -11,7 +11,6 @@ using Music.WPF.ViewModels;
 using Music.WPF.Views;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 
 namespace Music.WPF
@@ -34,7 +33,7 @@ namespace Music.WPF
         protected override void OnStartup(StartupEventArgs e)
         {
             var trackStore = _serviceProvider.GetRequiredService<TrackStore>();
-            trackStore.AddTracks(GetAvailableTracks().ToList());
+            trackStore.AddTracks(GetAvailableTracks());
 
             var initialNavigationService = _serviceProvider.GetRequiredService<INavigationService>();
             initialNavigationService.Navigate();
@@ -108,28 +107,28 @@ namespace Music.WPF
         {
             return new NavigationService<MyMusicViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
-                () => serviceProvider.GetRequiredService<MyMusicViewModel>());
+                serviceProvider.GetRequiredService<MyMusicViewModel>);
         }
 
         private static INavigationService CreatePlaylistCollectionNavigationService(IServiceProvider serviceProvider)
         {
             return new NavigationService<PlaylistCollectionViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
-                () => serviceProvider.GetRequiredService<PlaylistCollectionViewModel>());
+                serviceProvider.GetRequiredService<PlaylistCollectionViewModel>);
         }
 
         private static INavigationService CreateSettingsNavigationService(IServiceProvider serviceProvider)
         {
             return new NavigationService<SettingsViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
-                () => serviceProvider.GetRequiredService<SettingsViewModel>());
+                serviceProvider.GetRequiredService<SettingsViewModel>);
         }
 
         private static INavigationService CreateSearchNavigationService(IServiceProvider serviceProvider)
         {
             return new NavigationService<SearchViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
-                () => serviceProvider.GetRequiredService<SearchViewModel>());
+                serviceProvider.GetRequiredService<SearchViewModel>);
         }
 
         private static NavigationBarViewModel CreateNavigationBarViewModel(IServiceProvider serviceProvider)
@@ -140,7 +139,7 @@ namespace Music.WPF
                 CreateSearchNavigationService(serviceProvider));
         }
 
-        private static IEnumerable<TrackModel> GetAvailableTracks()
+        private static IList<TrackModel> GetAvailableTracks()
         {
             var musicFolders = MusicFilesService.GetMusicFolders();
 
