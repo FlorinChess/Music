@@ -86,7 +86,7 @@ namespace Music.WPF.Store
 
             AddTracksToQueue(tracks);
 
-            if (setFirstAsCurrent)
+            if (Queue.Count > 0 && setFirstAsCurrent)
                 CurrentTrack = Queue[0];
 
             QueueChange();
@@ -98,7 +98,7 @@ namespace Music.WPF.Store
 
             Queue.Add(track);
 
-            if (setFirstAsCurrent)
+            if (Queue.Count > 0 && setFirstAsCurrent)
                 CurrentTrack = Queue[0];
 
             QueueChange();
@@ -153,6 +153,8 @@ namespace Music.WPF.Store
 
         public void AddTracks(IList<TrackModel> tracks)
         {
+            if (tracks is null || tracks.Count == 0) return;
+
             for (int i = 0; i < tracks.Count; i++)
             {
                 AvailableTracks.Add(tracks[i]);
@@ -168,6 +170,8 @@ namespace Music.WPF.Store
 
         public void RemovePlaylist(PlaylistModel playlist)
         {
+            if (AvailablePlaylists.Count == 0) return;
+
             AvailablePlaylists.Remove(playlist);
             PlaylistUpdated();
         }
