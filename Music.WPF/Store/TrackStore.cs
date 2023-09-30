@@ -161,7 +161,7 @@ namespace Music.WPF.Store
 
         public void SetTrackAsCurrent(TrackModel track)
         {
-            if (CurrentTrack is null || CurrentTrack == track) return;
+            if (CurrentTrack == track) return;
 
             CurrentTrack = track;
         }
