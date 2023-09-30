@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -26,8 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Music.Domain\Music.Domain.csproj" />
     <ProjectReference Include="..\Music.MetadataService\Music.APIs.csproj" />
     <ProjectReference Include="..\Music.NAudio\Music.NAudio.csproj" />
+    <ProjectReference Include="..\Music.WPF\Music.WPF.csproj" />
   </ItemGroup>
 
   <ItemGroup>
