@@ -1,18 +1,17 @@
-﻿using System;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
-namespace Music.WPF.Models
+namespace Music.Domain.DataModels
 {
     [Serializable]
     [XmlType("Playlist")]
-    public sealed record PersistenceObject
+    public sealed record Playlist
     {
         public string Name { get; set; }
         public string DateCreatedString { get; set; }
+        public string ImagePath { get; set; }
 
         [XmlArray("Tracks")]
         [XmlArrayItem("FilePath")]
-        public string[] TracksFilePaths { get; set; }
-        public string ImagePath { get; set; }
+        public List<string> TracksFilePaths { get; set; }
     }
 }
