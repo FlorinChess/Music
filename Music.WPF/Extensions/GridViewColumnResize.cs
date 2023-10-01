@@ -55,25 +55,18 @@ namespace Music.WPF.Extensions
 
         private static void OnSetWidthCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var element = dependencyObject as GridViewColumn;
-            if (element is not null)
+            if (dependencyObject is GridViewColumn gridColumn)
             {
-                GridViewColumnResizeBehavior behavior = GetOrCreateBehavior(element);
-                behavior.Width = e.NewValue as string;
-            }
-            else
-            {
-                Console.Error.WriteLine("Error: Expected type GridViewColumn but found " +
-                                        dependencyObject.GetType().Name);
+                GridViewColumnResizeBehavior behavior = GetOrCreateBehavior(gridColumn);
+                behavior.Width = (string)e.NewValue;
             }
         }
 
         private static void OnSetEnabledCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var element = dependencyObject as ListView;
-            if (element is not null)
+            if (dependencyObject is ListView listView)
             {
-                ListViewResizeBehavior behavior = GetOrCreateBehavior(element);
+                ListViewResizeBehavior behavior = GetOrCreateBehavior(listView);
                 behavior.Enabled = (bool)e.NewValue;
             }
             else

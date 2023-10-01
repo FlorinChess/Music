@@ -21,10 +21,10 @@ namespace Music.WPF.Extensions
         {
             return Enum.GetValues(EnumType).Cast<Enum>().Select(EnumToDescriptionOrString);
         }
-        //.Cast<Enum>().Select(EnumToDescriptionOrString);
+
         private string EnumToDescriptionOrString(Enum value)
         {
-            return value.GetType().GetField(value.ToString())
+            return value.GetType().GetField(value.ToString())!
                        .GetCustomAttributes(typeof(DescriptionAttribute), false)
                        .Cast<DescriptionAttribute>()
                        .FirstOrDefault()?.Description ?? value.ToString();
