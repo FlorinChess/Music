@@ -1,6 +1,8 @@
-﻿using Music.Domain.DataModels;
+﻿using FluentAssertions.Events;
+using Music.Domain.DataModels;
 using Music.WPF.Models;
 using Music.WPF.Store;
+using System.Threading;
 
 namespace Music.Tests.WPF.Tests.Stores
 {
@@ -12,7 +14,6 @@ namespace Music.Tests.WPF.Tests.Stores
         public void Setup()
         {
             _trackStore = new TrackStore();
-            _trackStore.QueueChanged += delegate { }; // Test listener
         }
 
         [Test]
@@ -58,6 +59,8 @@ namespace Music.Tests.WPF.Tests.Stores
         public void SetQueue_TrackListNotEmptyAndQueueNotClear_ClearAndAddNewTracks()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
             var track3 = new TrackModel() { Title = "testTitle3" };
@@ -88,12 +91,16 @@ namespace Music.Tests.WPF.Tests.Stores
             _trackStore.Queue[1].Should().BeEquivalentTo(track4);
 
             _trackStore.CurrentTrack.Should().BeEquivalentTo(track2);
+
+            monitor.Should().Raise("QueueChanged");
         }
 
         [Test]
         public void SetQueue_TrackListNotEmptyAndQueueNotClearAndSetFirstFalse_ClearAndAddNewTracks()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
             var track3 = new TrackModel() { Title = "testTitle3" };
@@ -124,12 +131,16 @@ namespace Music.Tests.WPF.Tests.Stores
             _trackStore.Queue[1].Should().BeEquivalentTo(track4);
 
             _trackStore.CurrentTrack.Should().BeEquivalentTo(track1);
+
+            monitor.Should().Raise("QueueChanged");
         }
 
         [Test]
         public void SetQueue_OneNewTrackAndQueueIsEmpty_AddNewTrack()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+
             var track1 = new TrackModel() { Title = "testTitle1" };
 
             _trackStore.AddToQueue(track1);
@@ -140,12 +151,16 @@ namespace Music.Tests.WPF.Tests.Stores
             // Assert
             _trackStore.Queue.Count.Should().Be(1);
             _trackStore.CurrentTrack.Should().BeEquivalentTo(track1);
+
+            monitor.Should().Raise("QueueChanged");
         }
 
         [Test]
         public void SetQueue_OneNewTrackAndQueueIsNotEmpty_ClearAndAddNewTrack()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+            
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
             var track3 = new TrackModel() { Title = "testTitle3" };
@@ -167,12 +182,16 @@ namespace Music.Tests.WPF.Tests.Stores
             // Assert
             _trackStore.Queue.Count.Should().Be(1);
             _trackStore.CurrentTrack.Should().BeEquivalentTo(track3);
+
+            monitor.Should().Raise("QueueChanged");
         }
 
         [Test]
         public void SetQueue_OneNewTrackAndQueueIsNotEmptyAndSetFirstFalse_ClearAndAddNewTrack()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+            
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
             var track3 = new TrackModel() { Title = "testTitle3" };
@@ -194,6 +213,8 @@ namespace Music.Tests.WPF.Tests.Stores
             // Assert
             _trackStore.Queue.Count.Should().Be(1);
             _trackStore.CurrentTrack.Should().BeEquivalentTo(track1);
+            
+            monitor.Should().Raise("QueueChanged");
         }
 
         [Test]
@@ -214,6 +235,8 @@ namespace Music.Tests.WPF.Tests.Stores
         public void AddToQueue_TrackListNotEmptyAndQueueIsEmpty_AddNewTracks()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+            
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
 
@@ -228,17 +251,16 @@ namespace Music.Tests.WPF.Tests.Stores
 
             // Assert
             _trackStore.Queue.Count.Should().Be(2);
-            
-            // TODO: check if bahavior is correct when calling QueueChanged()
-            //_trackStore.CurrentTrack.Should().BeNull();
 
-            //_trackStore.Monitor().Should().Raise(nameof(_trackStore.QueueChanged));
+            monitor.Should().Raise("QueueChanged");
         }
 
         [Test]
         public void AddToQueue_OneNewTrackAndQueueEmpty_AddNewTrack()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+            
             var track1 = new TrackModel() { Title = "testTitle1" };
 
             // Act
@@ -247,13 +269,15 @@ namespace Music.Tests.WPF.Tests.Stores
             // Assert
             _trackStore.Queue.Count.Should().Be(1);
 
-            //_trackStore.Monitor().Should().Raise(nameof(_trackStore.QueueChanged));
+            monitor.Should().Raise("QueueChanged");
         }
 
         [Test]
         public void AddToQueue_OneNewTrackAndQueueNotEmpty_AddNewTrack()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+            
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
 
@@ -273,13 +297,15 @@ namespace Music.Tests.WPF.Tests.Stores
             _trackStore.Queue[2].Should().BeEquivalentTo(track1);
             _trackStore.CurrentTrack.Should().BeEquivalentTo(track1);
 
-            //_trackStore.Monitor().Should().Raise(nameof(_trackStore.QueueChanged));
+            monitor.Should().Raise("QueueChanged");
         }
 
         [Test]
         public void AddNextInQueue_QueueEmpty_AddNewTrack()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+            
             var track1 = new TrackModel() { Title = "testTitle1" };
 
             // Act
@@ -289,12 +315,15 @@ namespace Music.Tests.WPF.Tests.Stores
             _trackStore.Queue.Count.Should().Be(1);
             _trackStore.CurrentTrack.Should().BeEquivalentTo(track1);
 
+            monitor.Should().Raise("QueueChanged");
         }
 
         [Test]
         public void AddNextInQueue_QueueNotEmpty_AddNewTrack()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
             var track3 = new TrackModel() { Title = "testTitle3" };
@@ -317,6 +346,8 @@ namespace Music.Tests.WPF.Tests.Stores
             _trackStore.Queue[1].Should().BeEquivalentTo(track2);
             _trackStore.Queue[2].Should().BeEquivalentTo(track1);
             _trackStore.CurrentTrack.Should().BeEquivalentTo(track2);
+
+            monitor.Should().Raise("QueueChanged");
         }
 
         [Test]
@@ -336,6 +367,8 @@ namespace Music.Tests.WPF.Tests.Stores
         public void ClearQueue_QueueNotEmpty_ClearQueue()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+            
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
             var track3 = new TrackModel() { Title = "testTitle3" };
@@ -354,6 +387,8 @@ namespace Music.Tests.WPF.Tests.Stores
 
             // Assert
             _trackStore.Queue.Should().BeEmpty();
+
+            monitor.Should().Raise("QueueChanged");
         }
 
         [Test]
@@ -373,6 +408,8 @@ namespace Music.Tests.WPF.Tests.Stores
         public void AddPlaylist_AvailablePlaylistsEmpty_AddPlaylist()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+            
             var playlist1 = new PlaylistModel() { Name = "testPlaylist1" };
 
             // Act
@@ -380,12 +417,16 @@ namespace Music.Tests.WPF.Tests.Stores
 
             // Assert
             _trackStore.AvailablePlaylists.Count.Should().Be(1);
+
+            monitor.Should().Raise("AvailablePlaylistsChanged");
         }
 
         [Test]
         public void AddPlaylist_AvailablePlaylistsNotEmpty_AddPlaylist()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+
             var playlist1 = new PlaylistModel() { Name = "testPlaylist1" };
             var playlist2 = new PlaylistModel() { Name = "testPlaylist1" };
 
@@ -398,6 +439,8 @@ namespace Music.Tests.WPF.Tests.Stores
             _trackStore.AvailablePlaylists.Count.Should().Be(2);
             _trackStore.AvailablePlaylists[0].Should().BeEquivalentTo(playlist1);
             _trackStore.AvailablePlaylists[1].Should().BeEquivalentTo(playlist2);
+
+            monitor.Should().Raise("AvailablePlaylistsChanged");
         }
 
         [Test]
@@ -531,6 +574,8 @@ namespace Music.Tests.WPF.Tests.Stores
         public void RemovePlaylist_AvailablePlaylistsNotEmpty_RemovePlaylist()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+            
             var playlist1 = new PlaylistModel() { Name = "testPlaylist1" };
             var playlist2 = new PlaylistModel() { Name = "testPlaylist2" };
 
@@ -542,18 +587,23 @@ namespace Music.Tests.WPF.Tests.Stores
 
             // Assert
             _trackStore.AvailablePlaylists.Count.Should().Be(1);
+
+            monitor.Should().Raise("AvailablePlaylistsChanged");
         }
 
         [Test]
         public void PlaylistsUpdated_PlaylistsChangedShouldBeTrue()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
 
             // Act
             _trackStore.PlaylistsUpdated();
 
             // Assert
             _trackStore.PlaylistsChanged.Should().BeTrue();
+
+            monitor.Should().Raise("AvailablePlaylistsChanged");
         }
 
         [Test]
@@ -593,6 +643,8 @@ namespace Music.Tests.WPF.Tests.Stores
         public void AddMusicFolder_MusicFolderIsEmpty_AddMusicFolder()
         {
             // Arrange
+            using var monitor = _trackStore.Monitor();
+
             var musicFolder = new MusicFolderModel() { Path = @"D:\Music"};
 
             // Act
@@ -600,6 +652,8 @@ namespace Music.Tests.WPF.Tests.Stores
 
             // Assert
             _trackStore.MusicFolders.Count.Should().Be(1);
+
+            monitor.Should().Raise("MusicFoldersChanged");
         }
     }
 }
