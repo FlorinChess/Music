@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Domain.Tests\test_playlists.xml" />
     <None Remove="NAudio.Tests\test_music_file.mp3" />
     <None Remove="test_access_token.json" />
     <None Remove="test_api_response.json" />
@@ -37,6 +38,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="APIs.Tests\test_api_response.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Domain.Tests\test_playlists.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="NAudio.Tests\test_music_file.mp3">
