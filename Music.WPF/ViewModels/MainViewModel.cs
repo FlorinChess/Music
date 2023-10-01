@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Music.Domain;
-using Music.WPF.Commands;
 using Music.WPF.Store;
 using System;
 using System.Linq;
@@ -17,7 +16,6 @@ namespace Music.WPF.ViewModels
         private readonly IServiceProvider _serviceProvider;
         private const string PAUSE_IMAGE_PATH = @"/Icons/pause.png";
         private const string PLAY_IMAGE_PATH = @"/Icons/play.png";
-        private const int RESIZE_THRESHOLD = 710;
 
         #endregion
 
@@ -62,28 +60,6 @@ namespace Music.WPF.ViewModels
             }
         }
 
-        private double _windowWidth;
-        public double WindowWidth
-        {
-            get => _windowWidth;
-            set
-            {
-                _windowWidth = value;
-                OnWindowWidthChanged(_windowWidth);
-            }
-        }
-
-        private bool _navigateBackEnabled = false;
-        public bool NavigateBackEnabled
-        {
-            get => _navigateBackEnabled;
-            set
-            {
-                _navigateBackEnabled = value;
-                OnPropertyChanged(nameof(NavigateBackEnabled));
-            }
-        }
-
         private bool _nowPlayingViewModelVisibility = false;
         public bool NowPlayingViewModelVisibility
         {
@@ -102,7 +78,6 @@ namespace Music.WPF.ViewModels
         public ICommand PlayPauseCommand { get; private set; }
         public ICommand PlayNextCommand { get; private set; }
         public ICommand PlayPreviousCommand { get; private set; }
-        public ICommand NavigateBackCommand { get; private set; }
 
         #endregion
 
@@ -127,7 +102,6 @@ namespace Music.WPF.ViewModels
             PlayPauseCommand = MusicPlayerViewModel.PlayPauseCommand;
             PlayNextCommand = MusicPlayerViewModel.PlayNextCommand;
             PlayPreviousCommand = MusicPlayerViewModel.PlayPreviousCommand;
-            NavigateBackCommand = new RelayCommand(_ => navigationStore.Pop());
         }
 
         #region Private Methods
@@ -136,7 +110,6 @@ namespace Music.WPF.ViewModels
         {
             MusicPlayerViewModel.IsEnabled = false;
             NavigationBarViewModel.IsEnabled = false; 
-            NavigateBackEnabled = false;
             IsMainEnabled = false;
 
             if (CurrentModalViewModel is not null)
@@ -172,13 +145,6 @@ namespace Music.WPF.ViewModels
         private void OnCurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
-
-            NavigateBackEnabled = _navigationStore.Count() > 1;
-        }
-
-        private void OnWindowWidthChanged(double windowWidth)
-        {
-            MusicPlayerViewModel.ClearQueueButtonVisible = windowWidth >= RESIZE_THRESHOLD;
         }
 
         #endregion
@@ -190,8 +156,6 @@ namespace Music.WPF.ViewModels
             MusicPlayerViewModel.IsEnabled = true;
             NavigationBarViewModel.IsEnabled = true;
             IsMainEnabled = true;
-
-            NavigateBackEnabled = _navigationStore.Count() > 1;
         }
 
         public void OnClosing()

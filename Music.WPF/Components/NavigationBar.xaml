@@ -13,13 +13,29 @@
              IsTabStop="False">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="50"/>
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <Button 
+            Command="{Binding NavigateBackCommand}"
+            Style="{StaticResource WindowControlButton}"
+            IsEnabled="{Binding NavigateBackEnabled}"
+            TabIndex="0"
+            ToolTip="Go back" 
+            Width="50" 
+            WindowChrome.IsHitTestVisibleInChrome="True">
+            <Path 
+                Data="M480 896 160 576l320-320 42 42-248 248h526v60H274l248 248-42 42Z" 
+                Style="{StaticResource DefaultIcon}"              
+                />
+        </Button>
+
         <!-- Hamburger Menu CheckBox -->
         <CheckBox 
             x:Name="HamburgerCheckBox" 
+            Grid.Row="1"
             Style="{StaticResource HamburgerMenuCheckBox}"
             TabIndex="1"
             ToolTip="Menu"
@@ -27,7 +43,7 @@
 
         <!-- Hamburger Menu -->
         <custom:HamburgerMenu 
-            Grid.Row="1" 
+            Grid.Row="2" 
             Focusable="False"
             IconWidth="50"
             IsOpen="{Binding IsChecked, ElementName=HamburgerCheckBox}"

@@ -140,7 +140,8 @@ namespace Music.WPF
             return new NavigationBarViewModel(CreateMyMusicNavigationService(serviceProvider),
                 CreatePlaylistCollectionNavigationService(serviceProvider),
                 CreateSettingsNavigationService(serviceProvider),
-                CreateSearchNavigationService(serviceProvider));
+                CreateSearchNavigationService(serviceProvider),
+                serviceProvider.GetRequiredService<NavigationStore>());
         }
 
         private static IList<TrackModel> GetAvailableTracks()
