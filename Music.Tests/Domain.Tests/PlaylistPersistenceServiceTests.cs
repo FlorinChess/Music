@@ -20,18 +20,23 @@ namespace Music.Tests.Domain.Tests
             // Arrange
             var playlistsXmlFileString = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "Domain.Tests\\test_playlists.xml"));
 
+            var testExpectedResultFilePath = Path.Combine(Environment.CurrentDirectory, "Domain.Tests\\test_playlists_expected.xml");
+            _playlistPersistenceService.SaveFilePath = testExpectedResultFilePath;
             _playlistPersistenceService.Add("testName", "01/01/2010", string.Empty, new List<string>()
             {
                 @"D:\Music\Test1.mp3",
                 @"D:\Music\Test2.mp3",
             });
 
+
             // Act
             _playlistPersistenceService.Save();
 
             // Assert
-            var result = await File.ReadAllTextAsync(_playlistPersistenceService.SaveFilePath);
+            var result = await File.ReadAllTextAsync(testExpectedResultFilePath);
             result.Should().Be(playlistsXmlFileString);
+
+            File.WriteAllText(testExpectedResultFilePath, string.Empty);
         }
 
         [Test]
@@ -51,6 +56,9 @@ namespace Music.Tests.Domain.Tests
             };
 
             var playlists = new List<PlaylistModel> { playlist1 };
+
+            // Read from the test file, not the actual save file
+            _playlistPersistenceService.SaveFilePath = Path.Combine(Environment.CurrentDirectory, "Domain.Tests\\test_playlists.xml");
 
             // Act
             var result = _playlistPersistenceService.Parse();
