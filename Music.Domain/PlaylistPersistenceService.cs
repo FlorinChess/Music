@@ -15,7 +15,7 @@ namespace Music.Domain
 
         #endregion Private Members
 
-        public string SaveFilePath { get; private set; }
+        public string SaveFilePath { get; set; }
 
         public PlaylistPersistenceService()
         {

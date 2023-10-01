@@ -167,6 +167,7 @@
         <Setter Property="Foreground" Value="{StaticResource GrayBrush}"/>
         <Setter Property="Margin" Value="6 0" />
         <Setter Property="Orientation" Value="Vertical" />
+        <Setter Property="SmallChange" Value="0.5" />
         <Setter Property="Tag" Value="Vertical" />
         <Setter Property="Template" Value="{StaticResource SliderVertical}"/>
         <Setter Property="TickFrequency" Value="5" />

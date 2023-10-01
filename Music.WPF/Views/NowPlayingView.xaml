@@ -65,7 +65,7 @@
             Background="{StaticResource Transparent60BlackBrush}"
             CornerRadius="5"
             Margin="10 40 10 10"
-            Padding="0 5">
+            Padding="20 0 0 0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />

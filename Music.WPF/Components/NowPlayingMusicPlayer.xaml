@@ -9,19 +9,32 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-            <Button Height="50" Width="50">
+            <Button 
+                Height="50" Width="50"
+                ToolTip="{Binding ShuffleButtonToolTip}">
                 
             </Button>
-            <Button Height="50" Width="50">
+            <Button 
+                Height="50" Width="50" 
+                Command="{Binding PlayPreviousCommand}"
+                ToolTip="Play previous">
 
             </Button>
-            <Button Height="50" Width="50">
+            <Button 
+                Height="50" Width="50" 
+                Command="{Binding PlayPauseCommand}"
+                ToolTip="{Binding PlayPauseButtonToolTip}">
 
             </Button>
-            <Button Height="50" Width="50">
+            <Button 
+                Height="50" Width="50"
+                Command="{Binding PlayNextCommand}"
+                ToolTip="Play next">
 
             </Button>
-            <Button Height="50" Width="50">
+            <Button 
+                Height="50" Width="50"
+                ToolTip="{Binding RepeatButtonToolTip}">
 
             </Button>
         </StackPanel>

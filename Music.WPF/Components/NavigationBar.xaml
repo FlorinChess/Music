@@ -16,7 +16,7 @@
             <RowDefinition Height="50"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <!-- Hamburger Menu CheckBox -->
         <CheckBox 
             x:Name="HamburgerCheckBox" 
@@ -70,6 +70,9 @@
                                 <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type custom:HamburgerMenuItem}}}" Value="True">
                                     <Setter Property="Fill" Value="{DynamicResource Primary}" />
                                 </DataTrigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Fill" Value="{StaticResource GrayBrush}" />
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                         <!-- Menu Text -->

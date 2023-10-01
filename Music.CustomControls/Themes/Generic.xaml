@@ -261,7 +261,7 @@
                             <Popup 
                                 x:Name="PART_Popup"
                                 AllowsTransparency="True"
-                                IsOpen="{Binding IsOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" 
+                                IsOpen="{Binding IsOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
                                 Placement="{TemplateBinding PopupPlacement}"
                                 PopupAnimation="Fade"
                                 StaysOpen="False"

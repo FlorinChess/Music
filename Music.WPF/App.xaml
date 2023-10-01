@@ -6,11 +6,11 @@
             
             <ResourceDictionary.MergedDictionaries>
                 <!-- Fonts and colors first-->
+                <ResourceDictionary Source="./Themes/ColorThemes/YellowTheme.xaml" />
                 <ResourceDictionary Source="/Music.Common;component/Dictionaries/Colors.xaml" />
                 <ResourceDictionary Source="/Music.Common;component/Dictionaries/Converters.xaml" />
                 <ResourceDictionary Source="/Music.Common;component/Dictionaries/DefaultStyles.xaml" />
 
-                <ResourceDictionary Source="./Themes/ColorThemes/YellowTheme.xaml" />
                 <ResourceDictionary Source="./Themes/TextBlock.xaml" />
 
                 <ResourceDictionary Source="./Themes/Storyboards.xaml" />

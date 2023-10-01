@@ -17,7 +17,8 @@
             DragLeave="AnimatedListView_DragLeave"
             ItemsSource="{Binding Tracks}"
             TabIndex="7"
-            VirtualizingPanel.IsVirtualizing="True">
+            VirtualizingPanel.IsVirtualizing="True"
+            VirtualizingPanel.VirtualizationMode="Recycling">
             <custom:AnimatedListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="FocusVisualStyle" Value="{StaticResource RoundFocusVisualStyle}" />
@@ -78,29 +79,29 @@
         <Border
             x:Name="topScrollArea"
             Background="{StaticResource BlackBrush}"
+            CornerRadius="5"
             Height="60" 
             IsHitTestVisible="False"
             VerticalAlignment="Top"
-            Visibility="Collapsed">
+            Visibility="Collapsed" d:Visibility="Visible">
             <TextBlock 
-                Foreground="{StaticResource WhiteBrush}"
                 HorizontalAlignment="Center" 
+                Style="{StaticResource Header1Text}"
                 Text="Scroll up"
-                VerticalAlignment="Center"
                 />
         </Border>
         <Border
             x:Name="bottomScrollArea"
             Background="{StaticResource BlackBrush}"
+            CornerRadius="5"
             Height="60" 
             IsHitTestVisible="False"
             VerticalAlignment="Bottom"
-            Visibility="Collapsed">
+            Visibility="Collapsed" d:Visibility="Visible">
             <TextBlock 
-                Foreground="{StaticResource WhiteBrush}"
+                Style="{StaticResource Header1Text}"
                 HorizontalAlignment="Center" 
                 Text="Scroll down"
-                VerticalAlignment="Center"
                 />
         </Border>
     </Grid>

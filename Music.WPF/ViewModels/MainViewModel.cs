@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Music.Domain;
 using Music.WPF.Commands;
-using Music.WPF.Services;
 using Music.WPF.Store;
 using System;
+using System.Linq;
 using System.Windows.Input;
 
 namespace Music.WPF.ViewModels
@@ -72,14 +73,14 @@ namespace Music.WPF.ViewModels
             }
         }
 
-        private bool _navigateBackButtonVisible = false;
-        public bool NavigateBackButtonVisible
+        private bool _navigateBackEnabled = false;
+        public bool NavigateBackEnabled
         {
-            get => _navigateBackButtonVisible;
+            get => _navigateBackEnabled;
             set
             {
-                _navigateBackButtonVisible = value;
-                OnPropertyChanged(nameof(NavigateBackButtonVisible));
+                _navigateBackEnabled = value;
+                OnPropertyChanged(nameof(NavigateBackEnabled));
             }
         }
 
@@ -134,7 +135,8 @@ namespace Music.WPF.ViewModels
         private void OnNavigateToNowPlaying()
         {
             MusicPlayerViewModel.IsEnabled = false;
-            NavigationBarViewModel.IsEnabled = false;
+            NavigationBarViewModel.IsEnabled = false; 
+            NavigateBackEnabled = false;
             IsMainEnabled = false;
 
             if (CurrentModalViewModel is not null)
@@ -171,7 +173,7 @@ namespace Music.WPF.ViewModels
         {
             OnPropertyChanged(nameof(CurrentViewModel));
 
-            NavigateBackButtonVisible = _navigationStore.Count() > 1;
+            NavigateBackEnabled = _navigationStore.Count() > 1;
         }
 
         private void OnWindowWidthChanged(double windowWidth)
@@ -181,17 +183,37 @@ namespace Music.WPF.ViewModels
 
         #endregion
 
+        #region Public Methods
+
         public void EnableControls()
         {
             MusicPlayerViewModel.IsEnabled = true;
             NavigationBarViewModel.IsEnabled = true;
             IsMainEnabled = true;
+
+            NavigateBackEnabled = _navigationStore.Count() > 1;
         }
 
         public void OnClosing()
         {
-            var persistenceService = _serviceProvider.GetRequiredService<PersistenceService>();
-            persistenceService.Save();
+            var trackStore = _serviceProvider.GetRequiredService<TrackStore>();
+
+            if (trackStore.PlaylistsChanged)
+            {
+                var playlistPersistenceService = _serviceProvider.GetRequiredService<PlaylistPersistenceService>();
+
+                for (int i = 0; i < trackStore.AvailablePlaylists.Count; i++)
+                {
+                    var currentPlaylist = trackStore.AvailablePlaylists[i];
+
+                    playlistPersistenceService.Add(currentPlaylist.Name, 
+                        currentPlaylist.DateCreated.ToString(), 
+                        currentPlaylist.ImagePath, 
+                        currentPlaylist.Tracks.Select(t => t.FilePath).ToList());
+                }
+
+                playlistPersistenceService.Save();
+            }
 
             Properties.Settings.Default.Volume = MusicPlayerViewModel.Volume;
             Properties.Settings.Default.Save();
@@ -200,5 +222,7 @@ namespace Music.WPF.ViewModels
             CurrentViewModel.Dispose();
             CurrentModalViewModel?.Dispose();
         }
+
+        #endregion Public Methods
     }
 }

@@ -545,12 +545,12 @@ namespace Music.Tests.WPF.Tests.Stores
         }
 
         [Test]
-        public void PlaylistUpdated_PlaylistsChangedShouldBeTrue()
+        public void PlaylistsUpdated_PlaylistsChangedShouldBeTrue()
         {
             // Arrange
 
             // Act
-            _trackStore.PlaylistUpdated();
+            _trackStore.PlaylistsUpdated();
 
             // Assert
             _trackStore.PlaylistsChanged.Should().BeTrue();

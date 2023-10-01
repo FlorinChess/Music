@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Music.APIs;
 using Music.APIs.Spotify;
+using Music.Domain;
 using Music.NAudio.WaveformGenerator;
 using Music.WPF.Commands;
 using Music.WPF.Modals.ViewModels;
@@ -27,13 +28,14 @@ namespace Music.WPF
             
             _serviceProvider = services.BuildServiceProvider();
 
-            _persistenceService = _serviceProvider.GetRequiredService<PersistenceService>();
+            _persistenceService = _serviceProvider.GetRequiredService<PlaylistPersistenceService>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             var trackStore = _serviceProvider.GetRequiredService<TrackStore>();
             trackStore.AddTracks(GetAvailableTracks());
+            trackStore.AddPlaylists(GetAvailablePlaylists());
 
             var initialNavigationService = _serviceProvider.GetRequiredService<INavigationService>();
             initialNavigationService.Navigate();
@@ -45,6 +47,8 @@ namespace Music.WPF
             _persistenceService.Parse();
             base.OnStartup(e);
         }
+
+        #region Private Methods
 
         private void OnClosing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -62,7 +66,7 @@ namespace Music.WPF
             services.AddHttpClient();
             services.AddSingleton<SpotifyService>();
             services.AddTransient<MusicMetadataService>();
-            services.AddSingleton<PersistenceService>(s => new (s.GetRequiredService<TrackStore>()));
+            services.AddSingleton<PlaylistPersistenceService>();
             services.AddSingleton<WaveformGenerator>();
 
             // Add NavigationService as a Singleton
@@ -149,5 +153,34 @@ namespace Music.WPF
             // Create and return Track objects
             return TrackFactory.CreateTracks(files);
         }
+
+        private IList<PlaylistModel> GetAvailablePlaylists()
+        {
+            var root = _persistenceService.Parse();
+            var trackStore = _serviceProvider.GetRequiredService<TrackStore>();
+
+            var playlists = new List<PlaylistModel>();
+
+            for (int i = 0; i < root?.Playlists.Count; i++)
+            {
+                var currentPlaylist = root.Playlists[i];
+
+                playlists.Add(new PlaylistModel()
+                {
+                    Name = currentPlaylist.Name,
+                    DateCreated = DateOnly.Parse(currentPlaylist.DateCreatedString),
+                    ImagePath = currentPlaylist.ImagePath,
+                });
+
+                for (int j = 0; j < currentPlaylist.TracksFilePaths.Count; j++)
+                {
+                    playlists[i].Tracks.Add(trackStore.GetTrackByFilePath(currentPlaylist.TracksFilePaths[j]));
+                }
+            }
+
+            return playlists;
+        }
+
+        #endregion
     }
 }

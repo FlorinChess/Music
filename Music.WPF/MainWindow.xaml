@@ -75,10 +75,9 @@
         <Button 
             Command="{Binding NavigateBackCommand}"
             Style="{StaticResource WindowControlButton}"
-            IsEnabled="{Binding IsMainEnabled}"
+            IsEnabled="{Binding NavigateBackEnabled}"
             TabIndex="0"
             ToolTip="Go back" 
-            Visibility="{Binding NavigateBackButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
             Width="50" 
             WindowChrome.IsHitTestVisibleInChrome="True">
             <Path 
