@@ -40,17 +40,17 @@
                     MinHeight="40"
                     Width="400">
                     <Grid>
-                        <ListView 
+                        <ListBox 
                             ItemsSource="{Binding MusicFolders}" d:ItemsSource="{d:SampleData ItemCount=4}"
                             SelectedItem="{Binding SelectedMusicFolder}"
-                            Style="{StaticResource SettingsListView}"
+                            Style="{StaticResource SettingsListBox}"
                             TabIndex="7">
-                            <ListView.ContextMenu>
+                            <ListBox.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Command="{Binding RemoveMusicFolderCommand}" Header="Remove folder" />
                                 </ContextMenu>
-                            </ListView.ContextMenu>
-                        </ListView>
+                            </ListBox.ContextMenu>
+                        </ListBox>
                         <TextBlock 
                             Style="{StaticResource PlaceholderText}"
                             Text="No music folders selected."
