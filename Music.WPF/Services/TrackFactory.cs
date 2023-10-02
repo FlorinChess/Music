@@ -50,7 +50,7 @@ namespace Music.WPF.Services
                     {
                         FilePath = file,
                         Title = musicFile.Tag.Title,
-                        Artist = musicFile.Tag.Performers.SplitAndConcat(),
+                        Artist = musicFile.Tag.Performers.ConcatAndAddDevider(),
                         Length = MusicPlayer.GetLengthInSeconds(file)
                     };
                 })
@@ -59,7 +59,12 @@ namespace Music.WPF.Services
             return output;
         }
 
-        private static string SplitAndConcat(this string[] stringArray)
+        /// <summary>
+        /// Concatenates the elements of a <see cref="string"/>[] into one <see cref="string"/> with ', ' as a devider between the individual elements.
+        /// </summary>
+        /// <param name="stringArray"></param>
+        /// <returns>The resulting string.</returns>
+        private static string ConcatAndAddDevider(this string[] stringArray)
         {
             var result = string.Empty;
 
