@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="./Themes/Button.xaml" />
                 <ResourceDictionary Source="./Themes/CheckBox.xaml" />
                 <ResourceDictionary Source="./Themes/ComboBox.xaml" />
+                <ResourceDictionary Source="./Themes/ListBox.xaml" />
                 <ResourceDictionary Source="./Themes/ListView.xaml" />
                 <ResourceDictionary Source="./Themes/MenuItem.xaml" />
                 <ResourceDictionary Source="./Themes/RadioButton.xaml" />
