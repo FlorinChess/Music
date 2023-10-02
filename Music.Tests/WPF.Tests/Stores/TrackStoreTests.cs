@@ -640,13 +640,16 @@ namespace Music.Tests.WPF.Tests.Stores
         public void AddMusicFolder_MusicFolderIsEmpty_AddMusicFolder()
         {
             // Arrange
-            var musicFolder = new MusicFolderModel() { Path = @"D:\Music" };
+            var dir = Directory.CreateDirectory(@"C:\Music");
+            var musicFolder = new MusicFolderModel() { Path = dir.FullName };
 
             // Act
             _trackStore.AddMusicFolder(musicFolder);
 
             // Assert
             _trackStore.MusicFolders.Count.Should().Be(1);
+
+            Directory.Delete(dir.FullName);
         }
     }
 }
