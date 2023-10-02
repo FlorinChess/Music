@@ -28,7 +28,7 @@ namespace Music.WPF.Store
 
                 if (_currentViewModel.GetPageIndex() != PageIndex.None)
                 {
-                    _navigationStack.Push(_currentViewModel.GetPageIndex());
+                    Push(_currentViewModel.GetPageIndex());
                 }
 
                 OnCurrentViewModelChanged();

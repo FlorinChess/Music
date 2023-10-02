@@ -26,11 +26,14 @@ namespace Music.WPF.ViewModels
 
         public ObservableCollection<PlaylistModel> Playlists { get; private set; } = new();
 
+        private PlaylistModel _selectedPlaylist;
         public PlaylistModel SelectedPlaylist
         {
-            get => null;
+            get => _selectedPlaylist;
             set 
-            { 
+            {
+                _selectedPlaylist = value;
+
                 _trackStore.SetCurrentPlaylist(value);
                 NavigateToSelectedPlaylist();
             }
@@ -42,6 +45,8 @@ namespace Music.WPF.ViewModels
             get => _numberOfPlaylists;
             set
             {
+                if (_numberOfPlaylists == value) return;
+
                 _numberOfPlaylists = value;
                 OnPropertyChanged(nameof(NumberOfPlaylists));
             }
@@ -55,7 +60,10 @@ namespace Music.WPF.ViewModels
 
         #endregion Commands
 
-        public PlaylistCollectionViewModel(IServiceProvider serviceProvider, ModalNavigationStore modalNavigationStore, NavigationStore navigationStore, TrackStore trackStore)
+        public PlaylistCollectionViewModel(IServiceProvider serviceProvider, 
+            ModalNavigationStore modalNavigationStore, 
+            NavigationStore navigationStore, 
+            TrackStore trackStore)
         {
             _serviceProvider = serviceProvider;
             _modalNavigationStore = modalNavigationStore;

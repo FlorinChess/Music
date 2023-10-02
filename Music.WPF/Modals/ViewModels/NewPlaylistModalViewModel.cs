@@ -19,6 +19,8 @@ namespace Music.WPF.Modals.ViewModels
 
         #endregion Private Members
 
+        #region Properties
+
         private string _playlistName = string.Empty;
         public string PlaylistName
         {
@@ -29,6 +31,8 @@ namespace Music.WPF.Modals.ViewModels
                 OnPropertyChanged(nameof(PlaylistName));
             }
         }
+
+        #endregion Properties
 
         #region Commands
 

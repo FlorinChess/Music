@@ -1,4 +1,5 @@
 ﻿using Music.WPF.Models;
+using Music.WPF.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace Music.WPF.Store
         #region Public Events
 
         public event Action AvailablePlaylistsChanged;
+        public event Action<IList<TrackModel>> AvailableTracksChanged;
         public event Action CurrentTrackChanged;
-        public event Action MusicFoldersChanged;
         public event Action QueueChanged;
 
         #endregion Public Events
@@ -64,6 +65,18 @@ namespace Music.WPF.Store
             {
                 CurrentTrack = Queue[0];
             }
+        }
+
+        private void MusicFoldersUpdated(MusicFolderModel musicFolder)
+        {
+
+            var musicFilePaths = MusicFilesService.GetMusicFiles(musicFolder.Path);
+
+            var tracks = TrackFactory.CreateTracks(musicFilePaths);
+
+            AddTracks(tracks);
+
+            AvailableTracksChanged?.Invoke(tracks);
         }
 
         private void AddTracksToQueue(IList<TrackModel> tracks)
@@ -209,7 +222,7 @@ namespace Music.WPF.Store
         {
             MusicFolders.Add(musicFolder);
 
-            MusicFoldersChanged?.Invoke();
+            MusicFoldersUpdated(musicFolder);
         }
 
         #endregion

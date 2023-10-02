@@ -115,6 +115,8 @@ namespace Music.WPF.ViewModels
             _serviceProvider = serviceProvider;
             _navigationStore = navigationStore;
             _trackStore = trackStore;
+            _trackStore.AvailableTracksChanged += OnAvailableTrackChanged;
+
             ListComponentViewModel = listComponentViewModel;
             ListComponentViewModel.TracksChanged += OnTracksChanged;
 
@@ -129,6 +131,13 @@ namespace Music.WPF.ViewModels
         }
 
         #region Private Methods
+
+        private void OnAvailableTrackChanged(IList<TrackModel> newTracks)
+        {
+            ListComponentViewModel.AddTracks(newTracks);
+
+            OnTracksChanged();
+        }
 
         private void AddMusicFolder()
         {
@@ -154,12 +163,5 @@ namespace Music.WPF.ViewModels
         #endregion
 
         public override PageIndex GetPageIndex() => PageIndex.MyMusic;
-
-        public override void Dispose()
-        {
-            ListComponentViewModel.TracksChanged -= OnTracksChanged;
-
-            base.Dispose();
-        }
     }
 }

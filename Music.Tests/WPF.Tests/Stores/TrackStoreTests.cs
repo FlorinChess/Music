@@ -1,8 +1,5 @@
-﻿using FluentAssertions.Events;
-using Music.Domain.DataModels;
-using Music.WPF.Models;
+﻿using Music.WPF.Models;
 using Music.WPF.Store;
-using System.Threading;
 
 namespace Music.Tests.WPF.Tests.Stores
 {
@@ -160,7 +157,7 @@ namespace Music.Tests.WPF.Tests.Stores
         {
             // Arrange
             using var monitor = _trackStore.Monitor();
-            
+
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
             var track3 = new TrackModel() { Title = "testTitle3" };
@@ -191,7 +188,7 @@ namespace Music.Tests.WPF.Tests.Stores
         {
             // Arrange
             using var monitor = _trackStore.Monitor();
-            
+
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
             var track3 = new TrackModel() { Title = "testTitle3" };
@@ -213,7 +210,7 @@ namespace Music.Tests.WPF.Tests.Stores
             // Assert
             _trackStore.Queue.Count.Should().Be(1);
             _trackStore.CurrentTrack.Should().BeEquivalentTo(track1);
-            
+
             monitor.Should().Raise("QueueChanged");
         }
 
@@ -236,13 +233,13 @@ namespace Music.Tests.WPF.Tests.Stores
         {
             // Arrange
             using var monitor = _trackStore.Monitor();
-            
+
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
 
             var tracks = new List<TrackModel>()
-            { 
-                track1, 
+            {
+                track1,
                 track2,
             };
 
@@ -260,7 +257,7 @@ namespace Music.Tests.WPF.Tests.Stores
         {
             // Arrange
             using var monitor = _trackStore.Monitor();
-            
+
             var track1 = new TrackModel() { Title = "testTitle1" };
 
             // Act
@@ -277,13 +274,13 @@ namespace Music.Tests.WPF.Tests.Stores
         {
             // Arrange
             using var monitor = _trackStore.Monitor();
-            
+
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
 
-            var tracks = new List<TrackModel>() 
-            { 
-                track1, 
+            var tracks = new List<TrackModel>()
+            {
+                track1,
                 track2,
             };
 
@@ -305,7 +302,7 @@ namespace Music.Tests.WPF.Tests.Stores
         {
             // Arrange
             using var monitor = _trackStore.Monitor();
-            
+
             var track1 = new TrackModel() { Title = "testTitle1" };
 
             // Act
@@ -329,7 +326,7 @@ namespace Music.Tests.WPF.Tests.Stores
             var track3 = new TrackModel() { Title = "testTitle3" };
 
             var tracks = new List<TrackModel>()
-            { 
+            {
                 track1,
                 track2, // <-- Current
                 track3,
@@ -368,7 +365,7 @@ namespace Music.Tests.WPF.Tests.Stores
         {
             // Arrange
             using var monitor = _trackStore.Monitor();
-            
+
             var track1 = new TrackModel() { Title = "testTitle1" };
             var track2 = new TrackModel() { Title = "testTitle2" };
             var track3 = new TrackModel() { Title = "testTitle3" };
@@ -409,7 +406,7 @@ namespace Music.Tests.WPF.Tests.Stores
         {
             // Arrange
             using var monitor = _trackStore.Monitor();
-            
+
             var playlist1 = new PlaylistModel() { Name = "testPlaylist1" };
 
             // Act
@@ -575,7 +572,7 @@ namespace Music.Tests.WPF.Tests.Stores
         {
             // Arrange
             using var monitor = _trackStore.Monitor();
-            
+
             var playlist1 = new PlaylistModel() { Name = "testPlaylist1" };
             var playlist2 = new PlaylistModel() { Name = "testPlaylist2" };
 
@@ -613,7 +610,7 @@ namespace Music.Tests.WPF.Tests.Stores
             var filePath = @"D:\Music";
 
             var track1 = new TrackModel() { FilePath = filePath };
-            
+
             _trackStore.AddTracks(new List<TrackModel> { track1 });
 
             // Act
@@ -643,17 +640,13 @@ namespace Music.Tests.WPF.Tests.Stores
         public void AddMusicFolder_MusicFolderIsEmpty_AddMusicFolder()
         {
             // Arrange
-            using var monitor = _trackStore.Monitor();
-
-            var musicFolder = new MusicFolderModel() { Path = @"D:\Music"};
+            var musicFolder = new MusicFolderModel() { Path = @"D:\Music" };
 
             // Act
             _trackStore.AddMusicFolder(musicFolder);
 
             // Assert
             _trackStore.MusicFolders.Count.Should().Be(1);
-
-            monitor.Should().Raise("MusicFoldersChanged");
         }
     }
 }
