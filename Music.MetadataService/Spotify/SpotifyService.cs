@@ -35,6 +35,11 @@ namespace Music.APIs.Spotify
             _timer.Elapsed += OnTokenExpired;
 
             GetClientCredentials();
+
+            Task.Run(async () =>
+            {
+                _accessToken = await GetAccessTokenAsync();
+            });
         }
 
         ~SpotifyService()
@@ -88,7 +93,7 @@ namespace Music.APIs.Spotify
         {
             var authenticationHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", _clientId, _clientSecret)));
 
-            var client = _httpClientFactory.CreateClient("AuthorizationClient");
+            var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationHeader);
 
             var requestBody = new Dictionary<string, string>
@@ -98,8 +103,7 @@ namespace Music.APIs.Spotify
 
             var content = new FormUrlEncodedContent(requestBody);
 
-            using var response = await client.PostAsync(TOKEN_URL, content).ConfigureAwait(false);
-
+            var response = client.PostAsync(TOKEN_URL, content).Result;
             var json = await response.Content.ReadAsStringAsync();
             var token = JsonConvert.DeserializeObject<SpotifyToken>(json);
 
@@ -154,12 +158,12 @@ namespace Music.APIs.Spotify
         {
             try
             {
-                var client = _httpClientFactory.CreateClient("SearchClient");
+                var client = _httpClientFactory.CreateClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                string query = BuildQuery(trackName, artist);
-
-                using HttpResponseMessage response = await client.GetAsync($"https://api.spotify.com/v1/search?q={query}&type=track&limit={limit}");
+                string searchQuery = BuildQuery(trackName, artist);
+                string query = $"https://api.spotify.com/v1/search?q={searchQuery}&type=track";
+                using HttpResponseMessage response = await client.GetAsync(query);
 
                 if (response.StatusCode != HttpStatusCode.OK)
                 {

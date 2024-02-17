@@ -20,6 +20,43 @@ namespace Music.APIs
             _service = service;
         }
 
+        public static IEnumerable<string> GetMusicFilesWithoutMetadata(string directory) 
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(directory))
+                    throw new ArgumentException("Directory path cannot be null!");
+
+                if (!Directory.Exists(directory))
+                    throw new ArgumentException("Selected directory could not be found!");
+
+                var filePaths = Directory.GetFiles(directory)
+                    .Where(filePath => filePath.EndsWith(".mp3") || filePath.EndsWith(".wav"));
+            
+                List<string> results = new();
+
+                TFile? file = null;
+
+                foreach (var filePath in filePaths)
+                {
+                    file = TFile.Create(filePath);
+
+                    if (file.Tag.Comment == METADATA_COMPLETE) continue;
+
+                    results.Add(filePath);
+                    Console.WriteLine($"File without metadata: {filePath}");
+
+                    file?.Dispose();
+                }
+
+                return results;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public void AddMusicFiles(IEnumerable<string> filePaths)
         {
             TFile? file = null;
