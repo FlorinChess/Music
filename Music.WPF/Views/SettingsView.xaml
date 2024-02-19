@@ -12,14 +12,14 @@
         <TextBlock DockPanel.Dock="Top" Text="Settings" Style="{StaticResource TitleText}" />
         <ScrollViewer>
             <StackPanel>
-                
                 <TextBlock 
                     Text="Tell us where to find your music files" 
                     Style="{StaticResource Header1Text}"
                     />
                 <Button 
                     Command="{Binding SelectMusicFilesFolderCommand}" 
-                    Style="{StaticResource CommandButton}">
+                    Style="{StaticResource CommandButton}"
+                    TabIndex="6">
                     <StackPanel Orientation="Horizontal" Margin="2">
                         <Path 
                             Data="M22.5 38V25.5H10v-3h12.5V10h3v12.5H38v3H25.5V38Z"
@@ -38,18 +38,25 @@
                     HorizontalAlignment="Left"
                     Margin="0 5"
                     MinHeight="40"
-                    Padding="0 5"
                     Width="400">
-                    <ListView 
-                        ItemsSource="{Binding MusicFolders}" d:ItemsSource="{d:SampleData ItemCount=4}"
-                        SelectedItem="{Binding SelectedMusicFolder}"
-                        Style="{StaticResource SettingsListView}">
-                        <ListView.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Command="{Binding RemoveMusicFolderCommand}" Header="Remove folder" />
-                            </ContextMenu>
-                        </ListView.ContextMenu>
-                    </ListView>
+                    <Grid>
+                        <ListBox 
+                            ItemsSource="{Binding MusicFolders}" d:ItemsSource="{d:SampleData ItemCount=4}"
+                            SelectedItem="{Binding SelectedMusicFolder}"
+                            Style="{StaticResource SettingsListBox}"
+                            TabIndex="7">
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Command="{Binding RemoveMusicFolderCommand}" Header="Remove folder" />
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListBox>
+                        <TextBlock 
+                            Style="{StaticResource PlaceholderText}"
+                            Text="No music folders selected."
+                            Visibility="{Binding PlaceholderVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            />
+                    </Grid>
                 </Border>            
                 <TextBlock 
                     Text="Select audio output device" 
@@ -60,9 +67,11 @@
                     ItemsSource="{Binding OutputDevices}" 
                     SelectedItem="{Binding CurrentOutputDevice}"
                     Style="{StaticResource SortComboBox}"
+                    TabIndex="8"
                     Width="400"
                     />
                 <TextBlock Text="Select your favorite theme" Style="{StaticResource Header1Text}" />
+                
                 <WrapPanel>
                     <RadioButton Background="#EE0202" Command="{Binding ChangeThemeCommand}" CommandParameter="Red" />
                     <RadioButton Background="#7e3ff2" Command="{Binding ChangeThemeCommand}" CommandParameter="Purple" />
@@ -76,6 +85,7 @@
                         Content="Autoplay"
                         IsChecked="{Binding IsAutoPlayEnabled, FallbackValue=True}" 
                         Style="{StaticResource SwitchCheckBox}"
+                        TabIndex="9"
                         VerticalContentAlignment="Center"
                         />
                     <TextBlock 
@@ -89,6 +99,7 @@
                     <CheckBox 
                         IsChecked="{Binding IsMetadataAutocompleteEnabled, FallbackValue=False}"
                         Style="{StaticResource SwitchCheckBox}"
+                        TabIndex="10"
                         VerticalContentAlignment="Center"
                         />
                     <TextBlock 
@@ -100,7 +111,8 @@
                 </StackPanel>
                 <Button 
                     Command="{Binding OpenEqualizerCommand}" 
-                    Style="{StaticResource CommandButton}">
+                    Style="{StaticResource CommandButton}"
+                    TabIndex="11">
                     <StackPanel Orientation="Horizontal" Margin="2">
                         <Path 
                             Data="M200-160v-280h-80v-80h240v80h-80v280h-80Zm0-440v-200h80v200h-80Zm160 0v-80h80v-120h80v120h80v80H360Zm80 440v-360h80v360h-80Zm240 0v-120h-80v-80h240v80h-80v120h-80Zm0-280v-360h80v360h-80Z"

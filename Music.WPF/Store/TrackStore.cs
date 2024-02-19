@@ -1,4 +1,5 @@
 ﻿using Music.WPF.Models;
+using Music.WPF.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace Music.WPF.Store
     {
         #region Public Events
 
+        public event Action AvailablePlaylistsChanged;
+        public event Action<IList<TrackModel>> AvailableTracksChanged;
         public event Action CurrentTrackChanged;
         public event Action QueueChanged;
-        public event Action AvailablePlaylistsChanged;
 
         #endregion Public Events
 
@@ -48,13 +50,14 @@ namespace Music.WPF.Store
         public List<TrackModel> Queue { get; private set; } = new();
         public List<TrackModel> AvailableTracks { get; private set; } = new();
         public List<PlaylistModel> AvailablePlaylists { get; private set; } = new();
+        public List<MusicFolderModel> MusicFolders { get; private set; } = new();
         public bool PlaylistsChanged { get; private set; } = false;
 
         #endregion
 
         #region Private Methods
 
-        private void QueueChange()
+        private void QueueUpdated()
         {
             QueueChanged?.Invoke();
 
@@ -64,11 +67,31 @@ namespace Music.WPF.Store
             }
         }
 
+        private void MusicFoldersUpdated(MusicFolderModel musicFolder)
+        {
+
+            var musicFilePaths = MusicFilesService.GetMusicFiles(musicFolder.Path);
+
+            var tracks = TrackFactory.CreateTracks(musicFilePaths);
+
+            AddTracks(tracks);
+
+            AvailableTracksChanged?.Invoke(tracks);
+        }
+
         private void AddTracksToQueue(IList<TrackModel> tracks)
         {
             for (int i = 0; i < tracks.Count; i++)
             {
                 Queue.Add(tracks[i]);
+            }
+        }
+
+        private void AddPlaylistsToAvailablePlaylists(IList<PlaylistModel> playlists)
+        {
+            for(int i = 0; i <  playlists.Count; i++)
+            {
+                AvailablePlaylists.Add(playlists[i]);
             }
         }
 
@@ -84,10 +107,10 @@ namespace Music.WPF.Store
 
             AddTracksToQueue(tracks);
 
-            if (setFirstAsCurrent)
+            if (Queue.Count > 0 && setFirstAsCurrent)
                 CurrentTrack = Queue[0];
 
-            QueueChange();
+            QueueUpdated();
         }
 
         public void SetQueue(TrackModel track, bool setFirstAsCurrent = true)
@@ -96,10 +119,10 @@ namespace Music.WPF.Store
 
             Queue.Add(track);
 
-            if (setFirstAsCurrent)
+            if (Queue.Count > 0 && setFirstAsCurrent)
                 CurrentTrack = Queue[0];
 
-            QueueChange();
+            QueueUpdated();
         }
 
         public void AddToQueue(IList<TrackModel> tracks)
@@ -108,14 +131,14 @@ namespace Music.WPF.Store
 
             AddTracksToQueue(tracks);
 
-            QueueChange();
+            QueueUpdated();
         }
 
         public void AddToQueue(TrackModel track)
         {
             Queue.Add(track);
 
-            QueueChange();
+            QueueUpdated();
         }
 
         public void AddNextInQueue(TrackModel track)
@@ -124,7 +147,7 @@ namespace Music.WPF.Store
 
             Queue.Insert(currentTrackIndex + 1, track);
 
-            QueueChange();
+            QueueUpdated();
         }
 
         public void ClearQueue()
@@ -135,7 +158,7 @@ namespace Music.WPF.Store
 
             CurrentTrack = null;
 
-            QueueChange();
+            QueueUpdated();
         }
 
         public void SetCurrentPlaylist(PlaylistModel playlist)
@@ -146,11 +169,30 @@ namespace Music.WPF.Store
         public void AddPlaylist(PlaylistModel playlist)
         {
             AvailablePlaylists.Add(playlist);
-            PlaylistUpdated();
+            PlaylistsUpdated();
+        }
+
+        public void AddPlaylists(IList<PlaylistModel> playlists)
+        {
+            if (playlists is null || playlists.Count == 0) return;
+
+            AddPlaylistsToAvailablePlaylists(playlists);
+
+            PlaylistsUpdated();
+        }
+
+        public void RemovePlaylist(PlaylistModel playlist)
+        {
+            if (AvailablePlaylists.Count == 0) return;
+
+            AvailablePlaylists.Remove(playlist);
+            PlaylistsUpdated();
         }
 
         public void AddTracks(IList<TrackModel> tracks)
         {
+            if (tracks is null || tracks.Count == 0) return;
+
             for (int i = 0; i < tracks.Count; i++)
             {
                 AvailableTracks.Add(tracks[i]);
@@ -159,18 +201,12 @@ namespace Music.WPF.Store
 
         public void SetTrackAsCurrent(TrackModel track)
         {
-            if (CurrentTrack is null || CurrentTrack == track) return;
+            if (CurrentTrack == track) return;
 
             CurrentTrack = track;
         }
 
-        public void RemovePlaylist(PlaylistModel playlist)
-        {
-            AvailablePlaylists.Remove(playlist);
-            PlaylistUpdated();
-        }
-
-        public void PlaylistUpdated()
+        public void PlaylistsUpdated()
         {
             AvailablePlaylistsChanged?.Invoke();
 
@@ -180,6 +216,13 @@ namespace Music.WPF.Store
         public TrackModel GetTrackByFilePath(string filePath)
         {
             return AvailableTracks.Where(t => t.FilePath == filePath).Single();
+        }
+
+        public void AddMusicFolder(MusicFolderModel musicFolder)
+        {
+            MusicFolders.Add(musicFolder);
+
+            MusicFoldersUpdated(musicFolder);
         }
 
         #endregion

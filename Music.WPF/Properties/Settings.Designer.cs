@@ -84,5 +84,137 @@ namespace Music.WPF.Properties {
                 this["AutoplayEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float Band1 {
+            get {
+                return ((float)(this["Band1"]));
+            }
+            set {
+                this["Band1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float Band2 {
+            get {
+                return ((float)(this["Band2"]));
+            }
+            set {
+                this["Band2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float Band3 {
+            get {
+                return ((float)(this["Band3"]));
+            }
+            set {
+                this["Band3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float Band4 {
+            get {
+                return ((float)(this["Band4"]));
+            }
+            set {
+                this["Band4"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float Band5 {
+            get {
+                return ((float)(this["Band5"]));
+            }
+            set {
+                this["Band5"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float Band6 {
+            get {
+                return ((float)(this["Band6"]));
+            }
+            set {
+                this["Band6"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float Band7 {
+            get {
+                return ((float)(this["Band7"]));
+            }
+            set {
+                this["Band7"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float Band8 {
+            get {
+                return ((float)(this["Band8"]));
+            }
+            set {
+                this["Band8"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float Band9 {
+            get {
+                return ((float)(this["Band9"]));
+            }
+            set {
+                this["Band9"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float Band10 {
+            get {
+                return ((float)(this["Band10"]));
+            }
+            set {
+                this["Band10"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Flat")]
+        public string EqualizerProfile {
+            get {
+                return ((string)(this["EqualizerProfile"]));
+            }
+            set {
+                this["EqualizerProfile"] = value;
+            }
+        }
     }
 }

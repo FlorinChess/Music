@@ -185,17 +185,6 @@ namespace Music.WPF.ViewModels
             }
         }
 
-        private bool _areTracksInQueue;
-        public bool AreTracksInQueue
-        {
-            get => _areTracksInQueue;
-            set
-            {
-                _areTracksInQueue = value;
-                OnPropertyChanged(nameof(AreTracksInQueue));
-            }
-        }
-
         private bool _isPlaying = false;
         public bool IsPlaying
         {

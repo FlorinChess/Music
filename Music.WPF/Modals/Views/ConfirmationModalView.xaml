@@ -30,11 +30,13 @@
                 Command="{Binding SaveCommand}" 
                 Content="Confirm"
                 Style="{StaticResource ModalButton}" 
+                TabIndex="10"
                 />
             <Button  
                 Command="{Binding CloseModalCommand}" 
                 Content="Cancel"
                 Style="{StaticResource ModalButton}" 
+                TabIndex="11"
                 />
         </StackPanel>
     </Grid>

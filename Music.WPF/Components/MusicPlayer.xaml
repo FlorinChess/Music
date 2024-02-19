@@ -8,13 +8,13 @@
              xmlns:custom="clr-namespace:Music.CustomControls.DropdownMenu;assembly=Music.CustomControls"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance {x:Type viewmodels:MusicPlayerViewModel}, IsDesignTimeCreatable=False}"
-             d:DesignHeight="100" d:DesignWidth="700" 
+             d:DesignHeight="100"
              Background="{StaticResource MusicPlayerGraySurfaceBrush}"
              IsEnabled="{Binding IsEnabled}"
              IsTabStop="False">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -24,37 +24,13 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel 
-            Orientation="Horizontal" 
-            Grid.Column="1" Grid.Row="1"
-            HorizontalAlignment="Center">
-            <TextBlock 
-                Style="{StaticResource MusicPlayerSliderText}"
-                Text="{Binding TrackCurrentPosition, Converter={StaticResource TimeSpanToStringConverter}, FallbackValue='00:00'}"
-                />
-            <Slider 
-                x:Name="TrackSlider"
-                extensions:SliderExtension.DragStartedCommand="{Binding SeekDragStartedCommand}"
-                extensions:SliderExtension.DragCompletedCommand="{Binding SeekDragCompletedCommand}"
-                IsEnabled="{Binding CommandButtonsEnabled}"
-                Maximum="{Binding TrackLength}"
-                Style="{StaticResource MusicPlayerSlider}"
-                Value="{Binding TrackCurrentPosition, FallbackValue=5}"
-                VerticalAlignment="Center"
-                Width="210" 
-                />
-            <TextBlock 
-                Style="{StaticResource MusicPlayerSliderText}"
-                Text="{Binding TrackLength, Converter={StaticResource TimeSpanToStringConverter}, FallbackValue='00:00'}"
-                />
-        </StackPanel>
-
         <Button 
             x:Name="leftPanel" 
             Grid.RowSpan="2"
             Command="{Binding NavigateToNowPlayingCommand}"
             FocusVisualStyle="{StaticResource DefaultFocusVisualStyle}"
             Style="{StaticResource OpenQueueButton}"
+            TabIndex="30"
             ToolTip="{Binding CurrentTrack.Title}"
             Visibility="{Binding LeftPanelVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
             <DockPanel>
@@ -80,6 +56,7 @@
             <CheckBox 
                 IsChecked="{Binding IsShuffleEnabled}" 
                 Style="{StaticResource MusicPlayerCheckBox}"
+                TabIndex="31"
                 ToolTip="{Binding ShuffleButtonToolTip}">
                 <Path 
                     Data="M29.05 40.5v-3h6.25l-9.2-9.15 2.1-2.15 9.3 9.2v-6.35h3V40.5Zm-19.45 0-2.1-2.15 27.9-27.9h-6.35v-3H40.5V18.9h-3v-6.3Zm10.15-18.7L7.5 9.6l2.15-2.15 12.25 12.2Z" 
@@ -91,6 +68,7 @@
                 Command="{Binding PlayPreviousCommand}" 
                 IsEnabled="{Binding CommandButtonsEnabled}"
                 Style="{StaticResource MusicPlayerButton}"
+                TabIndex="32"
                 ToolTip="Previous">
                 <Path 
                     Data="M11 36V12h3v24Zm26 0L19.7 24 37 12Z" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}" 
@@ -103,6 +81,7 @@
                 IsChecked="{Binding IsPlaying, FallbackValue=False}" 
                 IsEnabled="{Binding CommandButtonsEnabled}"
                 Style="{StaticResource MusicPlayerPlayPauseCheckBox}"
+                TabIndex="33"
                 ToolTip="{Binding PlayPauseButtonToolTip}"
                 />
 
@@ -110,6 +89,7 @@
                 Command="{Binding PlayNextCommand}" 
                 IsEnabled="{Binding CommandButtonsEnabled}"
                 Style="{StaticResource MusicPlayerButton}"
+                TabIndex="34"
                 ToolTip="Next">
                 <Path 
                     Data="M34 36V12h3v24Zm-23 0V12l17.3 12Z" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"
@@ -120,6 +100,7 @@
             <CheckBox 
                 IsChecked="{Binding IsRepeatEnabled}" 
                 Style="{StaticResource MusicPlayerCheckBox}"
+                TabIndex="35"
                 ToolTip="{Binding RepeatButtonToolTip}">
                 <Path 
                     Data="M24 44q-3.75 0-7.025-1.4-3.275-1.4-5.725-3.85Q8.8 36.3 7.4 33.025 6 29.75 6 26h3q0 6.25 4.375 10.625T24 41q6.25 0 10.625-4.375T39 26q0-6.25-4.25-10.625T24.25 11H23.1l3.65 3.65-2.05 2.1-7.35-7.35 7.35-7.35 2.05 2.05-3.9 3.9H24q3.75 0 7.025 1.4 3.275 1.4 5.725 3.85 2.45 2.45 3.85 5.725Q42 22.25 42 26q0 3.75-1.4 7.025-1.4 3.275-3.85 5.725-2.45 2.45-5.725 3.85Q27.75 44 24 44Z" 
@@ -128,7 +109,32 @@
             </CheckBox>
         </StackPanel>
 
-        
+        <StackPanel 
+            Grid.Column="1" Grid.Row="1"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <TextBlock 
+                Style="{StaticResource MusicPlayerSliderText}"
+                Text="{Binding TrackCurrentPosition, Converter={StaticResource TimeSpanToStringConverter}, FallbackValue='00:00'}"
+                />
+            <Slider 
+                x:Name="trackSlider"
+                extensions:SliderExtension.DragStartedCommand="{Binding SeekDragStartedCommand}"
+                extensions:SliderExtension.DragCompletedCommand="{Binding SeekDragCompletedCommand}"
+                IsEnabled="{Binding CommandButtonsEnabled}"
+                Maximum="{Binding TrackLength, FallbackValue=20}"
+                Style="{StaticResource MusicPlayerSlider}"
+                TabIndex="36"
+                Value="{Binding TrackCurrentPosition, FallbackValue=5}"
+                VerticalAlignment="Center"
+                Width="200" 
+                />
+            <TextBlock 
+                Style="{StaticResource MusicPlayerSliderText}"
+                Text="{Binding TrackLength, Converter={StaticResource TimeSpanToStringConverter}, FallbackValue='00:00'}"
+                />
+        </StackPanel>
+
         <StackPanel 
             x:Name="rightPanel" 
             Grid.Column="2" 
@@ -139,6 +145,7 @@
                 Command="{Binding MuteCommand}" 
                 IsChecked="{Binding IsMuted}"
                 Style="{DynamicResource MusicPlayerCheckBox}"
+                TabIndex="37"
                 ToolTip="{Binding MuteButtonToolTip}">
                 <Path 
                     Data="{Binding Value, ElementName=VolumeSlider, Converter={StaticResource DoubleToVectorConverter}}" 
@@ -156,13 +163,15 @@
                 Maximum="100" 
                 Margin="0 0 10 0"
                 Style="{StaticResource MusicPlayerSlider}"
-                Value="{Binding Volume, Mode=TwoWay, FallbackValue=10}"
+                TabIndex="38"
+                Value="{Binding Volume, Mode=TwoWay, FallbackValue=20}"
                 VerticalAlignment="Center"
                 />
 
             <custom:DropdownMenu 
+                CheckBoxTabIndex="39"
                 IsOpen="{Binding IsDropDownOpen, Mode=TwoWay}"
-                FocusVisualStyle="{StaticResource RoundFocusVisualStyle}"
+                IsTabStop="False"
                 PopupBorderBrush="{StaticResource MainBackgroundBrush}"
                 PopupPlacement="Top"
                 ToolTip="More options">
@@ -171,11 +180,13 @@
                         Command="{Binding ClearQueueCommand}"
                         Content="Clear queue"
                         Style="{DynamicResource DropdownTextButton}"
+                        TabIndex="40"
                         />
                     <Button
                         Command="{Binding OpenEqualizerCommand}"
                         Content="Equalizer"
                         Style="{DynamicResource DropdownTextButton}"
+                        TabIndex="41"
                         />
                 </StackPanel>
             </custom:DropdownMenu>

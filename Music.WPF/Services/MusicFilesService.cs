@@ -36,7 +36,7 @@ namespace Music.WPF.Services
         /// Returns the paths of the music files (.mp3 or .wav) in a directory.
         /// </summary>
         /// <param name="directories">The directories where the music files are stored on disk.</param>
-        /// <returns>An <see cref="IEnumerable{T}"/> that contains the music file paths.</returns>
+        /// <returns>An <see cref="IEnumerable{string}"/> that contains the music file paths.</returns>
         /// <exception cref="ArgumentException"></exception>
         public static IEnumerable<string> GetMusicFiles(IEnumerable<string> directories)
         {

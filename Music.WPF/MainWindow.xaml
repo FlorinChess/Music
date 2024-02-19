@@ -15,9 +15,7 @@
         MinHeight="600" MinWidth="800"
         Background="{StaticResource MainBackgroundBrush}"
         BorderBrush="{StaticResource GrayBrush}"
-        Height="{Binding WindowWidth, Mode=OneWayToSource, TargetNullValue=700, FallbackValue=700}" 
         Title="Music"
-        Width="{Binding WindowWidth, Mode=OneWayToSource, FallbackValue=1200}"
         WindowStartupLocation="CenterScreen" WindowStyle="None">
     <Window.Resources>
         <LinearGradientBrush x:Key="HeaderGradient" StartPoint="0,0" EndPoint="0,1">
@@ -72,20 +70,6 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Button 
-            Command="{Binding NavigateBackCommand}"
-            Style="{StaticResource WindowControlButton}"
-            IsEnabled="{Binding IsMainEnabled}"
-            TabIndex="3"
-            ToolTip="Go back" 
-            Width="50" 
-            WindowChrome.IsHitTestVisibleInChrome="True">
-            <Path 
-                Data="M480 896 160 576l320-320 42 42-248 248h526v60H274l248 248-42 42Z" 
-                Style="{StaticResource DefaultIcon}"              
-                />
-        </Button>
-
         <!-- Window Control Buttons -->
         <StackPanel 
             Grid.ColumnSpan="2"
@@ -97,7 +81,7 @@
             <Button 
                 x:Name="MinimizeButton"
                 Style="{StaticResource WindowControlButton}" 
-                TabIndex="0"
+                TabIndex="42"
                 ToolTip="Minimize">
                 <TextBlock 
                     FontWeight="ExtraBold"
@@ -108,7 +92,7 @@
             <Button 
                 x:Name="MaximizeButton"
                 Style="{StaticResource WindowControlButton}" 
-                TabIndex="1" 
+                TabIndex="43" 
                 ToolTip="Restore down">
                 <TextBlock 
                     FontSize="18" FontWeight="Medium"
@@ -119,7 +103,7 @@
             <Button 
                 x:Name="CloseButton" 
                 Style="{StaticResource WindowControlCloseButton}" 
-                TabIndex="2"
+                TabIndex="44"
                 ToolTip="Close">
                 <Path 
                     Width="13" Height="13" Stretch="Fill"
@@ -131,7 +115,7 @@
 
         <!-- Navigation Bar -->
         <components:NavigationBar 
-            Grid.Row="1" 
+            Grid.RowSpan="2"
             DataContext="{Binding NavigationBarViewModel}"
             />
 

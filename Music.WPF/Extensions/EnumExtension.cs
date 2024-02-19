@@ -12,15 +12,12 @@ namespace Music.WPF.Extensions
         {
             Type type = value.GetType();
             string? name = Enum.GetName(type, value);
-            if (name != null)
+            if (name is not null)
             {
                 FieldInfo? field = type.GetField(name);
                 if (field != null)
                 {
-                    DescriptionAttribute? attr =
-                           Attribute.GetCustomAttribute(field,
-                             typeof(DescriptionAttribute)) as DescriptionAttribute;
-                    if (attr != null)
+                    if (Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attr)
                     {
                         return attr.Description;
                     }
@@ -42,7 +39,7 @@ namespace Music.WPF.Extensions
 
             return options;
         }
-        public static T GetValueFromDescription<T>(string description) where T : Enum
+        public static T? GetValueFromDescription<T>(string description) where T : Enum
         {
             foreach (var field in typeof(T).GetFields())
             {
@@ -50,17 +47,16 @@ namespace Music.WPF.Extensions
                 typeof(DescriptionAttribute)) is DescriptionAttribute attribute)
                 {
                     if (attribute.Description == description)
-                        return (T)field.GetValue(null);
+                        return (T?)field.GetValue(null);
                 }
                 else
                 {
                     if (field.Name == description)
-                        return (T)field.GetValue(null);
+                        return (T?)field.GetValue(null);
                 }
             }
 
-            throw new ArgumentException("Not found.", nameof(description));
-            // Or return default(T);
+            return default;
         }
 
     }

@@ -1,22 +1,22 @@
 ﻿<Application x:Class="Music.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="clr-namespace:Music.WPF.Converters">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
         <ResourceDictionary>
             
             <ResourceDictionary.MergedDictionaries>
                 <!-- Fonts and colors first-->
                 <ResourceDictionary Source="./Themes/ColorThemes/YellowTheme.xaml" />
-                <ResourceDictionary Source="./Themes/ColorsBase.xaml" />
-                <ResourceDictionary Source="./Themes/Converters.xaml" />
-                <ResourceDictionary Source="./Themes/DefaultStyles.xaml" />
+                <ResourceDictionary Source="/Music.Common;component/Dictionaries/Colors.xaml" />
+                <ResourceDictionary Source="/Music.Common;component/Dictionaries/Converters.xaml" />
+                <ResourceDictionary Source="/Music.Common;component/Dictionaries/DefaultStyles.xaml" />
+
                 <ResourceDictionary Source="./Themes/TextBlock.xaml" />
 
-                <ResourceDictionary Source="./Themes/Storyboards.xaml" />
                 <ResourceDictionary Source="./Themes/Button.xaml" />
                 <ResourceDictionary Source="./Themes/CheckBox.xaml" />
                 <ResourceDictionary Source="./Themes/ComboBox.xaml" />
+                <ResourceDictionary Source="./Themes/ListBox.xaml" />
                 <ResourceDictionary Source="./Themes/ListView.xaml" />
                 <ResourceDictionary Source="./Themes/MenuItem.xaml" />
                 <ResourceDictionary Source="./Themes/RadioButton.xaml" />
@@ -24,10 +24,7 @@
                 <ResourceDictionary Source="./Themes/Slider.xaml" />
                 <ResourceDictionary Source="./Themes/TextBox.xaml" />
                 <ResourceDictionary Source="./Themes/ToolTip.xaml" />
-                
             </ResourceDictionary.MergedDictionaries>
-
-            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

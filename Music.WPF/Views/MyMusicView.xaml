@@ -43,7 +43,8 @@
         <DockPanel Grid.Row="1">
             <Button 
                 Command="{Binding PlayAllCommand}"
-                Style="{StaticResource CommandButton}">
+                Style="{StaticResource CommandButton}"
+                TabIndex="6">
                 <StackPanel Orientation="Horizontal">
                     <Path 
                         Data="M16 37.85v-28l22 14Z"
@@ -57,7 +58,8 @@
             </Button>
             <Button 
                 Command="{Binding ShufflePlayAllCommand}"
-                Style="{StaticResource CommandButton}">
+                Style="{StaticResource CommandButton}"
+                TabIndex="7">
                 <StackPanel Orientation="Horizontal">
                     <Path 
                         Data="M29.05 40.5v-3h6.25l-9.2-9.15 2.1-2.15 9.3 9.2v-6.35h3V40.5Zm-19.45 0-2.1-2.15 27.9-27.9h-6.35v-3H40.5V18.9h-3v-6.3Zm10.15-18.7L7.5 9.6l2.15-2.15 12.25 12.2Z" Stretch="Fill"
@@ -79,6 +81,7 @@
                     ItemsSource="{Binding SortOptions}"
                     SelectedValue="{Binding SelectedSortOption}"
                     Style="{StaticResource SortComboBox}"
+                    TabIndex="8"
                     />
             </StackPanel>
         </DockPanel>
@@ -88,10 +91,20 @@
             DataContext="{Binding ListComponentViewModel}"
             />
 
-        <TextBlock 
+        <StackPanel 
             Grid.Row="2" 
-            Style="{StaticResource PlaceholderText}"
-            Text="{Binding PlaceholderText, FallbackValue='No tracks here.'}"
-            />
+            VerticalAlignment="Center"
+            Visibility="{Binding PlaceholderVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock                 
+                Style="{StaticResource PlaceholderText}"
+                Text="No tracks here." 
+                />
+            <Button 
+                Content="Add music folders to your library"
+                Command="{Binding AddMusicFolderCommand}"
+                Style="{StaticResource LinkButton}"
+                TabIndex="9"
+                />
+        </StackPanel>
     </Grid>
 </UserControl>

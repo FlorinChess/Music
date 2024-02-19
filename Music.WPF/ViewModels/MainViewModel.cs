@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Music.WPF.Commands;
-using Music.WPF.Services;
+using Music.Domain;
 using Music.WPF.Store;
 using System;
+using System.Linq;
 using System.Windows.Input;
 
 namespace Music.WPF.ViewModels
@@ -16,7 +16,6 @@ namespace Music.WPF.ViewModels
         private readonly IServiceProvider _serviceProvider;
         private const string PAUSE_IMAGE_PATH = @"/Icons/pause.png";
         private const string PLAY_IMAGE_PATH = @"/Icons/play.png";
-        private const int RESIZE_THRESHOLD = 710;
 
         #endregion
 
@@ -61,28 +60,6 @@ namespace Music.WPF.ViewModels
             }
         }
 
-        private double _windowWidth;
-        public double WindowWidth
-        {
-            get => _windowWidth;
-            set
-            {
-                _windowWidth = value;
-                OnWindowWidthChanged(_windowWidth);
-            }
-        }
-
-        private bool _navigateBackButtonVisible;
-        public bool NavigateBackButtonVisible
-        {
-            get => _navigateBackButtonVisible;
-            set
-            {
-                _navigateBackButtonVisible = value;
-                OnPropertyChanged(nameof(NavigateBackButtonVisible));
-            }
-        }
-
         private bool _nowPlayingViewModelVisibility = false;
         public bool NowPlayingViewModelVisibility
         {
@@ -94,7 +71,6 @@ namespace Music.WPF.ViewModels
             }
         }
 
-
         #endregion
 
         #region Commands 
@@ -102,7 +78,6 @@ namespace Music.WPF.ViewModels
         public ICommand PlayPauseCommand { get; private set; }
         public ICommand PlayNextCommand { get; private set; }
         public ICommand PlayPreviousCommand { get; private set; }
-        public ICommand NavigateBackCommand { get; private set; }
 
         #endregion
 
@@ -127,7 +102,6 @@ namespace Music.WPF.ViewModels
             PlayPauseCommand = MusicPlayerViewModel.PlayPauseCommand;
             PlayNextCommand = MusicPlayerViewModel.PlayNextCommand;
             PlayPreviousCommand = MusicPlayerViewModel.PlayPreviousCommand;
-            NavigateBackCommand = new RelayCommand(_ => navigationStore.Pop());
         }
 
         #region Private Methods
@@ -135,7 +109,7 @@ namespace Music.WPF.ViewModels
         private void OnNavigateToNowPlaying()
         {
             MusicPlayerViewModel.IsEnabled = false;
-            NavigationBarViewModel.IsEnabled = false;
+            NavigationBarViewModel.IsEnabled = false; 
             IsMainEnabled = false;
 
             if (CurrentModalViewModel is not null)
@@ -173,12 +147,9 @@ namespace Music.WPF.ViewModels
             OnPropertyChanged(nameof(CurrentViewModel));
         }
 
-        private void OnWindowWidthChanged(double windowWidth)
-        {
-            MusicPlayerViewModel.ClearQueueButtonVisible = windowWidth >= RESIZE_THRESHOLD;
-        }
-
         #endregion
+
+        #region Public Methods
 
         public void EnableControls()
         {
@@ -189,8 +160,24 @@ namespace Music.WPF.ViewModels
 
         public void OnClosing()
         {
-            var persistenceService = _serviceProvider.GetRequiredService<PersistenceService>();
-            persistenceService.Save();
+            var trackStore = _serviceProvider.GetRequiredService<TrackStore>();
+
+            if (trackStore.PlaylistsChanged)
+            {
+                var playlistPersistenceService = _serviceProvider.GetRequiredService<PlaylistPersistenceService>();
+
+                for (int i = 0; i < trackStore.AvailablePlaylists.Count; i++)
+                {
+                    var currentPlaylist = trackStore.AvailablePlaylists[i];
+
+                    playlistPersistenceService.Add(currentPlaylist.Name, 
+                        currentPlaylist.DateCreated.ToString(), 
+                        currentPlaylist.ImagePath, 
+                        currentPlaylist.Tracks.Select(t => t.FilePath).ToList());
+                }
+
+                playlistPersistenceService.Save();
+            }
 
             Properties.Settings.Default.Volume = MusicPlayerViewModel.Volume;
             Properties.Settings.Default.Save();
@@ -199,5 +186,7 @@ namespace Music.WPF.ViewModels
             CurrentViewModel.Dispose();
             CurrentModalViewModel?.Dispose();
         }
+
+        #endregion Public Methods
     }
 }

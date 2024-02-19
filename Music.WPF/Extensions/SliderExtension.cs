@@ -32,7 +32,7 @@ namespace Music.WPF.Extensions
             {
                 var command = GetDragStartedCommand(element);
                 var slider = FindParentControl<Slider>(element) as Slider;
-                command.Execute(slider.Value);
+                command.Execute(slider!.Value);
             });
         }
 
@@ -44,7 +44,7 @@ namespace Music.WPF.Extensions
         public static ICommand GetDragStartedCommand(FrameworkElement element)
         {
             var slider = FindParentControl<Slider>(element);
-            return (ICommand)slider.GetValue(DragStartedCommandProperty);
+            return (ICommand)slider!.GetValue(DragStartedCommandProperty);
         }
 
         private static void DragCompleted(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -58,13 +58,15 @@ namespace Music.WPF.Extensions
 
         private static void Thumb_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            FrameworkElement element = (FrameworkElement)sender;
-            element.Dispatcher.Invoke(() =>
+            if (sender is FrameworkElement element)
             {
-                var command = GetDragCompletedCommand(element);
-                var slider = FindParentControl<Slider>(element) as Slider;
-                command.Execute(slider.Value);
-            });
+                element.Dispatcher.Invoke(() =>
+                {
+                    var command = GetDragCompletedCommand(element);
+                    var slider = FindParentControl<Slider>(element) as Slider;
+                    command.Execute(slider!.Value);
+                });
+            }
         }
 
         public static void SetDragCompletedCommand(UIElement element, ICommand value)
@@ -75,16 +77,16 @@ namespace Music.WPF.Extensions
         public static ICommand GetDragCompletedCommand(FrameworkElement element)
         {
             var slider = FindParentControl<Slider>(element);
-            return (ICommand)slider.GetValue(DragCompletedCommandProperty);
+            return (ICommand)slider!.GetValue(DragCompletedCommandProperty);
         }
 
-        private static Thumb GetThumbFromSlider(Slider slider)
+        private static Thumb? GetThumbFromSlider(Slider slider)
         {
             var track = slider.Template.FindName("PART_Track", slider) as Track;
             return track is null ? null : track.Thumb;
         }
 
-        private static DependencyObject FindParentControl<T>(DependencyObject control)
+        private static DependencyObject? FindParentControl<T>(DependencyObject control)
         {
             var parent = VisualTreeHelper.GetParent(control);
             while (parent is not null && parent is not T)

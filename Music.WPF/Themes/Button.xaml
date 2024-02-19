@@ -104,7 +104,7 @@
         <Setter Property="Height" Value="40" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="Margin" Value="0 4 8 4" />
-        <Setter Property="Padding" Value="8 0" />
+        <Setter Property="Padding" Value="6 0" />
     </Style>
 
     <!-- Selected playlist Button-->
@@ -199,5 +199,31 @@
         <Setter Property="Height" Value="40" />
         <Setter Property="Margin" Value="4" />
         <Setter Property="Width" Value="60" />
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="LinkButton">
+        <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RoundFocusVisualStyle}" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border>
+                        <TextBlock 
+                            x:Name="text" 
+                            Foreground="{DynamicResource Primary}"
+                            Style="{StaticResource PlaceholderText}"
+                            Text="{TemplateBinding Content}"
+                            /> 
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="TextDecorations" TargetName="text" Value="Underline" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

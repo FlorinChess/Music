@@ -18,7 +18,7 @@ namespace Music.WPF.Modals.ViewModels
         public ObservableCollection<string> PlaylistTags { get; private set; }
         public PlaylistModel OriginalPlaylist { get; private set; }
         public PlaylistModel SelectedPlaylist { get; private set; }
-        public string PlaylistName { get; private set; }
+        public string PlaylistName { get; set; }
 
         private bool _isRemoveButtonVisible;
         public bool IsRemoveButtonVisible
@@ -83,7 +83,7 @@ namespace Music.WPF.Modals.ViewModels
             OriginalPlaylist.Name = PlaylistName;
             OriginalPlaylist.ImagePath = PlaylistImagePath;
 
-            _trackStore.PlaylistUpdated();
+            _trackStore.PlaylistsUpdated();
         }
 
         private void RemoveImage()

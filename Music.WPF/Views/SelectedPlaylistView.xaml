@@ -53,16 +53,20 @@
                 DockPanel.Dock="Left"
                 Command="{Binding PlayAllCommand}" 
                 Style="{StaticResource PlaylistPlayAllButton}" 
+                TabIndex="6"
                 ToolTip="Play all"
                 />
             <CheckBox 
                 DockPanel.Dock="Left"
+                d:IsChecked="True"
                 Style="{StaticResource StarCheckBox}" 
+                TabIndex="7"
                 ToolTip="Add to favorites"
                 VerticalAlignment="Center"
                 />
             <custom:DropdownMenu 
-                DockPanel.Dock="Right"                
+                DockPanel.Dock="Right"  
+                CheckBoxTabIndex="8"
                 FocusVisualStyle="{StaticResource RoundFocusVisualStyle}"
                 HorizontalAlignment="Right"
                 HoverBrush="{StaticResource ButtonHoverBrush}"

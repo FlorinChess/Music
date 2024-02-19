@@ -1,17 +1,24 @@
-﻿using Music.WPF.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Music.WPF.Commands;
+using Music.WPF.Core;
+using Music.WPF.Extensions;
 using Music.WPF.Models;
 using Music.WPF.Store;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Music.WPF.ViewModels
 {
-    public sealed class MyMusicViewModel : BaseViewModel
+    public sealed class MyMusicViewModel : BaseViewModel, INavigation
     {
         #region Private Members
 
+        private readonly IServiceProvider _serviceProvider;
+        private readonly NavigationStore _navigationStore;
         private readonly TrackStore _trackStore;
+        private ICommand _addMusicFolderCommand;
 
         #endregion
 
@@ -20,17 +27,16 @@ namespace Music.WPF.ViewModels
         public ListComponentViewModel ListComponentViewModel { get; set; }
         public static List<string> SortOptions => EnumExtension.GetSortOptions();
 
-        private string _placeholderText;
-        public string PlaceholderText
+        private bool _placeholderVisibility;
+        public bool PlaceholderVisibility
         {
-            get => _placeholderText;
-            set 
-            { 
-                _placeholderText = value; 
-                OnPropertyChanged(nameof(PlaceholderText));
+            get => _placeholderVisibility;
+            set
+            {
+                _placeholderVisibility = value;
+                OnPropertyChanged(nameof(PlaceholderVisibility));
             }
         }
-
 
         private string _selectedSortOption;
         public string SelectedSortOption
@@ -100,12 +106,17 @@ namespace Music.WPF.ViewModels
 
         public ICommand ShufflePlayAllCommand { get; }
         public ICommand PlayAllCommand { get; }
+        public ICommand AddMusicFolderCommand => _addMusicFolderCommand ??= new RelayCommand(_ => AddMusicFolder());
 
         #endregion
 
-        public MyMusicViewModel(TrackStore trackStore, ListComponentViewModel listComponentViewModel)
+        public MyMusicViewModel(IServiceProvider serviceProvider, NavigationStore navigationStore, TrackStore trackStore, ListComponentViewModel listComponentViewModel)
         {
+            _serviceProvider = serviceProvider;
+            _navigationStore = navigationStore;
             _trackStore = trackStore;
+            _trackStore.AvailableTracksChanged += OnAvailableTrackChanged;
+
             ListComponentViewModel = listComponentViewModel;
             ListComponentViewModel.TracksChanged += OnTracksChanged;
 
@@ -114,9 +125,6 @@ namespace Music.WPF.ViewModels
 
             ListComponentViewModel.SetTracks(_trackStore.AvailableTracks);
             
-            ///For testing only!
-            ///ListComponentViewModel.AddTrack(new TrackModel() { HasErrors = true, Title = "Test Track", Artist = "Test Artist", ErrorMessage = "This is a test error message" });
-
             SelectedSortOption = SortOptions[0];
 
             UpdateTracklistInformation();
@@ -124,25 +132,36 @@ namespace Music.WPF.ViewModels
 
         #region Private Methods
 
+        private void OnAvailableTrackChanged(IList<TrackModel> newTracks)
+        {
+            ListComponentViewModel.AddTracks(newTracks);
+
+            OnTracksChanged();
+        }
+
+        private void AddMusicFolder()
+        {
+            var viewModel = _serviceProvider.GetRequiredService<SettingsViewModel>();
+
+            _navigationStore.CurrentViewModel = viewModel;
+
+            viewModel.SelectMusicFilesFolderCommand.Execute(null);
+        }
+
         private void OnTracksChanged()
         {
-            Task.Run(() => UpdateTracklistInformation());
+            Task.Run(UpdateTracklistInformation);
         }
 
         private void UpdateTracklistInformation()
         {
             NumberOfTracks = (ListComponentViewModel.Count != 1) ? $"{ListComponentViewModel.Count} Tracks" : $"1 Track";
             PlayTime = GetStringTotalTimeFromTracks(ListComponentViewModel.Tracks);
-            PlaceholderText = ListComponentViewModel.Count == 0 ? "No tracks here." : string.Empty;
+            PlaceholderVisibility = ListComponentViewModel.Count == 0;
         }
 
         #endregion
 
-        public override void Dispose()
-        {
-            ListComponentViewModel.TracksChanged -= OnTracksChanged;
-
-            base.Dispose();
-        }
+        public override PageIndex GetPageIndex() => PageIndex.MyMusic;
     }
 }

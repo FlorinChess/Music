@@ -90,7 +90,7 @@ namespace Music.WPF.ViewModels
 
             PlayCommand = new RelayCommand(_ => PlaySelectedTrack());
             PlayNextCommand = new RelayCommand(_ => PlayNext());
-            PlayAllCommand = new RelayCommand(parameter => PlayAllTracks(parameter));
+            PlayAllCommand = new RelayCommand(PlayAllTracks);
             AddToQueueCommand = new RelayCommand(_ => AddToQueue());
             RemoveTrackCommand = new RelayCommand(_ => RemoveTrack(SelectedTrack));
             AddToPlaylistCommand = new RelayCommand(_ => AddToPlaylist());
@@ -101,7 +101,7 @@ namespace Music.WPF.ViewModels
 
         #region Private Methods
 
-        private void AddTracks(IList<TrackModel> tracks)
+        private void AddTracksToList(IList<TrackModel> tracks)
         {
             for (int i = 0; i < tracks.Count; i++)
             {
@@ -193,14 +193,14 @@ namespace Music.WPF.ViewModels
 
             Tracks.Clear();
 
-            AddTracks(tracks);
+            AddTracksToList(tracks);
         }
 
         public void SetPlaylist(PlaylistModel playlist)
         {
             Playlist = playlist;
 
-            AddTracks(playlist.Tracks);
+            AddTracksToList(playlist.Tracks);
         }
 
         public void ClearTracks()
@@ -213,6 +213,13 @@ namespace Music.WPF.ViewModels
         {
             Tracks.Add(track);
             ContextMenuEnabled = Count > 0;
+        }
+
+        public void AddTracks(IList<TrackModel> tracks)
+        {
+            if (tracks is null || tracks.Count == 0) return;
+
+            AddTracksToList(tracks);
         }
 
         public void RemoveTrack(TrackModel track)

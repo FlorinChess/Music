@@ -6,7 +6,8 @@
         <Setter Property="FocusVisualStyle" Value="{StaticResource RoundFocusVisualStyle}" />
         <Setter Property="Foreground" Value="{StaticResource WhiteBrush}" />
         <Setter Property="Height" Value="45" />
-        <Setter Property="Margin" Value="5" />
+        <Setter Property="KeyboardNavigation.AcceptsReturn" Value="True" />
+        <Setter Property="Margin" Value="5 0" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Width" Value="45" />
 
@@ -29,11 +30,12 @@
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                             <Ellipse
                                 x:Name="CheckMark" 
-                                Width="8" Height="8"
-                                VerticalAlignment="Bottom"
-                                HorizontalAlignment="Center"
                                 Fill="{DynamicResource Primary}"
+                                Height="8"
+                                HorizontalAlignment="Center"
                                 SnapsToDevicePixels="True"
+                                VerticalAlignment="Bottom"
+                                Width="8" 
                                 />
                         </Grid>
                     </Border>
@@ -69,8 +71,6 @@
     </Style>
 
     <Style TargetType="{x:Type CheckBox}" x:Key="MusicPlayerPlayPauseCheckBox" BasedOn="{StaticResource CheckBoxBase}">
-        <Setter Property="Height" Value="45" />
-        <Setter Property="Width" Value="45" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
@@ -96,8 +96,8 @@
         <Setter Property="FocusVisualStyle" Value="{StaticResource DefaultFocusVisualStyle}" />
         <Setter Property="Height" Value="50" />
         <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Width" Value="50" />
         <Setter Property="Margin" Value="0" />
+        <Setter Property="Width" Value="50" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
@@ -114,7 +114,7 @@
                             <Path
                                 x:Name="ImagePath"
                                 Data="M6 36v-3h36v3Zm0-10.5v-3h36v3ZM6 15v-3h36v3Z" 
-                                Fill="{StaticResource WhiteBrush}"
+                                Fill="{TemplateBinding Foreground}"
                                 Stretch="Fill"
                                 />
                         </Viewbox>
@@ -153,11 +153,11 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Border 
-                    CornerRadius="14.5"
-                    Background="{StaticResource TransparentBrush}"
-                    BorderBrush="{StaticResource WhiteBrush}"
-                    BorderThickness="2"
-                    />
+                        CornerRadius="14.5"
+                        Background="{StaticResource TransparentBrush}"
+                        BorderBrush="{StaticResource WhiteBrush}"
+                        BorderThickness="2"
+                        />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -167,6 +167,7 @@
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource SwitchFocusVisualStyle}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="KeyboardNavigation.AcceptsReturn" Value="True" />
         <Setter Property="Margin" Value="0 6" />
         <Setter Property="Template">
             <Setter.Value>

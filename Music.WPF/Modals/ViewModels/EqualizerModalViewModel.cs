@@ -184,73 +184,105 @@ namespace Music.WPF.Modals.ViewModels
         #region Commands
 
         public CloseModalCommand CloseModalCommand { get; set; }
+        public ICommand DragCompletedCommand { get; private set; }
+        public ICommand DragStartedCommand { get; private set; }
         public ICommand ResetEqualizerCommand { get; private set; }
         public ICommand SaveCommand { get; set; }
-        public ICommand DragStartedCommand { get; private set; }
-        public ICommand DragCompletedCommand { get; private set; }
 
         #endregion
 
         public EqualizerModalViewModel(ModalNavigationStore modalNavigationStore, MusicPlayer musicPlayer)
         {
-            CloseModalCommand = modalNavigationStore.CloseModalCommand;
             _musicPlayer = musicPlayer;
 
-
+            CloseModalCommand = modalNavigationStore.CloseModalCommand;
+            DragCompletedCommand = new RelayCommand(_ => OnDragCompleted());
+            DragStartedCommand = new RelayCommand(_ => OnDragStarted());
             ResetEqualizerCommand = new RelayCommand(_ => ResetEqualizer());
-            SaveCommand = new RelayCommand(_ => 
-            {
-                Save();
-
-                CloseModalCommand.Execute(null);
-            });
-
-            DragStartedCommand = new RelayCommand(_ =>
-            {
-                if (EqualizerChanged) return;
-
-                EqualizerChanged = true;
-
-                if (SelectedEqualizerProfile.Name != "Manual")
-                {
-                    EqualizerProfiles[3] = SelectedEqualizerProfile with { Name = "Manual"};
-                    SelectedEqualizerProfile = EqualizerProfiles[3];
-                }
-            });
-
-            DragCompletedCommand = new RelayCommand(_ => 
-            {
-                // This creates a new instance of EqualizerProfile with the specified property changes
-                // NOTE: the name property preservs its initial value ('Manual')
-                EqualizerProfiles[3] = EqualizerProfiles[3] with 
-                { 
-                    Band1 = Band1,
-                    Band2 = Band2,
-                    Band3 = Band3,
-                    Band4 = Band4,
-                    Band5 = Band5,
-                    Band6 = Band6,
-                    Band7 = Band7,
-                    Band8 = Band8,
-                    Band9 = Band9,
-                    Band10 = Band10,
-                };
-                SelectedEqualizerProfile = EqualizerProfiles[3];
-
-                EqualizerChanged = false;
-            });
+            SaveCommand = new RelayCommand(_ => Save());
 
             CreateEqualizerProfiles();
-            SelectedEqualizerProfile = EqualizerProfiles[0];
 
             EqualizerStatusText = IsEqualizerEnabled ? "On" : "Off";
         }
 
         #region Private Methods
 
+        private void OnDragStarted()
+        {
+            if (EqualizerChanged) return;
+
+            EqualizerChanged = true;
+
+            if (SelectedEqualizerProfile.Name != "Manual")
+            {
+                EqualizerProfiles[3] = SelectedEqualizerProfile with { Name = "Manual" };
+                SelectedEqualizerProfile = EqualizerProfiles[3];
+            }
+        }
+
+        private void OnDragCompleted()
+        {
+            // This creates a new instance of EqualizerProfile with the specified property changes
+            // NOTE: the name property preservs its initial value ('Manual')
+            EqualizerProfiles[3] = EqualizerProfiles[3] with
+            {
+                Band1 = Band1,
+                Band2 = Band2,
+                Band3 = Band3,
+                Band4 = Band4,
+                Band5 = Band5,
+                Band6 = Band6,
+                Band7 = Band7,
+                Band8 = Band8,
+                Band9 = Band9,
+                Band10 = Band10,
+            };
+            SelectedEqualizerProfile = EqualizerProfiles[3];
+
+            EqualizerChanged = false;
+        }
+
         private void Save()
         {
-            
+            SaveSettings();
+
+            CloseModalCommand.Execute(null);
+        }
+
+        private void SaveSettings()
+        {
+            Properties.Settings.Default.EqualizerProfile = SelectedEqualizerProfile.Name;
+
+            // Save manual profile 
+            Properties.Settings.Default.Band1 = EqualizerProfiles[3].Band1;
+            Properties.Settings.Default.Band2 = EqualizerProfiles[3].Band2;
+            Properties.Settings.Default.Band3 = EqualizerProfiles[3].Band3;
+            Properties.Settings.Default.Band4 = EqualizerProfiles[3].Band4;
+            Properties.Settings.Default.Band5 = EqualizerProfiles[3].Band5;
+            Properties.Settings.Default.Band6 = EqualizerProfiles[3].Band6;
+            Properties.Settings.Default.Band7 = EqualizerProfiles[3].Band7;
+            Properties.Settings.Default.Band8 = EqualizerProfiles[3].Band8;
+            Properties.Settings.Default.Band9 = EqualizerProfiles[3].Band9;
+            Properties.Settings.Default.Band10 = EqualizerProfiles[3].Band10;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private static EqualizerProfile CreateManualEqualizerProfile()
+        {
+            var b1 = Properties.Settings.Default.Band1;
+            var b2 = Properties.Settings.Default.Band2;
+            var b3 = Properties.Settings.Default.Band3;
+            var b4 = Properties.Settings.Default.Band4;
+            var b5 = Properties.Settings.Default.Band5;
+            var b6 = Properties.Settings.Default.Band6;
+            var b7 = Properties.Settings.Default.Band7;
+            var b8 = Properties.Settings.Default.Band8;
+            var b9 = Properties.Settings.Default.Band9;
+            var b10 = Properties.Settings.Default.Band10;
+
+            return new EqualizerProfile("Manual", b1, b2, b3, b4, b5, b6, b7, b8, b9, b10);
         }
 
         private void CreateEqualizerProfiles()
@@ -258,7 +290,16 @@ namespace Music.WPF.Modals.ViewModels
             EqualizerProfiles.Add(new EqualizerProfile("Flat", 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)); 
             EqualizerProfiles.Add(new EqualizerProfile("Bass boost", 4f, 7f, 4.8f, 4f, 1f, 0f, 0f, 0f, 0f, 0f));
             EqualizerProfiles.Add(new EqualizerProfile("Treble boost", 0f, 0f, 0f, 0f, 0f, 0f, 1f, 4f, 4.8f, 7f));
-            EqualizerProfiles.Add(new EqualizerProfile("Manual", 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f));
+            EqualizerProfiles.Add(CreateManualEqualizerProfile());
+
+            for (int i = 0; i < EqualizerProfiles.Count; i++)
+            {
+                if (EqualizerProfiles[i].Name == Properties.Settings.Default.EqualizerProfile)
+                {
+                    SelectedEqualizerProfile = EqualizerProfiles[i];
+                    break;
+                }
+            }
         }
 
         private void ApplyEqualizerProfile(EqualizerProfile equalizerProfile)

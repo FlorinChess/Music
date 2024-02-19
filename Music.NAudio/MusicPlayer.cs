@@ -15,17 +15,13 @@ namespace Music.NAudio
         private AudioFileReader _reader;
         private WaveOutEvent _player;
         private Equalizer _equalizer;
+        private static EqualizerBand[] _bands;
 
         #endregion Private Members
 
         #region Properties
         public PlaybackState PlaybackState => _player.PlaybackState;
-
-        private static EqualizerBand[] _bands;
-        public static EqualizerBand[] Bands 
-        {
-            get => _bands ??= CreateEqaulizerBands();
-        }
+        public static EqualizerBand[] Bands => _bands ??= CreateEqaulizerBands();
 
         private float _volume = 0f;
         public float Volume 

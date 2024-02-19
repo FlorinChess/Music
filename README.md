@@ -20,9 +20,10 @@ A modern music player and music file manager built for Windows using WPF .NET 6.
 
 ## Third-party libraries and APIs
 
-- [Moq](https://github.com/moq/moq)
 - [FluentAssertions](https://fluentassertions.com/)
+- [Moq](https://github.com/moq/moq)
 - [NAudio](https://github.com/naudio/NAudio)
 - [Newtonsoft.Json](https://www.newtonsoft.com/json)
+- [Serilog](https://serilog.net/)
 - [TagLibSharp](https://github.com/mono/taglib-sharp)
 - [Spotify API](https://developer.spotify.com/)

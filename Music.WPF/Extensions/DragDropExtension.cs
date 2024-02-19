@@ -79,16 +79,18 @@ namespace Music.WPF.Extensions
                 for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
                 {
                     DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-                    if (child is not null and T)
+                    if (child is not null)
                     {
-                        return (T)child;
+                        if (child is T t)
+                            return t;
+                    
+                        T? childItem = GetFirstVisualChild<T>(child);
+                        if (childItem is not null)
+                        {
+                            return childItem;
+                        }
                     }
 
-                    T? childItem = GetFirstVisualChild<T>(child);
-                    if (childItem is not null)
-                    {
-                        return childItem;
-                    }
                 }
             }
 
