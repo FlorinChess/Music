@@ -10,8 +10,10 @@ using Music.WPF.Services;
 using Music.WPF.Store;
 using Music.WPF.ViewModels;
 using Music.WPF.Views;
+using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 
 namespace Music.WPF
@@ -33,19 +35,37 @@ namespace Music.WPF
 
         protected override void OnStartup(StartupEventArgs e)
         {
+
             var trackStore = _serviceProvider.GetRequiredService<TrackStore>();
             trackStore.AddTracks(GetAvailableTracks());
-            trackStore.AddPlaylists(GetAvailablePlaylists());
+            trackStore.AddPlaylists(GetAvailablePlaylists(_serviceProvider));
 
             var initialNavigationService = _serviceProvider.GetRequiredService<INavigationService>();
             initialNavigationService.Navigate();
 
             MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
             MainWindow.Show();
-            MainWindow.Closing += OnClosing; 
+            MainWindow.Closing += OnClosing;
 
             _persistenceService.Parse();
+
+            CheckCommandLineParameters(Environment.GetCommandLineArgs()[1..], _serviceProvider);
             base.OnStartup(e);
+        }
+
+        private static void CheckCommandLineParameters(string[] args, IServiceProvider serviceProvider)
+        {
+            var trackStore = serviceProvider.GetRequiredService<TrackStore>();
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (!File.Exists(args[i])) continue;
+
+                var track = TrackFactory.CreateTrack(args[i]);
+
+                if (track is null) continue;
+
+                trackStore.SetQueue(track);
+            }
         }
 
         #region Private Methods
@@ -58,19 +78,21 @@ namespace Music.WPF
 
         private static void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
+            services.AddSingleton<ILogger>(_ => new LoggerConfiguration().CreateLogger());
+
             // Add Stores as Singletons
             services.AddSingleton<TrackStore>();
             services.AddSingleton<NavigationStore>();
             services.AddSingleton<ModalNavigationStore>();
 
-            services.AddHttpClient();
             services.AddSingleton<SpotifyService>();
             services.AddTransient<MusicMetadataService>();
             services.AddSingleton<PlaylistPersistenceService>();
             services.AddSingleton<WaveformGenerator>();
 
             // Add NavigationService as a Singleton
-            services.AddSingleton<INavigationService>(s => CreateMyMusicNavigationService(s));
+            services.AddSingleton<INavigationService>(s => CreateMyMusicNavigationService(s!));
             // Add ViewModels 
             services.AddSingleton<MyMusicViewModel>();
             services.AddTransient<SettingsViewModel>();
@@ -155,10 +177,11 @@ namespace Music.WPF
             return TrackFactory.CreateTracks(files);
         }
 
-        private IList<PlaylistModel> GetAvailablePlaylists()
+        private static IList<PlaylistModel> GetAvailablePlaylists(IServiceProvider serviceProvider)
         {
-            var root = _persistenceService.Parse();
-            var trackStore = _serviceProvider.GetRequiredService<TrackStore>();
+            var persistenceService = serviceProvider.GetRequiredService<PlaylistPersistenceService>();
+            var root = persistenceService.Parse();
+            var trackStore = serviceProvider.GetRequiredService<TrackStore>();
 
             var playlists = new List<PlaylistModel>();
 
@@ -175,7 +198,12 @@ namespace Music.WPF
 
                 for (int j = 0; j < currentPlaylist.TracksFilePaths.Count; j++)
                 {
-                    playlists[i].Tracks.Add(trackStore.GetTrackByFilePath(currentPlaylist.TracksFilePaths[j]));
+                    try
+                    {
+                        playlists[i].Tracks.Add(trackStore.GetTrackByFilePath(currentPlaylist.TracksFilePaths[j]));
+                    }
+                    catch { }
+
                 }
             }
 
