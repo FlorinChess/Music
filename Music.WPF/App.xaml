@@ -13,7 +13,6 @@
 
                 <ResourceDictionary Source="./Themes/TextBlock.xaml" />
 
-                <ResourceDictionary Source="./Themes/Storyboards.xaml" />
                 <ResourceDictionary Source="./Themes/Button.xaml" />
                 <ResourceDictionary Source="./Themes/CheckBox.xaml" />
                 <ResourceDictionary Source="./Themes/ComboBox.xaml" />
