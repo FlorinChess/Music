@@ -121,7 +121,7 @@ namespace Music.WPF
             var source = PresentationSource.FromVisual(_window);
 
             // Reset the transform to default
-            _transformToDevice = default(Matrix);
+            _transformToDevice = default;
 
             // If we cannot get the source, ignore
             if (source is null)
@@ -162,7 +162,7 @@ namespace Music.WPF
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             // We cannot find positioning until the window transform has been established
-            if (_transformToDevice == default(Matrix))
+            if (_transformToDevice == default)
                 return;
 
             // Get the WPF size
@@ -184,8 +184,7 @@ namespace Music.WPF
             var edgedBottom = windowBottomRight.Y >= (_screenSize.Bottom - _edgeTolerance);
             var edgedRight = windowBottomRight.X >= (_screenSize.Right - _edgeTolerance);
 
-            // Get docked position
-            var dock = WindowDockPosition.Undocked;
+            WindowDockPosition dock;
 
             // Left docking
             if (edgedTop && edgedBottom && edgedLeft)
@@ -243,8 +242,7 @@ namespace Music.WPF
         private void WmGetMinMaxInfo(IntPtr lParam)
         {
             // Get the point position to determine what screen we are on
-            POINT lMousePosition;
-            GetCursorPos(out lMousePosition);
+            GetCursorPos(out POINT lMousePosition);
 
             // Get the primary monitor at cursor position 0,0
             var lPrimaryScreen = MonitorFromPoint(new POINT(0, 0), MonitorOptions.MONITOR_DEFAULTTOPRIMARY);
@@ -258,7 +256,7 @@ namespace Music.WPF
             var lCurrentScreen = MonitorFromPoint(lMousePosition, MonitorOptions.MONITOR_DEFAULTTONEAREST);
 
             // If this has changed from the last one, update the transform
-            if (lCurrentScreen != _lastScreen || _transformToDevice == default(Matrix))
+            if (lCurrentScreen != _lastScreen || _transformToDevice == default)
                 GetTransform();
 
             // Store last know screen
