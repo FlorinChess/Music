@@ -21,7 +21,7 @@ namespace Music.WPF
     public sealed partial class App : Application
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IPersistenceService _persistenceService;
+        private readonly PlaylistPersistenceService _persistenceService;
         public App()
         {
             IServiceCollection services = new ServiceCollection();
@@ -129,28 +129,28 @@ namespace Music.WPF
             });
         }
 
-        private static INavigationService CreateMyMusicNavigationService(IServiceProvider serviceProvider)
+        private static NavigationService<MyMusicViewModel> CreateMyMusicNavigationService(IServiceProvider serviceProvider)
         {
             return new NavigationService<MyMusicViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<MyMusicViewModel>);
         }
 
-        private static INavigationService CreatePlaylistCollectionNavigationService(IServiceProvider serviceProvider)
+        private static NavigationService<PlaylistCollectionViewModel> CreatePlaylistCollectionNavigationService(IServiceProvider serviceProvider)
         {
             return new NavigationService<PlaylistCollectionViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<PlaylistCollectionViewModel>);
         }
 
-        private static INavigationService CreateSettingsNavigationService(IServiceProvider serviceProvider)
+        private static NavigationService<SettingsViewModel> CreateSettingsNavigationService(IServiceProvider serviceProvider)
         {
             return new NavigationService<SettingsViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<SettingsViewModel>);
         }
 
-        private static INavigationService CreateSearchNavigationService(IServiceProvider serviceProvider)
+        private static NavigationService<SearchViewModel> CreateSearchNavigationService(IServiceProvider serviceProvider)
         {
             return new NavigationService<SearchViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
@@ -177,7 +177,7 @@ namespace Music.WPF
             return TrackFactory.CreateTracks(files);
         }
 
-        private static IList<PlaylistModel> GetAvailablePlaylists(IServiceProvider serviceProvider)
+        private static List<PlaylistModel> GetAvailablePlaylists(IServiceProvider serviceProvider)
         {
             var persistenceService = serviceProvider.GetRequiredService<PlaylistPersistenceService>();
             var root = persistenceService.Parse();

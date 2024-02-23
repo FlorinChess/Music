@@ -140,7 +140,7 @@ namespace Music.WPF.ViewModels
             }
         }
 
-        private static List<TrackModel> PlayAllSelectedFirst(IList<TrackModel> tracks, TrackModel selectedTrack)
+        private static List<TrackModel> PlayAllSelectedFirst(ObservableCollection<TrackModel> tracks, TrackModel selectedTrack)
         {
             var tracksToBePlayed = new List<TrackModel>();
             var selectedTrackIndex = tracks.IndexOf(selectedTrack);
