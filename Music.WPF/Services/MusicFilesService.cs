@@ -114,7 +114,7 @@ namespace Music.WPF.Services
             {
                 var musicFolders = Properties.Settings.Default.MusicFolder.Cast<string>().ToArray();
 
-                return musicFolders.Any() ? musicFolders : Enumerable.Empty<string>();
+                return musicFolders.Length > 0 ? musicFolders : Enumerable.Empty<string>();
             }
             catch (Exception)
             {

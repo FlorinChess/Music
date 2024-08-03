@@ -69,7 +69,6 @@ namespace Music.WPF.Store
 
         private void MusicFoldersUpdated(MusicFolderModel musicFolder)
         {
-
             var musicFilePaths = MusicFilesService.GetMusicFiles(musicFolder.Path);
 
             var tracks = TrackFactory.CreateTracks(musicFilePaths);

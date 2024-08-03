@@ -121,10 +121,18 @@ namespace Music.WPF.ViewModels
 
         private void AddMusicFolders()
         {
-            var musicFolders = MusicFilesService.GetMusicFolders();
+            try
+            {
+                var musicFolders = MusicFilesService.GetMusicFolders();
 
-            for (int i = 0; i < musicFolders.Count();i++)
-                MusicFolders.Add(new MusicFolderModel { Path = musicFolders.ElementAt(i) });
+                for (int i = 0; i < musicFolders.Count();i++)
+                    MusicFolders.Add(new MusicFolderModel { Path = musicFolders.ElementAt(i) });
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Could not add music folder!");
+                // throw;
+            }
         }
 
         private void RemoveMusicFolder()

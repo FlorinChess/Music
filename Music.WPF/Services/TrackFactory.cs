@@ -2,31 +2,37 @@
 using Music.WPF.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using TagLib;
+
+using TFile = TagLib.File;
 
 namespace Music.WPF.Services
 {
     public static class TrackFactory
     {
+        private const string UNKNOWN_ARTIST = "Unknown Artist";
+
         /// <summary>
         /// Creates a TrackModel based on the tags of a file 
         /// </summary>
-        /// <param name="file"> The path to the file</param>
+        /// <param name="filePath"> The path to the file</param>
         /// <returns>A new instance of <see cref="TrackModel"/> with data from the tags of the file</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TrackModel CreateTrack(string file)
+        public static TrackModel CreateTrack(string filePath)
         {
-            if (string.IsNullOrEmpty(file)) throw new ArgumentNullException();
+            if (string.IsNullOrEmpty(filePath)) throw new ArgumentNullException();
 
-            using File musicFile = File.Create(file);
+            using TFile musicFile = TFile.Create(filePath);
 
-            return new TrackModel()
+            string artist = musicFile.Tag.Performers.ConcatAndAddDevider();
+
+            return new TrackModel
             {
-                FilePath = file,
-                Title = musicFile.Tag.Title,
-                Artist = musicFile.Tag.FirstPerformer.Replace("/", ", "),
-                Length = MusicPlayer.GetLengthInSeconds(file),
+                FilePath = filePath,
+                Title = (string.IsNullOrEmpty(musicFile.Tag.Title)) ? filePath : musicFile.Tag.Title,
+                Artist = (string.IsNullOrEmpty(artist)) ? UNKNOWN_ARTIST : artist,
+                Length = MusicPlayer.GetLengthInSeconds(filePath)
             };
         }
 
@@ -43,15 +49,18 @@ namespace Music.WPF.Services
             var output =
                 files.AsParallel()
                 .WithDegreeOfParallelism(2)
-                .Select(file =>
+                .Select(filePath =>
                 {
-                    using File musicFile = File.Create(file);
+                    using TFile musicFile = TFile.Create(filePath);
+
+                    string artist = musicFile.Tag.Performers.ConcatAndAddDevider();
+
                     return new TrackModel()
                     {
-                        FilePath = file,
-                        Title = musicFile.Tag.Title,
-                        Artist = musicFile.Tag.Performers.ConcatAndAddDevider(),
-                        Length = MusicPlayer.GetLengthInSeconds(file)
+                        FilePath = filePath,
+                        Title =  (string.IsNullOrEmpty(musicFile.Tag.Title)) ? GetFileNameWithoutExtension(filePath) : musicFile.Tag.Title,
+                        Artist = (string.IsNullOrEmpty(artist)) ? UNKNOWN_ARTIST : artist,
+                        Length = MusicPlayer.GetLengthInSeconds(filePath)
                     };
                 })
                 .ToList();
@@ -77,6 +86,18 @@ namespace Music.WPF.Services
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Returns the file name without extension from a fully qulified file path.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns>The resulting string.</returns>
+        private static string GetFileNameWithoutExtension(string filePath)
+        {
+            string fileName = Path.GetFileName(filePath);
+
+            return Path.GetFileNameWithoutExtension(fileName);
         }
     }
 }
