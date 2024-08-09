@@ -62,7 +62,7 @@ namespace Music.CustomControls.Waveform
                 return value;
         }
 
-        private object OnCoerceCenterLineBrush(Brush value)
+        private Brush OnCoerceCenterLineBrush(Brush value)
         {
             return value;
         }
@@ -101,7 +101,7 @@ namespace Music.CustomControls.Waveform
                 return value;
         }
 
-        private object OnCoerceLeftLevelBrush(Brush value)
+        private Brush OnCoerceLeftLevelBrush(Brush value)
         {
             return value;
         }
@@ -139,7 +139,7 @@ namespace Music.CustomControls.Waveform
                 return value;
         }
 
-        private object OnCoerceRightLevelBrush(Brush baseValue)
+        private Brush OnCoerceRightLevelBrush(Brush baseValue)
         {
             return baseValue;
         }
@@ -258,7 +258,7 @@ namespace Music.CustomControls.Waveform
                     Debug.WriteLine($"i = { i }");
                 }
 
-                // Because we cut the number of samples, every 'multiplier' times (default = 3) add a new Rectangle
+                // Because we cut the number of samples, every 'multiplier' times (default = 3) adds a new Rectangle
                 if (rectTopHeights.Count % multiplier == 0)
                 {
                     var average = rectTopHeights.Average();

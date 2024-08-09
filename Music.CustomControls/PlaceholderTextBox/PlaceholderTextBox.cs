@@ -5,8 +5,6 @@ namespace Music.CustomControls.PlaceholderTextBox
 {
     public sealed class PlaceholderTextBox : TextBox
     {
-
-
         public CornerRadius CornerRadius
         {
             get { return (CornerRadius)GetValue(CornerRadiusProperty); }

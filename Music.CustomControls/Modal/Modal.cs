@@ -22,7 +22,7 @@ namespace Music.CustomControls.Modal
             BackgroundProperty.OverrideMetadata(typeof(Modal), new FrameworkPropertyMetadata(CreateDefaultBackground()));
         }
 
-        private static object CreateDefaultBackground()
+        private static SolidColorBrush CreateDefaultBackground()
         {
             return new SolidColorBrush(Colors.Black)
             {

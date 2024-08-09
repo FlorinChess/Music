@@ -210,6 +210,7 @@
                         <Border 
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5"
                             UseLayoutRounding="True"
                             Margin="6">
                             <ContentControl Content="{TemplateBinding Content}" IsTabStop="False" />
