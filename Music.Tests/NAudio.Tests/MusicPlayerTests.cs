@@ -15,6 +15,11 @@ namespace Music.Tests.NAudio.Tests
             _musicPlayer = new MusicPlayer(_fileName, 0f);
         }
 
+        [TearDown] public void Teardown() 
+        {
+            _musicPlayer.Dispose();
+        }
+
         [Test]
         public void Stop_PlaybackStateStopped()
         {
