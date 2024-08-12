@@ -16,7 +16,6 @@ namespace Music.WPF.ViewModels
         #region Private Members
 
         private readonly IServiceProvider _serviceProvider;
-        private readonly NavigationStore _navigationStore;
         private readonly TrackStore _trackStore;
         private ICommand _addMusicFolderCommand;
 
@@ -110,10 +109,9 @@ namespace Music.WPF.ViewModels
 
         #endregion
 
-        public MyMusicViewModel(IServiceProvider serviceProvider, NavigationStore navigationStore, TrackStore trackStore, ListComponentViewModel listComponentViewModel)
+        public MyMusicViewModel(IServiceProvider serviceProvider, TrackStore trackStore, ListComponentViewModel listComponentViewModel)
         {
             _serviceProvider = serviceProvider;
-            _navigationStore = navigationStore;
             _trackStore = trackStore;
             _trackStore.AvailableTracksChanged += OnAvailableTrackChanged;
 
@@ -142,8 +140,6 @@ namespace Music.WPF.ViewModels
         private void AddMusicFolder()
         {
             var viewModel = _serviceProvider.GetRequiredService<SettingsViewModel>();
-
-            _navigationStore.CurrentViewModel = viewModel;
 
             viewModel.SelectMusicFilesFolderCommand.Execute(null);
         }
