@@ -156,6 +156,9 @@ namespace Music.APIs.Spotify
         /// <returns>An instance of <see cref="Tracks"/> if any matching track are found, else <see langword="null"/>.</returns>
         public async Task<Tracks?> SearchTrackAsync(string trackName, string artist = "", int limit = 1)
         {
+            if (_accessToken.Equals(string.Empty))
+                throw new InvalidOperationException("No Spotify access token!");
+
             try
             {
                 var client = _httpClientFactory.CreateClient();
@@ -192,6 +195,51 @@ namespace Music.APIs.Spotify
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+                throw;
+            }
+        }
+
+        public async Task<Tracks?> GetPlaylist(string playlistId)
+        {
+            if (_accessToken.Equals(string.Empty))
+                throw new InvalidOperationException("No Spotify access token!");
+
+            try
+            {
+                var client = _httpClientFactory.CreateClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+
+                string query = $"https://api.spotify.com/v1/playlists/{playlistId}";
+                using HttpResponseMessage response = await client.GetAsync(query);
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    // Error handling
+                    switch (response.StatusCode)
+                    {
+                        case HttpStatusCode.BadRequest:
+                            Debug.WriteLine("Bad request!");
+                            return null;
+                        case HttpStatusCode.Forbidden:
+                            Debug.WriteLine("Forbidden request!");
+                            return null;
+                        default:
+                            break;
+                    }
+                }
+
+                var content = await response.Content.ReadAsStringAsync();
+                var trackModel = JsonConvert.DeserializeObject<ApiResponse>(content);
+
+                if (trackModel is null || trackModel.Tracks is null)
+                    throw new Exception("Could not deserialize json reponse.");
+
+                return trackModel.Tracks;
+
+            }
+            catch (Exception)
+            {
+                   
                 throw;
             }
         }
