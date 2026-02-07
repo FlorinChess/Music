@@ -185,12 +185,12 @@ namespace Music.APIs.Spotify
                 }
 
                 var content = await response.Content.ReadAsStringAsync();
-                var trackModel = JsonConvert.DeserializeObject<ApiResponse>(content);
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(content);
 
-                if (trackModel is null || trackModel.Tracks is null)
+                if (apiResponse is null || apiResponse.Tracks is null)
                     throw new Exception("Could not deserialize json reponse.");
 
-                return trackModel.Tracks;
+                return apiResponse.Tracks;
             }
             catch (Exception ex)
             {
@@ -229,12 +229,12 @@ namespace Music.APIs.Spotify
                 }
 
                 var content = await response.Content.ReadAsStringAsync();
-                var trackModel = JsonConvert.DeserializeObject<ApiResponse>(content);
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(content);
 
-                if (trackModel is null || trackModel.Tracks is null)
+                if (apiResponse is null || apiResponse.Tracks is null)
                     throw new Exception("Could not deserialize json reponse.");
 
-                return trackModel.Tracks;
+                return apiResponse.Tracks;
 
             }
             catch (Exception)
