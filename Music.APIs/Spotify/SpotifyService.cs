@@ -185,7 +185,7 @@ namespace Music.APIs.Spotify
                 }
 
                 var content = await response.Content.ReadAsStringAsync();
-                var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(content);
+                var apiResponse = JsonConvert.DeserializeObject<SearchResponse>(content);
 
                 if (apiResponse is null || apiResponse.Tracks is null)
                     throw new Exception("Could not deserialize json reponse.");
@@ -199,7 +199,7 @@ namespace Music.APIs.Spotify
             }
         }
 
-        public async Task<Tracks?> GetPlaylist(string playlistId)
+        public async Task<PlaylistResponse> GetPlaylist(string playlistId)
         {
             if (_accessToken.Equals(string.Empty))
                 throw new InvalidOperationException("No Spotify access token!");
@@ -229,17 +229,16 @@ namespace Music.APIs.Spotify
                 }
 
                 var content = await response.Content.ReadAsStringAsync();
-                var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(content);
+                var apiResponse = JsonConvert.DeserializeObject<PlaylistResponse>(content);
 
-                if (apiResponse is null || apiResponse.Tracks is null)
+                if (apiResponse is null)
                     throw new Exception("Could not deserialize json reponse.");
 
-                return apiResponse.Tracks;
+                return apiResponse;
 
             }
             catch (Exception)
             {
-                   
                 throw;
             }
         }

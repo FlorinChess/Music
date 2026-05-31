@@ -2,7 +2,7 @@
 
 namespace Music.APIs.Spotify.Models
 {
-    public sealed record Item
+    public sealed record Track
     {
         [JsonProperty(PropertyName = "album")]
         public Album Album { get; set; }

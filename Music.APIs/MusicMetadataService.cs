@@ -149,7 +149,7 @@ namespace Music.APIs
             {
                 for (int i = 0; i < musicFiles.Count; i++)
                 {
-                    Item? item = await GetDataItem(musicFiles[i]);
+                    Track? item = await GetDataItem(musicFiles[i]);
                     
                     if (item is not null)
                         FillMusicFileMetadata(musicFiles[i], item);
@@ -164,7 +164,7 @@ namespace Music.APIs
         }
 
         // TODO: test a lot
-        private async Task<Item?> GetDataItem(MusicFileMetadataModel musicFile)
+        private async Task<Track?> GetDataItem(MusicFileMetadataModel musicFile)
         {
             int numberOfCalls = 0;
             int maxNumberOfRetries = musicFile.Performers.Length;
@@ -172,7 +172,7 @@ namespace Music.APIs
             int performerIndex = 0;
 
             Tracks? tracks = await _service.SearchTrackAsync(musicFile.Title);
-            Item? item;
+            Track? item;
 
             try
             {
@@ -193,13 +193,13 @@ namespace Music.APIs
             }
         }
 
-        private static bool ResponseMatchesArtistName(MusicFileMetadataModel musicFile, Tracks? tracks, out Item? matchingItem)
+        private static bool ResponseMatchesArtistName(MusicFileMetadataModel musicFile, Tracks? tracks, out Track? matchingItem)
         {
             if (tracks is not null && tracks.Items.Length != 0)
             {
                 for (int i = 0; i < tracks.Items.Length; i++)
                 {
-                    Item? item = tracks.Items[i];
+                    Track? item = tracks.Items[i];
 
                     for (int j = 0; j < item.Artists.Length; j++)
                     {
@@ -248,7 +248,7 @@ namespace Music.APIs
             }
         }
 
-        private static void FillMusicFileMetadata(MusicFileMetadataModel musicFile, Item item)
+        private static void FillMusicFileMetadata(MusicFileMetadataModel musicFile, Track item)
         {
             TFile? file = null;
 

@@ -3,32 +3,62 @@ using Microsoft.Extensions.Http;
 using Music.APIs.Spotify;
 using Music.APIs.Spotify.Models;
 
-Main(null);
+namespace Music.SyncUtility
+{
+    internal class Program
+    {
+        private static readonly List<Track> Tracks = new List<Track>();
+        const string PLAYLIST_NAME = "Salsa";
+        const string PLAYLIST_ID = "0ncfcOY6o1PhQqcuwGw2W9";
+        static async Task Main(string[] args)
+        {
+            Console.Write("Args: ");
+            Console.WriteLine(args);
 
-async static void Main(string[] args)
-{ 
-  Console.WriteLine("Hello, World1!");
-  
-  // 1. get access to Spotify API
-  var services = new ServiceCollection();
-  services.AddHttpClient(); // registers IHttpClientFactory
+            // 1. Get Spotify playlist
+            var playlistResponse = await GetPlaylist(PLAYLIST_ID);
 
-  var serviceProvider = services.BuildServiceProvider();
-  SpotifyService service = new SpotifyService(serviceProvider.GetRequiredService<IHttpClientFactory>());
-  Console.WriteLine("Spotify API initialized");
+            // 2. Map Spotify tracks to models
+            var playlistTracks = MapPlaylistResponseToList(playlistResponse);
+            
+            // 3.
 
-  // 2. pull Spotify playlist
-  string playlistId = "0ncfcOY6o1PhQqcuwGw2W9";
-  Tracks tracks = await service.GetPlaylist(playlistId);
+        }
 
-  foreach(var track in tracks.Items)
-  {
-    Console.WriteLine(track);
-  }
+        private static async Task<PlaylistResponse> GetPlaylist(string playlistId)
+        {
+            var services = new ServiceCollection();
 
-  // 3. convert each entry in Spotify into models
+            services.AddHttpClient();
 
-  // 4. for each model, check against local database
+            var serviceProvider = services.BuildServiceProvider();
+
+            SpotifyService spotifyService = new SpotifyService(serviceProvider.GetRequiredService<IHttpClientFactory>());
+
+            Thread.Sleep(5000);
+
+            PlaylistResponse playlistResponse = await spotifyService.GetPlaylist(playlistId);
+
+            if (playlistResponse == null)
+                throw new InvalidOperationException("Playlist is null!");
+
+            if (playlistResponse.Name != PLAYLIST_NAME)
+                throw new InvalidOperationException("Incorrect playlist fetched!");
+
+            return playlistResponse;
+        }
+
+        private static List<Track> MapPlaylistResponseToList(PlaylistResponse playlistResponse)
+        {
+            var list = new List<Track>();
+            for (int i = 0; i < playlistResponse.PlaylistTracks.PlaylistTrackObjects.Count(); i++)
+            {
+                Track track = playlistResponse.PlaylistTracks.PlaylistTrackObjects[i].Track;
+                list.Add(track);
+                Console.WriteLine(track);
+            }
+
+            return list;
+        }
+    }
 }
-
-Console.WriteLine("Hello, World!");
