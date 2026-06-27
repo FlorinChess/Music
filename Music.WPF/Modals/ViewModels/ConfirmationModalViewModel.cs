@@ -4,30 +4,29 @@ using Music.WPF.ViewModels;
 using System;
 using System.Windows.Input;
 
-namespace Music.WPF.Modals.ViewModels
+namespace Music.WPF.Modals.ViewModels;
+
+public sealed class ConfirmationModalViewModel : BaseViewModel, IModal
 {
-    public sealed class ConfirmationModalViewModel : BaseViewModel, IModal
+    public string ConfirmationText { get; }
+
+    #region Commands
+
+    public CloseModalCommand CloseModalCommand { get; set; }
+    public ICommand SaveCommand { get; set; }
+
+    #endregion Commands
+
+    public ConfirmationModalViewModel(ModalNavigationStore modalNavigationStore, string confirmationText, Action callback)
     {
-        public string ConfirmationText { get; }
+        ConfirmationText = confirmationText;
 
-        #region Commands
-
-        public CloseModalCommand CloseModalCommand { get; set; }
-        public ICommand SaveCommand { get; set; }
-
-        #endregion Commands
-
-        public ConfirmationModalViewModel(ModalNavigationStore modalNavigationStore, string confirmationText, Action callback)
+        CloseModalCommand = modalNavigationStore.CloseModalCommand;
+        SaveCommand = new RelayCommand(_ =>
         {
-            ConfirmationText = confirmationText;
+            callback?.Invoke();
 
-            CloseModalCommand = modalNavigationStore.CloseModalCommand;
-            SaveCommand = new RelayCommand(_ =>
-            {
-                callback?.Invoke();
-
-                modalNavigationStore.Close();
-            });
-        }
+            modalNavigationStore.Close();
+        });
     }
 }

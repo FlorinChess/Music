@@ -1,10 +1,9 @@
 ﻿using Music.Domain.DataModels;
 
-namespace Music.Domain
+namespace Music.Domain;
+
+public interface IPersistenceService
 {
-    public interface IPersistenceService
-    {
-        public Root? Parse();
-        public void Save();
-    }
+    public Root? Parse();
+    public void Save();
 }

@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="Music.Common/Music.Common.csproj" />
+  <Project Path="Music.CustomControls/Music.CustomControls.csproj" />
+  <Project Path="Music.Domain/Music.Domain.csproj" />
+  <Project Path="Music.MetadataService/Music.APIs.csproj" />
+  <Project Path="Music.NAudio/Music.NAudio.csproj" />
+  <Project Path="Music.Tests/Music.Tests.csproj" />
+  <Project Path="Music.WPF/Music.WPF.csproj" />
+</Solution>

@@ -7,76 +7,75 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-namespace Music.WPF.Modals.ViewModels
+namespace Music.WPF.Modals.ViewModels;
+
+public sealed class AddToPlaylistModalViewModel : BaseViewModel, IModal
 {
-    public sealed class AddToPlaylistModalViewModel : BaseViewModel, IModal
+    #region Properties
+
+    public ObservableCollection<PlaylistListViewItem> Playlists { get; private set; } = [];
+    public TrackModel SelectedTrack { get; }
+
+    #endregion
+
+    #region Commands
+
+    public CloseModalCommand CloseModalCommand { get; set; }
+    public ICommand SaveCommand { get; set; }
+
+    #endregion
+
+    public AddToPlaylistModalViewModel(ModalNavigationStore modalNavigationStore, TrackStore trackStore, TrackModel selectedTrack)
     {
-        #region Properties
+        CloseModalCommand = modalNavigationStore.CloseModalCommand;
+        SaveCommand = new RelayCommand(_ => Save());
 
-        public ObservableCollection<PlaylistListViewItem> Playlists { get; private set; } = new();
-        public TrackModel SelectedTrack { get; }
+        CreateListViewItems(trackStore.AvailablePlaylists);
 
-        #endregion
+        CheckIfTrackIsInPlaylists(selectedTrack);
 
-        #region Commands
-
-        public CloseModalCommand CloseModalCommand { get; set; }
-        public ICommand SaveCommand { get; set; }
-
-        #endregion
-
-        public AddToPlaylistModalViewModel(ModalNavigationStore modalNavigationStore, TrackStore trackStore, TrackModel selectedTrack)
-        {
-            CloseModalCommand = modalNavigationStore.CloseModalCommand;
-            SaveCommand = new RelayCommand(_ => Save());
-
-            CreateListViewItems(trackStore.AvailablePlaylists);
-
-            CheckIfTrackIsInPlaylists(selectedTrack);
-
-            SelectedTrack = selectedTrack;
-        }
-
-        #region Private Methods
-
-        private void Save()
-        {
-            AddTrackToPlaylists(SelectedTrack, Playlists);
-
-            CloseModalCommand.Execute(null);
-        }
-
-        private void CheckIfTrackIsInPlaylists(TrackModel selectedTrack)
-        {
-            for (int i = 0; i < Playlists.Count; i++)
-            {
-                PlaylistListViewItem item = Playlists[i];
-
-                if (item.Playlist.Contains(selectedTrack))
-                {
-                    item.HasTrack = true;
-                }
-            }
-        }
-
-        private void CreateListViewItems(IList<PlaylistModel> playlists)
-        {
-            for (int i = 0; i < playlists.Count; i++)
-            {
-                Playlists.Add(new PlaylistListViewItem(playlists[i], SelectedTrack));
-            }
-        }
-
-        private static void AddTrackToPlaylists(TrackModel track, Collection<PlaylistListViewItem> playlistItems)
-        {
-            for (int i = 0; i < playlistItems.Count; i++)
-            {
-                if (!playlistItems[i].HasTrack || playlistItems[i].Playlist.Contains(track)) continue;
-
-                playlistItems[i].Playlist.Tracks.Add(track);
-            }
-        }
-
-        #endregion
+        SelectedTrack = selectedTrack;
     }
+
+    #region Private Methods
+
+    private void Save()
+    {
+        AddTrackToPlaylists(SelectedTrack, Playlists);
+
+        CloseModalCommand.Execute(null);
+    }
+
+    private void CheckIfTrackIsInPlaylists(TrackModel selectedTrack)
+    {
+        for (int i = 0; i < Playlists.Count; i++)
+        {
+            PlaylistListViewItem item = Playlists[i];
+
+            if (item.Playlist.Contains(selectedTrack))
+            {
+                item.HasTrack = true;
+            }
+        }
+    }
+
+    private void CreateListViewItems(List<PlaylistModel> playlists)
+    {
+        for (int i = 0; i < playlists.Count; i++)
+        {
+            Playlists.Add(new PlaylistListViewItem(playlists[i], SelectedTrack));
+        }
+    }
+
+    private static void AddTrackToPlaylists(TrackModel track, Collection<PlaylistListViewItem> playlistItems)
+    {
+        for (int i = 0; i < playlistItems.Count; i++)
+        {
+            if (!playlistItems[i].HasTrack || playlistItems[i].Playlist.Contains(track)) continue;
+
+            playlistItems[i].Playlist.Tracks.Add(track);
+        }
+    }
+
+    #endregion
 }

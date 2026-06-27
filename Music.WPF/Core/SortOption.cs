@@ -1,19 +1,18 @@
 ﻿using System.ComponentModel;
 
-namespace Music.WPF.Core
+namespace Music.WPF.Core;
+
+public enum SortOption
 {
-    public enum SortOption
-    {
-        [Description("Date added")]
-        Date,
+    [Description("Date added")]
+    Date,
 
-        [Description("Title")]
-        Title,
+    [Description("Title")]
+    Title,
 
-        [Description("Artist")]
-        Artist,
+    [Description("Artist")]
+    Artist,
 
-        [Description("Length")]
-        Length
-    }
+    [Description("Length")]
+    Length
 }

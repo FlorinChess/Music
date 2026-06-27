@@ -1,12 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace Music.WPF.Modals.Views
+namespace Music.WPF.Modals.Views;
+
+public sealed partial class ConfirmationModalView : UserControl
 {
-    public sealed partial class ConfirmationModalView : UserControl
+    public ConfirmationModalView()
     {
-        public ConfirmationModalView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

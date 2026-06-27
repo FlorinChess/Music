@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Music.WPF.Commands
+namespace Music.WPF.Commands;
+
+public abstract class BaseCommand : ICommand
 {
-    public abstract class BaseCommand : ICommand
+    public event EventHandler? CanExecuteChanged;
+
+    public virtual bool CanExecute(object? parameter) => true;
+
+    public abstract void Execute(object? parameter);
+
+    protected void OnCanExecuteChanged()
     {
-        public event EventHandler? CanExecuteChanged;
-
-        public virtual bool CanExecute(object? parameter) => true;
-
-        public abstract void Execute(object? parameter);
-
-        protected void OnCanExecuteChanged()
-        {
-            CanExecuteChanged?.Invoke(this, new EventArgs());
-        }
+        CanExecuteChanged?.Invoke(this, new EventArgs());
     }
 }
