@@ -1,12 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace Music.WPF.Components
+namespace Music.WPF.Components;
+
+public sealed partial class NowPlayingMusicPlayer : UserControl
 {
-    public sealed partial class NowPlayingMusicPlayer : UserControl
+    public NowPlayingMusicPlayer()
     {
-        public NowPlayingMusicPlayer()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

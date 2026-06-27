@@ -1,19 +1,18 @@
 ﻿using Music.WPF.Services;
 
-namespace Music.WPF.Commands
+namespace Music.WPF.Commands;
+
+public sealed class NavigateCommand : BaseCommand
 {
-    public sealed class NavigateCommand : BaseCommand
+    private readonly INavigationService _navigationService;
+
+    public NavigateCommand(INavigationService navigationService)
     {
-        private readonly INavigationService _navigationService;
+        _navigationService = navigationService;
+    }
 
-        public NavigateCommand(INavigationService navigationService)
-        {
-            _navigationService = navigationService;
-        }
-
-        public override void Execute(object? parameter)
-        {
-            _navigationService.Navigate();
-        }
+    public override void Execute(object? parameter)
+    {
+        _navigationService.Navigate();
     }
 }

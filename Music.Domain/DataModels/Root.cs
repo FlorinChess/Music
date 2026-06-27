@@ -1,13 +1,12 @@
 ﻿using System.Xml.Serialization;
 
-namespace Music.Domain.DataModels
+namespace Music.Domain.DataModels;
+
+[Serializable]
+[XmlRoot("Root")]
+public sealed record Root
 {
-    [Serializable]
-    [XmlRoot("Root")]
-    public sealed record Root
-    {
-        [XmlArray("Playlists")]
-        [XmlArrayItem("Playlist")]
-        public List<Playlist> Playlists { get; set; } = new();
-    }
+    [XmlArray("Playlists")]
+    [XmlArrayItem("Playlist")]
+    public List<Playlist> Playlists { get; set; } = new();
 }

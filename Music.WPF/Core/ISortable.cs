@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace Music.WPF.Core
+namespace Music.WPF.Core;
+
+public interface ISortable
 {
-    public interface ISortable
-    {
-        public string SelectedSortOption { get; set; }
-        public List<string> SortOptions { get; }
-    }
+    public string SelectedSortOption { get; set; }
+    public List<string> SortOptions { get; }
 }

@@ -1,7 +1,6 @@
-﻿namespace Music.WPF.Services
+﻿namespace Music.WPF.Services;
+
+public interface INavigationService
 {
-    public interface INavigationService
-    {
-        void Navigate();
-    }
+    void Navigate();
 }

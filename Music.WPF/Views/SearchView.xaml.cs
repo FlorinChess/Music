@@ -1,19 +1,18 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Music.WPF.Views
-{
-    public sealed partial class SearchView : UserControl
-    {
-        public SearchView()
-        {
-            InitializeComponent();
-        }
+namespace Music.WPF.Views;
 
-        private void OnSearchViewLoaded(object sender, RoutedEventArgs e)
-        {
-            searchTextBox.Focus();
-            searchTextBox.SelectAll();
-        }
+public sealed partial class SearchView : UserControl
+{
+    public SearchView()
+    {
+        InitializeComponent();
+    }
+
+    private void OnSearchViewLoaded(object sender, RoutedEventArgs e)
+    {
+        searchTextBox.Focus();
+        searchTextBox.SelectAll();
     }
 }

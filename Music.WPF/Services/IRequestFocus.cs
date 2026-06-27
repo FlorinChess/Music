@@ -1,19 +1,18 @@
 ﻿using System;
 
-namespace Music.WPF.Services
+namespace Music.WPF.Services;
+
+public interface IRequestFocus
 {
-    public interface IRequestFocus
-    {
-        event EventHandler<FocusRequestedEventArgs> FocusRequested;
-    }
+    event EventHandler<FocusRequestedEventArgs> FocusRequested;
+}
 
-    public sealed class FocusRequestedEventArgs : EventArgs
-    {
-        public string PropertyName { get; private set; }
+public sealed class FocusRequestedEventArgs : EventArgs
+{
+    public string PropertyName { get; private set; }
 
-        public FocusRequestedEventArgs(string propertyName)
-        {
-            PropertyName = propertyName;
-        }
+    public FocusRequestedEventArgs(string propertyName)
+    {
+        PropertyName = propertyName;
     }
 }

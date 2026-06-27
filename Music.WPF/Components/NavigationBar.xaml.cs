@@ -1,12 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace Music.WPF.Components
+namespace Music.WPF.Components;
+
+public sealed partial class NavigationBar : UserControl
 {
-    public sealed partial class NavigationBar : UserControl
+    public NavigationBar()
     {
-        public NavigationBar()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

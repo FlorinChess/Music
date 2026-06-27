@@ -3,71 +3,70 @@ using Moq.Protected;
 using Music.APIs.Spotify;
 using System.Net;
 
-namespace Music.Tests.APIs.Tests
+namespace Music.Tests.APIs.Tests;
+
+[TestFixture]
+internal sealed class SpotifyServiceTests
 {
-    [TestFixture]
-    internal sealed class SpotifyServiceTests
+    private SpotifyService _spotifyService;
+    private Mock<IHttpClientFactory> _mockHttpClientFactory;
+
+    [SetUp]
+    public void Setup()
     {
-        private SpotifyService _spotifyService;
-        private Mock<IHttpClientFactory> _mockHttpClientFactory;
+        _mockHttpClientFactory = new Mock<IHttpClientFactory>();
+    }
 
-        [SetUp]
-        public void Setup()
-        {
-            _mockHttpClientFactory = new Mock<IHttpClientFactory>();
-        }
+    private async Task SetupSpotifyService()
+    {
+        var json = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "APIs.Tests\\test_access_token.json"));
 
-        private async Task SetupSpotifyService()
-        {
-            var json = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "APIs.Tests\\test_access_token.json"));
+        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+        mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json),
+            });
 
-            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-            mockHttpMessageHandler.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(json),
-                });
+        var client = new HttpClient(mockHttpMessageHandler.Object);
+        _mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(client);
+        _spotifyService = new SpotifyService(_mockHttpClientFactory.Object);
+    }
 
-            var client = new HttpClient(mockHttpMessageHandler.Object);
-            _mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(client);
-            _spotifyService = new SpotifyService(_mockHttpClientFactory.Object);
-        }
+    [Test]
+    public async Task GetAccessTokenAsync_TokenReceived_ReturnsToken()
+    {
+        // Arrange
+        // Act
+        await SetupSpotifyService();
+    }
 
-        [Test]
-        public async Task GetAccessTokenAsync_TokenReceived_ReturnsToken()
-        {
-            // Arrange
-            // Act
-            await SetupSpotifyService();
-        }
+    [Test]
+    public async Task SearchTrackAsync_TrackFound_ReturnsTrack()
+    {
+        // Arrange
+        await SetupSpotifyService();
 
-        [Test]
-        public async Task SearchTrackAsync_TrackFound_ReturnsTrack()
-        {
-            // Arrange
-            await SetupSpotifyService();
+        var json = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "APIs.Tests\\test_api_response.json"));
+        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+        mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json),
+            });
 
-            var json = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "APIs.Tests\\test_api_response.json"));
-            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-            mockHttpMessageHandler.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(json),
-                });
+        var client = new HttpClient(mockHttpMessageHandler.Object);
+        _mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(client);
 
-            var client = new HttpClient(mockHttpMessageHandler.Object);
-            _mockHttpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(client);
+        // Act
+        var output = await _spotifyService.SearchTrackAsync("fakeTrack");
 
-            // Act
-            var output = await _spotifyService.SearchTrackAsync("fakeTrack");
-
-            // Assert
-            output.Should().NotBeNull();
-            output?.Items.Should().HaveCount(1);
-        }
+        // Assert
+        output.Should().NotBeNull();
+        output?.Items.Should().HaveCount(1);
     }
 }
