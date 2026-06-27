@@ -1,6 +1,6 @@
 ## Music
 
-A modern audio file player and manager built for Windows using .NET 8 and WPF. Music allows you to seamlessly manage your music files and listen to your favorite songs.
+A modern audio file player and manager built for Windows using .NET 9 and WPF. Music allows you to seamlessly manage your music files and listen to your favorite songs.
 
 ## Features
 
