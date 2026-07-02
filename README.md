@@ -7,7 +7,7 @@ A modern audio file player and manager built for Windows using .NET 9 and WPF. M
 - Music playback (.mp3 and .wav)
 - Repeat, shuffle, and song queuing functionality
 - Playlist creation, management, and deletion
-- Music metadata autocomplete
+- Music metadata fetching and autocomplete
 - Customizable themes
 - Customizable settings
 - 10-Band visual equalizer
