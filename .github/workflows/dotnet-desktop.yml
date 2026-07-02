@@ -35,15 +35,15 @@ jobs:
     - name: Install .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 9.0.x
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
     # Enable Windows Audio Engine
-    - name: Enable Windows Audio Engine
-      run: net start audiosrv
+    #- name: Enable Windows Audio Engine
+    #  run: net start audiosrv
 
     # Create virtual audio device, otherwise NAudio tests won't work https://github.com/actions/runner-images/issues/2528
     # Install virutal audio device

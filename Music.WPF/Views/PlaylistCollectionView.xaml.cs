@@ -1,12 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace Music.WPF.Views
+namespace Music.WPF.Views;
+
+public sealed partial class PlaylistCollectionView : UserControl
 {
-    public sealed partial class PlaylistCollectionView : UserControl
+    public PlaylistCollectionView()
     {
-        public PlaylistCollectionView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

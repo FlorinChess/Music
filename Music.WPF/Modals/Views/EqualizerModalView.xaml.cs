@@ -1,12 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace Music.WPF.Modals.Views
+namespace Music.WPF.Modals.Views;
+
+public sealed partial class EqualizerModalView : UserControl
 {
-    public sealed partial class EqualizerModalView : UserControl
+    public EqualizerModalView()
     {
-        public EqualizerModalView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

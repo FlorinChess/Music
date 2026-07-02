@@ -3,59 +3,58 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
-namespace Music.CustomControls.DropdownMenu
+namespace Music.CustomControls.DropdownMenu;
+
+[TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
+public sealed class DropdownMenu : ContentControl
 {
-    [TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
-    public sealed class DropdownMenu : ContentControl
+    public int CheckBoxTabIndex
     {
-        public int CheckBoxTabIndex
-        {
-            get { return (int)GetValue(CheckBoxTabIndexProperty); }
-            set { SetValue(CheckBoxTabIndexProperty, value); }
-        }
+        get { return (int)GetValue(CheckBoxTabIndexProperty); }
+        set { SetValue(CheckBoxTabIndexProperty, value); }
+    }
 
-        public static readonly DependencyProperty CheckBoxTabIndexProperty =
-            DependencyProperty.Register("CheckBoxTabIndex", typeof(int), typeof(DropdownMenu), new PropertyMetadata(0));
+    public static readonly DependencyProperty CheckBoxTabIndexProperty =
+        DependencyProperty.Register("CheckBoxTabIndex", typeof(int), typeof(DropdownMenu), new PropertyMetadata(0));
 
-        public Brush PopupBorderBrush
-        {
-            get { return (Brush)GetValue(PopupBorderBrushProperty); }
-            set { SetValue(PopupBorderBrushProperty, value); }
-        }
+    public Brush PopupBorderBrush
+    {
+        get { return (Brush)GetValue(PopupBorderBrushProperty); }
+        set { SetValue(PopupBorderBrushProperty, value); }
+    }
 
-        public static readonly DependencyProperty PopupBorderBrushProperty =
-            DependencyProperty.Register("PopupBorderBrush", typeof(Brush), typeof(DropdownMenu), new PropertyMetadata(null));
+    public static readonly DependencyProperty PopupBorderBrushProperty =
+        DependencyProperty.Register("PopupBorderBrush", typeof(Brush), typeof(DropdownMenu), new PropertyMetadata(null));
 
-        public PlacementMode PopupPlacement
-        {
-            get { return (PlacementMode)GetValue(PopupPlacementProperty); }
-            set { SetValue(PopupPlacementProperty, value); }
-        }
+    public PlacementMode PopupPlacement
+    {
+        get { return (PlacementMode)GetValue(PopupPlacementProperty); }
+        set { SetValue(PopupPlacementProperty, value); }
+    }
 
-        public static readonly DependencyProperty PopupPlacementProperty =
-            DependencyProperty.Register("PopupPlacement", typeof(PlacementMode), typeof(DropdownMenu), new PropertyMetadata(PlacementMode.Bottom));
+    public static readonly DependencyProperty PopupPlacementProperty =
+        DependencyProperty.Register("PopupPlacement", typeof(PlacementMode), typeof(DropdownMenu), new PropertyMetadata(PlacementMode.Bottom));
 
-        public bool IsOpen
-        {
-            get { return (bool)GetValue(IsOpenProperty); }
-            set { SetValue(IsOpenProperty, value); }
-        }
+    public bool IsOpen
+    {
+        get { return (bool)GetValue(IsOpenProperty); }
+        set { SetValue(IsOpenProperty, value); }
+    }
 
-        public static readonly DependencyProperty IsOpenProperty =
-            DependencyProperty.Register("IsOpen", typeof(bool), typeof(DropdownMenu), new PropertyMetadata(false));
+    public static readonly DependencyProperty IsOpenProperty =
+        DependencyProperty.Register("IsOpen", typeof(bool), typeof(DropdownMenu), new PropertyMetadata(false));
 
-        public Brush HoverBrush
-        {
-            get { return (Brush)GetValue(HoverBrushProperty); }
-            set { SetValue(HoverBrushProperty, value); }
-        }
+    public Brush HoverBrush
+    {
+        get { return (Brush)GetValue(HoverBrushProperty); }
+        set { SetValue(HoverBrushProperty, value); }
+    }
 
-        public static readonly DependencyProperty HoverBrushProperty =
-            DependencyProperty.Register("MyProperty", typeof(Brush), typeof(DropdownMenu), new PropertyMetadata(new SolidColorBrush(Colors.Red)));
+    public static readonly DependencyProperty HoverBrushProperty =
+        DependencyProperty.Register("MyProperty", typeof(Brush), typeof(DropdownMenu), new PropertyMetadata(new SolidColorBrush(Colors.Red)));
 
-        static DropdownMenu()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DropdownMenu), new FrameworkPropertyMetadata(typeof(DropdownMenu)));
-        }
+    static DropdownMenu()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(DropdownMenu), new FrameworkPropertyMetadata(typeof(DropdownMenu)));
     }
 }

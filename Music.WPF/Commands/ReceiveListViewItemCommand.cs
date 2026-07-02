@@ -1,19 +1,18 @@
 ﻿using Music.WPF.ViewModels;
 
-namespace Music.WPF.Commands
+namespace Music.WPF.Commands;
+
+public sealed class ReceiveListViewItemCommand : BaseCommand
 {
-    public sealed class ReceiveListViewItemCommand : BaseCommand
+    private readonly TrackListComponentViewModel _trackListComponentViewModel;
+
+    public ReceiveListViewItemCommand(TrackListComponentViewModel trackListComponentViewModel)
     {
-        private readonly TrackListComponentViewModel _trackListComponentViewModel;
+        _trackListComponentViewModel = trackListComponentViewModel;
+    }
 
-        public ReceiveListViewItemCommand(TrackListComponentViewModel trackListComponentViewModel)
-        {
-            _trackListComponentViewModel = trackListComponentViewModel;
-        }
-
-        public override void Execute(object? parameter)
-        {
-            _trackListComponentViewModel.AddNewItem(_trackListComponentViewModel.IncomingItem);
-        }
+    public override void Execute(object? parameter)
+    {
+        _trackListComponentViewModel.AddNewItem(_trackListComponentViewModel.IncomingItem);
     }
 }

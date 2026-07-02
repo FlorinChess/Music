@@ -1,7 +1,6 @@
-﻿namespace Music.WPF.ViewModels
-{
-    public sealed class LoadingComponentViewModel : BaseViewModel
-    {
+﻿namespace Music.WPF.ViewModels;
 
-    }
+public sealed class LoadingComponentViewModel : BaseViewModel
+{
+
 }

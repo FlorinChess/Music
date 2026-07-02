@@ -1,18 +1,17 @@
 ﻿using System.Windows.Controls;
 
-namespace Music.WPF.Modals.Views
-{
-    public sealed partial class EditPlaylistModalView : UserControl
-    {
-        public EditPlaylistModalView()
-        {
-            InitializeComponent();
-        }
+namespace Music.WPF.Modals.Views;
 
-        private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            playlistNameTextBox.Focus();
-            playlistNameTextBox.SelectAll();
-        }
+public sealed partial class EditPlaylistModalView : UserControl
+{
+    public EditPlaylistModalView()
+    {
+        InitializeComponent();
+    }
+
+    private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
+    {
+        playlistNameTextBox.Focus();
+        playlistNameTextBox.SelectAll();
     }
 }

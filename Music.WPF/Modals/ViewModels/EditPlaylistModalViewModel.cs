@@ -7,117 +7,116 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-namespace Music.WPF.Modals.ViewModels
+namespace Music.WPF.Modals.ViewModels;
+
+public sealed class EditPlaylistModalViewModel : BaseViewModel, IModal
 {
-    public sealed class EditPlaylistModalViewModel : BaseViewModel, IModal
+    private readonly TrackStore _trackStore;
+
+    #region Properties
+
+    public ObservableCollection<string> PlaylistTags { get; private set; }
+    public PlaylistModel OriginalPlaylist { get; private set; }
+    public PlaylistModel SelectedPlaylist { get; private set; }
+    public string PlaylistName { get; set; }
+
+    private bool _isRemoveButtonVisible;
+    public bool IsRemoveButtonVisible
     {
-        private readonly TrackStore _trackStore;
-
-        #region Properties
-
-        public ObservableCollection<string> PlaylistTags { get; private set; }
-        public PlaylistModel OriginalPlaylist { get; private set; }
-        public PlaylistModel SelectedPlaylist { get; private set; }
-        public string PlaylistName { get; set; }
-
-        private bool _isRemoveButtonVisible;
-        public bool IsRemoveButtonVisible
-        {
-            get => _isRemoveButtonVisible;
-            set 
-            { 
-                _isRemoveButtonVisible = value;
-                OnPropertyChanged(nameof(IsRemoveButtonVisible));
-            }
-        }
-
-        private string _playlistImagePath;
-        public string PlaylistImagePath 
+        get => _isRemoveButtonVisible;
+        set 
         { 
-            get => _playlistImagePath;
-            set
-            {
-                _playlistImagePath = value;
-                OnPropertyChanged(nameof(PlaylistImagePath));
-            }
+            _isRemoveButtonVisible = value;
+            OnPropertyChanged(nameof(IsRemoveButtonVisible));
         }
-
-        #endregion Properties
-
-        #region Commands
-
-        public CloseModalCommand CloseModalCommand { get; set; }
-        public ICommand RemovePlaylistImage { get; private set; }
-        public ICommand SaveCommand { get; set; }
-        public ICommand SelectPlaylistImage { get; private set; }
-
-        #endregion
-
-        public EditPlaylistModalViewModel(ModalNavigationStore modalNavigationStore, TrackStore trackStore, PlaylistModel playlist)
-        {
-            _trackStore = trackStore;
-            OriginalPlaylist = playlist;
-
-            CloseModalCommand = modalNavigationStore.CloseModalCommand;
-            RemovePlaylistImage = new RelayCommand(_ => RemoveImage());
-            SaveCommand = new RelayCommand(_ =>
-            {
-                Save();
-
-                modalNavigationStore.Close();
-            });
-            SelectPlaylistImage = new RelayCommand(_ => SelectImage());
-
-            // Clone the selected playlist and bind the clone to the UI; on save, replicate changes on the original object
-            SelectedPlaylist = (PlaylistModel) playlist.Clone();
-
-            IsRemoveButtonVisible = SelectedPlaylist.ImagePath != string.Empty;
-
-            SetInitialValues();
-        }
-
-        #region Private Methods
-
-        private void Save()
-        {
-            OriginalPlaylist.Name = PlaylistName;
-            OriginalPlaylist.ImagePath = PlaylistImagePath;
-
-            _trackStore.PlaylistsUpdated();
-        }
-
-        private void RemoveImage()
-        {
-            PlaylistImagePath = string.Empty;
-            IsRemoveButtonVisible = false;
-        }
-
-        private void SelectImage()
-        {
-            var openFileDialog = new OpenFileDialog()
-            {
-                Title = "Select image...",
-                Filter = "Image Files|*.png;*.jpg;*.jpeg",
-                CheckFileExists = true,
-                RestoreDirectory = true,
-                InitialDirectory = Environment.SpecialFolder.MyPictures.ToString()
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                PlaylistImagePath = openFileDialog.FileName;
-                IsRemoveButtonVisible = true;
-            }
-        }
-
-        private void SetInitialValues()
-        {
-            PlaylistName = SelectedPlaylist.Name;
-            PlaylistImagePath = SelectedPlaylist.ImagePath;
-
-            OnPropertyChanged(nameof(PlaylistName));
-        }
-
-        #endregion
     }
+
+    private string _playlistImagePath;
+    public string PlaylistImagePath 
+    { 
+        get => _playlistImagePath;
+        set
+        {
+            _playlistImagePath = value;
+            OnPropertyChanged(nameof(PlaylistImagePath));
+        }
+    }
+
+    #endregion Properties
+
+    #region Commands
+
+    public CloseModalCommand CloseModalCommand { get; set; }
+    public ICommand RemovePlaylistImage { get; private set; }
+    public ICommand SaveCommand { get; set; }
+    public ICommand SelectPlaylistImage { get; private set; }
+
+    #endregion
+
+    public EditPlaylistModalViewModel(ModalNavigationStore modalNavigationStore, TrackStore trackStore, PlaylistModel playlist)
+    {
+        _trackStore = trackStore;
+        OriginalPlaylist = playlist;
+
+        CloseModalCommand = modalNavigationStore.CloseModalCommand;
+        RemovePlaylistImage = new RelayCommand(_ => RemoveImage());
+        SaveCommand = new RelayCommand(_ =>
+        {
+            Save();
+
+            modalNavigationStore.Close();
+        });
+        SelectPlaylistImage = new RelayCommand(_ => SelectImage());
+
+        // Clone the selected playlist and bind the clone to the UI; on save, replicate changes on the original object
+        SelectedPlaylist = (PlaylistModel) playlist.Clone();
+
+        IsRemoveButtonVisible = SelectedPlaylist.ImagePath != string.Empty;
+
+        SetInitialValues();
+    }
+
+    #region Private Methods
+
+    private void Save()
+    {
+        OriginalPlaylist.Name = PlaylistName;
+        OriginalPlaylist.ImagePath = PlaylistImagePath;
+
+        _trackStore.PlaylistsUpdated();
+    }
+
+    private void RemoveImage()
+    {
+        PlaylistImagePath = string.Empty;
+        IsRemoveButtonVisible = false;
+    }
+
+    private void SelectImage()
+    {
+        var openFileDialog = new OpenFileDialog()
+        {
+            Title = "Select image...",
+            Filter = "Image Files|*.png;*.jpg;*.jpeg",
+            CheckFileExists = true,
+            RestoreDirectory = true,
+            InitialDirectory = Environment.SpecialFolder.MyPictures.ToString()
+        };
+
+        if (openFileDialog.ShowDialog() == true)
+        {
+            PlaylistImagePath = openFileDialog.FileName;
+            IsRemoveButtonVisible = true;
+        }
+    }
+
+    private void SetInitialValues()
+    {
+        PlaylistName = SelectedPlaylist.Name;
+        PlaylistImagePath = SelectedPlaylist.ImagePath;
+
+        OnPropertyChanged(nameof(PlaylistName));
+    }
+
+    #endregion
 }

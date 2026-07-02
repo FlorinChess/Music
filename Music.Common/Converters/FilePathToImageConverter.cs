@@ -6,35 +6,30 @@ using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace Music.Common.Converters
+namespace Music.Common.Converters;
+
+public sealed class FilePathToImageConverter : IValueConverter
 {
-    public sealed class FilePathToImageConverter : IValueConverter
+    private const string DEFAULT_ALBUM_ICON = "pack://application:,,,/Music.WPF;component/Icons/default_album_icon.png";
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        private const string DEFAULT_ALBUM_ICON = "pack://application:,,,/Music.WPF;component/Icons/default_album_icon.png";
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        BitmapImage bitmapImage;
+
+        if (value is string filePath && !string.IsNullOrEmpty(filePath))
         {
-            BitmapImage bitmapImage;
-
-            if (value is string filePath && !string.IsNullOrEmpty(filePath))
+            if (filePath.EndsWith(".png") || filePath.EndsWith(".jpg") || filePath.EndsWith(".jpeg"))
             {
-                if (filePath.EndsWith(".png") || filePath.EndsWith(".jpg") || filePath.EndsWith(".jpeg"))
-                {
-                    bitmapImage = new BitmapImage(new Uri(filePath));
-                }
-                else if (filePath.EndsWith(".mp3"))
-                {
-                    using var file = TagLib.File.Create(filePath);
+                bitmapImage = new BitmapImage(new Uri(filePath));
+            }
+            else if (filePath.EndsWith(".mp3"))
+            {
+                using var file = TagLib.File.Create(filePath);
 
-                    if (file?.Tag.Pictures.Length > 0)
-                    {
-                        var picture = file.Tag.Pictures[0];
-                        using var memoryStream = new MemoryStream(picture.Data.Data);
-                        bitmapImage = new Bitmap(memoryStream).ToBitmapImage();
-                    }
-                    else
-                    {
-                        bitmapImage = new BitmapImage(new Uri(DEFAULT_ALBUM_ICON));
-                    }
+                if (file?.Tag.Pictures.Length > 0)
+                {
+                    var picture = file.Tag.Pictures[0];
+                    using var memoryStream = new MemoryStream(picture.Data.Data);
+                    bitmapImage = new Bitmap(memoryStream).ToBitmapImage();
                 }
                 else
                 {
@@ -45,34 +40,38 @@ namespace Music.Common.Converters
             {
                 bitmapImage = new BitmapImage(new Uri(DEFAULT_ALBUM_ICON));
             }
-
-            return bitmapImage;
         }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        else
         {
-            throw new NotImplementedException();
+            bitmapImage = new BitmapImage(new Uri(DEFAULT_ALBUM_ICON));
         }
+
+        return bitmapImage;
     }
 
-    internal static class BitmapExtension
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public static BitmapImage ToBitmapImage(this Bitmap bitmap)
-        {
-            using var memory = new MemoryStream();
+        throw new NotImplementedException();
+    }
+}
 
-            bitmap.Save(memory, ImageFormat.Png);
-            memory.Position = 0;
+internal static class BitmapExtension
+{
+    public static BitmapImage ToBitmapImage(this Bitmap bitmap)
+    {
+        using var memory = new MemoryStream();
 
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = memory;
-            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapImage.EndInit();
-            bitmapImage.Freeze();
+        bitmap.Save(memory, ImageFormat.Png);
+        memory.Position = 0;
 
-            return bitmapImage;
+        var bitmapImage = new BitmapImage();
+        bitmapImage.BeginInit();
+        bitmapImage.StreamSource = memory;
+        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+        bitmapImage.EndInit();
+        bitmapImage.Freeze();
 
-        }
+        return bitmapImage;
+
     }
 }
