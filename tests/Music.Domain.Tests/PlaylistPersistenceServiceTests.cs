@@ -22,11 +22,11 @@ internal sealed class PlaylistPersistenceServiceTests
 
         var testExpectedResultFilePath = Path.Combine(Environment.CurrentDirectory, "test_playlists_expected.xml");
         _playlistPersistenceService.SaveFilePath = testExpectedResultFilePath;
-        _playlistPersistenceService.Add("testName", "01/01/2010", string.Empty, new List<string>()
-        {
+        _playlistPersistenceService.Add("testName", "01/01/2010", string.Empty,
+        [
             @"D:\Music\Test1.mp3",
             @"D:\Music\Test2.mp3",
-        });
+        ]);
 
 
         // Act
@@ -48,11 +48,11 @@ internal sealed class PlaylistPersistenceServiceTests
             Name = "testName",
             DateCreated = new DateOnly(2010, 1, 1),
             ImagePath = string.Empty,
-            Tracks = new List<TrackModel>()
-            {
-                new TrackModel() { FilePath = @"D:\Music\Test1.mp3" },
-                new TrackModel() { FilePath = @"D:\Music\Test2.mp3" },
-            }
+            Tracks =
+            [
+                new() { FilePath = @"D:\Music\Test1.mp3" },
+                new() { FilePath = @"D:\Music\Test2.mp3" },
+            ]
         };
 
         var playlists = new List<PlaylistModel> { playlist1 };
