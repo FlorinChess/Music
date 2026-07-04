@@ -20,7 +20,7 @@ internal sealed class SpotifyServiceTests
 
     private async Task SetupSpotifyService()
     {
-        var json = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "APIs.Tests\\test_access_token.json"));
+        var json = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "test_access_token.json"));
 
         var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
         mockHttpMessageHandler.Protected()
@@ -50,7 +50,7 @@ internal sealed class SpotifyServiceTests
         // Arrange
         await SetupSpotifyService();
 
-        var json = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "APIs.Tests\\test_api_response.json"));
+        var json = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "test_api_response.json"));
         var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
         mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())

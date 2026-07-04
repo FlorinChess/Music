@@ -18,9 +18,9 @@ internal sealed class PlaylistPersistenceServiceTests
     public async Task Save_NoErrors_ShouldSaveProperly()
     {
         // Arrange
-        var playlistsXmlFileString = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "Domain.Tests\\test_playlists.xml"));
+        var playlistsXmlFileString = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "test_playlists.xml"));
 
-        var testExpectedResultFilePath = Path.Combine(Environment.CurrentDirectory, "Domain.Tests\\test_playlists_expected.xml");
+        var testExpectedResultFilePath = Path.Combine(Environment.CurrentDirectory, "test_playlists_expected.xml");
         _playlistPersistenceService.SaveFilePath = testExpectedResultFilePath;
         _playlistPersistenceService.Add("testName", "01/01/2010", string.Empty, new List<string>()
         {
@@ -58,7 +58,7 @@ internal sealed class PlaylistPersistenceServiceTests
         var playlists = new List<PlaylistModel> { playlist1 };
 
         // Read from the test file, not the actual save file
-        _playlistPersistenceService.SaveFilePath = Path.Combine(Environment.CurrentDirectory, "Domain.Tests\\test_playlists.xml");
+        _playlistPersistenceService.SaveFilePath = Path.Combine(Environment.CurrentDirectory, "test_playlists.xml");
 
         // Act
         var result = _playlistPersistenceService.Parse();

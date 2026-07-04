@@ -7,7 +7,7 @@ namespace Music.NAudio.Tests;
 internal sealed class MusicPlayerTests
 {
     private MusicPlayer _musicPlayer;
-    private static readonly string _fileName = Path.Combine(Environment.CurrentDirectory, "NAudio.Tests\\test_music_file.mp3");
+    private static readonly string _fileName = Path.Combine(Environment.CurrentDirectory, "test_music_file.mp3");
 
     [SetUp]
     public void Setup()
@@ -125,7 +125,7 @@ internal sealed class MusicPlayerTests
     public void GetLengthInSeconds_ReturnLengthInSeconds()
     {
         // Arrange
-        var filePath = Path.Combine(Environment.CurrentDirectory, "NAudio.Tests\\test_music_file.mp3");
+        var filePath = Path.Combine(Environment.CurrentDirectory, "test_music_file.mp3");
         
         var expectedLength = Math.Round(226.056f, 3); // Round to avoid floating point error
 
