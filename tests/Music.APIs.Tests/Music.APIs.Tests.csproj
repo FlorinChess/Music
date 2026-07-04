@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Music.MetadataService\Music.APIs.csproj" />
+    <ProjectReference Include="..\..\src\Music.APIs\Music.APIs.csproj" />
   </ItemGroup>
 
   <ItemGroup>
