@@ -13,7 +13,7 @@ public sealed class MusicMetadataService
 {
     private static readonly string METADATA_COMPLETE = "Metadata complete.";
     private readonly SpotifyService _service;
-    private readonly List<MusicFileMetadataModel> _musicFiles = new();
+    private readonly List<MusicFileMetadataModel> _musicFiles = [];
 
     public MusicMetadataService(SpotifyService service)
     {
@@ -116,7 +116,7 @@ public sealed class MusicMetadataService
         }
     }
 
-    private static void CleanUpMetadata(IList<MusicFileMetadataModel> musicFiles)
+    private static void CleanUpMetadata(List<MusicFileMetadataModel> musicFiles)
     {
         TFile? file = null;
 
@@ -143,7 +143,7 @@ public sealed class MusicMetadataService
         }
     }
 
-    private async Task CompleteMetadata(IList<MusicFileMetadataModel> musicFiles)
+    private async Task CompleteMetadata(List<MusicFileMetadataModel> musicFiles)
     {
         try
         {
