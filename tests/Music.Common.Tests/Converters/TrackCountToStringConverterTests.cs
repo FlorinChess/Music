@@ -5,31 +5,28 @@ using System.Globalization;
 namespace Music.Common.Tests.Converters;
 
 [TestFixture]
-internal sealed class TimeSpanToStringConverterTests
+internal sealed class TrackCountToStringConverterTests
 {
-    private TimeSpanToStringConverter SUT;
+    private TrackCountToStringConverter SUT;
 
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        SUT = new TimeSpanToStringConverter();
+        SUT = new TrackCountToStringConverter();
     }
 
     [Test]
-    [TestCase(0,"00:00")]
-    [TestCase(10,"00:10")]
-    [TestCase(69,"01:09")]
-    [TestCase(300,"05:00")]
-    [TestCase(3599,"59:59")]
-    [TestCase(3600,"01:00:00")]
-    [TestCase(7222, "02:00:22")]
-    public void Convert_ConvertsTimeSpanToStringCorrectly(double seconds, string expected)
+    [TestCase(0, "0 Tracks")]
+    [TestCase(1, "1 Track")]
+    [TestCase(100, "100 Tracks")]
+    [TestCase(1000, "1000 Tracks")]
+    public void Convert_ConvertsCountToStringCorrectly(int count, string expected)
     {
         // arrange
 
         // act
-        string actual = (string)SUT.Convert(seconds, typeof(Object), new object(), CultureInfo.InvariantCulture);
-        
+        string actual = (string)SUT.Convert(count, typeof(Object), new object(), CultureInfo.InvariantCulture);
+            
         // assert
         actual.Should().Be(expected);
     }
