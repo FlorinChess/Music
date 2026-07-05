@@ -469,8 +469,7 @@ public sealed class MusicPlayerViewModel : BaseViewModel
 
     public override void Dispose()
     {
-        if (_musicPlayer is not null)
-            _musicPlayer.PlaybackStopped -= OnPlaybackStopped;
+        _musicPlayer?.PlaybackStopped -= OnPlaybackStopped;
 
         _musicPlayer?.Dispose();
 

@@ -2,7 +2,7 @@
 using Music.APIs;
 using Music.APIs.Spotify;
 using Music.Domain;
-using Music.NAudio.WaveformGenerator;
+using Music.NAudio;
 using Music.WPF.Commands;
 using Music.WPF.Modals.ViewModels;
 using Music.WPF.Models;
@@ -10,7 +10,6 @@ using Music.WPF.Services;
 using Music.WPF.Store;
 using Music.WPF.ViewModels;
 using Music.WPF.Views;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -78,18 +77,11 @@ public sealed partial class App : Application
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        services.AddHttpClient();
-        services.AddSingleton<ILogger>(_ => new LoggerConfiguration().CreateLogger());
+        services.AddApplicationServices();
 
-        // Add Stores as Singletons
-        services.AddSingleton<TrackStore>();
-        services.AddSingleton<NavigationStore>();
-        services.AddSingleton<ModalNavigationStore>();
-
-        services.AddSingleton<SpotifyService>();
-        services.AddTransient<MusicMetadataService>();
-        services.AddSingleton<PlaylistPersistenceService>();
-        services.AddSingleton<WaveformGenerator>();
+        services.AddAPIs();
+        services.AddDomain();
+        services.AddNAudio();
 
         // Add NavigationService as a Singleton
         services.AddSingleton<INavigationService>(s => CreateMyMusicNavigationService(s!));

@@ -87,8 +87,8 @@ public sealed class MusicPlayer : IDisposable
 
     private static EqualizerBand[] CreateEqaulizerBands()
     {
-        return new EqualizerBand[]
-        {
+        return
+        [
             new EqualizerBand {Bandwidth = 0.8f, Frequency = 32, Gain = 0},
             new EqualizerBand {Bandwidth = 0.8f, Frequency = 64, Gain = 0},
             new EqualizerBand {Bandwidth = 0.8f, Frequency = 125, Gain = 0},
@@ -99,7 +99,7 @@ public sealed class MusicPlayer : IDisposable
             new EqualizerBand {Bandwidth = 0.8f, Frequency = 4000, Gain = 0},
             new EqualizerBand {Bandwidth = 0.8f, Frequency = 8000, Gain = 0},
             new EqualizerBand {Bandwidth = 0.8f, Frequency = 16000, Gain = 0},
-        };
+        ];
     }
 
     private void OnPlaybackStopped(object sender, StoppedEventArgs e)
@@ -162,7 +162,7 @@ public sealed class MusicPlayer : IDisposable
 
     public static Dictionary<Guid, string> GetOutputDevices()
     {
-        Dictionary<Guid, string> outputDevices = new();
+        Dictionary<Guid, string> outputDevices = [];
 
         foreach (var device in DirectSoundOut.Devices)
         {
