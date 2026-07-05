@@ -2,11 +2,18 @@
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
   </Folder>
-  <Project Path="Music.Common/Music.Common.csproj" />
-  <Project Path="Music.CustomControls/Music.CustomControls.csproj" />
-  <Project Path="Music.Domain/Music.Domain.csproj" />
-  <Project Path="Music.MetadataService/Music.APIs.csproj" />
-  <Project Path="Music.NAudio/Music.NAudio.csproj" />
-  <Project Path="Music.Tests/Music.Tests.csproj" />
-  <Project Path="Music.WPF/Music.WPF.csproj" />
+  <Folder Name="/Tests/">
+    <Project Path="tests/Music.APIs.Tests/Music.APIs.Tests.csproj" />
+    <Project Path="tests/Music.CustomControls.Tests/Music.CustomControls.Tests.csproj" />
+    <Project Path="tests/Music.Common.Tests/Music.Common.Tests.csproj" />
+    <Project Path="tests/Music.Domain.Tests/Music.Domain.Tests.csproj" />
+    <Project Path="tests/Music.NAudio.Tests/Music.NAudio.Tests.csproj" />
+    <Project Path="tests/Music.WPF.Tests/Music.WPF.Tests.csproj" />
+  </Folder>
+  <Project Path="src/Music.APIs/Music.APIs.csproj" />
+  <Project Path="src/Music.Common/Music.Common.csproj" />
+  <Project Path="src/Music.CustomControls/Music.CustomControls.csproj" />
+  <Project Path="src/Music.Domain/Music.Domain.csproj" />
+  <Project Path="src/Music.NAudio/Music.NAudio.csproj" />
+  <Project Path="src/Music.WPF/Music.WPF.csproj" />
 </Solution>
