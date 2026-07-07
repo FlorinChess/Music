@@ -21,8 +21,7 @@ public sealed class SliderExtension
         var slider = (Slider)d;
         var thumb = GetThumbFromSlider(slider);
 
-        if (thumb != null)
-        thumb.DragStarted += Thumb_DragStarted;
+        thumb?.DragStarted += Thumb_DragStarted;
     }
 
     private static void Thumb_DragStarted(object sender, DragStartedEventArgs e)
@@ -52,8 +51,7 @@ public sealed class SliderExtension
         var slider = (Slider)d;
         var thumb = GetThumbFromSlider(slider);
 
-        if (thumb != null)
-        thumb.DragCompleted += Thumb_DragCompleted;
+        thumb?.DragCompleted += Thumb_DragCompleted;
     }
 
     private static void Thumb_DragCompleted(object sender, DragCompletedEventArgs e)
@@ -83,7 +81,7 @@ public sealed class SliderExtension
     private static Thumb? GetThumbFromSlider(Slider slider)
     {
         var track = slider.Template.FindName("PART_Track", slider) as Track;
-        return track is null ? null : track.Thumb;
+        return track?.Thumb;
     }
 
     private static DependencyObject? FindParentControl<T>(DependencyObject control)
