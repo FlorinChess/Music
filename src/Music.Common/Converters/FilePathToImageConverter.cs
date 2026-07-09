@@ -13,13 +13,14 @@ public sealed class FilePathToImageConverter : IValueConverter
     private const string DEFAULT_ALBUM_ICON = "pack://application:,,,/Music.WPF;component/Icons/default_album_icon.png";
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        BitmapImage bitmapImage;
-
         if (value is string filePath && !string.IsNullOrEmpty(filePath))
         {
             if (filePath.EndsWith(".png") || filePath.EndsWith(".jpg") || filePath.EndsWith(".jpeg"))
             {
-                bitmapImage = new BitmapImage(new Uri(filePath));
+                var bitmapImage = new BitmapImage(new Uri(filePath));
+                bitmapImage.Freeze();
+
+                return bitmapImage;
             }
             else if (filePath.EndsWith(".mp3"))
             {
@@ -28,50 +29,22 @@ public sealed class FilePathToImageConverter : IValueConverter
                 if (file?.Tag.Pictures.Length > 0)
                 {
                     var picture = file.Tag.Pictures[0];
+
                     using var memoryStream = new MemoryStream(picture.Data.Data);
-                    bitmapImage = new Bitmap(memoryStream).ToBitmapImage();
-                }
-                else
-                {
-                    bitmapImage = new BitmapImage(new Uri(DEFAULT_ALBUM_ICON));
+                    var bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.StreamSource = memoryStream;
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.EndInit();
+                    bitmapImage.Freeze();
+
+                    return bitmapImage;
                 }
             }
-            else
-            {
-                bitmapImage = new BitmapImage(new Uri(DEFAULT_ALBUM_ICON));
-            }
-        }
-        else
-        {
-            bitmapImage = new BitmapImage(new Uri(DEFAULT_ALBUM_ICON));
         }
 
-        return bitmapImage;
+       return new BitmapImage(new Uri(DEFAULT_ALBUM_ICON));
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
-}
-
-internal static class BitmapExtension
-{
-    public static BitmapImage ToBitmapImage(this Bitmap bitmap)
-    {
-        using var memory = new MemoryStream();
-
-        bitmap.Save(memory, ImageFormat.Png);
-        memory.Position = 0;
-
-        var bitmapImage = new BitmapImage();
-        bitmapImage.BeginInit();
-        bitmapImage.StreamSource = memory;
-        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-        bitmapImage.EndInit();
-        bitmapImage.Freeze();
-
-        return bitmapImage;
-
-    }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }
