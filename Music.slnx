@@ -1,6 +1,10 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
+	<File Path=".gitattributes" />
+	<File Path=".gitignore" />
+	<File Path="LICENSE" />
+	<File Path="README.md" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="tests/Music.APIs.Tests/Music.APIs.Tests.csproj" />
