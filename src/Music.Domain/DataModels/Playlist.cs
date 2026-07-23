@@ -7,7 +7,7 @@ namespace Music.Domain.DataModels;
 public sealed record Playlist
 {
     public string Name { get; set; }
-    public string DateCreatedString { get; set; }
+    public DateOnly DateCreated { get; set; }
     public string ImagePath { get; set; }
 
     [XmlArray("Tracks")]
