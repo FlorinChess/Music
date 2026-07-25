@@ -1,27 +1,27 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Music.APIs.Spotify.Models;
 
 public sealed record Album
 {
-    [JsonProperty(PropertyName = "album_type")]
+    [JsonPropertyName("album_type")]
     public string AlbumType { get; set; }
 
-    [JsonProperty(PropertyName = "total_tracks")]
+    [JsonPropertyName("total_tracks")]
     public int TotalTracks { get; set; }
 
-    [JsonProperty(PropertyName = "id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
 
-    [JsonProperty(PropertyName = "images")]
+    [JsonPropertyName("images")]
     public Image[] Images { get; set; }
 
-    [JsonProperty(PropertyName = "name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
-    [JsonProperty(PropertyName = "release_date")]
+    [JsonPropertyName("release_date")]
     public string ReleaseDate { get; set; }
 
-    [JsonProperty(PropertyName = "artists")]
+    [JsonPropertyName("artists")]
     public Artist[] Artists { get; set; }
 }

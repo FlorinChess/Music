@@ -23,7 +23,6 @@ A modern audio file player and manager built for Windows using .NET 10 and WPF. 
 - [FluentAssertions](https://fluentassertions.com/)
 - [Moq](https://github.com/moq/moq)
 - [NAudio](https://github.com/naudio/NAudio)
-- [Newtonsoft.Json](https://www.newtonsoft.com/json)
 - [Serilog](https://serilog.net/)
 - [TagLibSharp](https://github.com/mono/taglib-sharp)
 - [Spotify API](https://developer.spotify.com/)
