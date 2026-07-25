@@ -16,8 +16,8 @@ public sealed class SpotifyService
 
     private const int MAX_RETRY_RETRY_COUNT = 10;
     private const string TOKEN_URL = "https://accounts.spotify.com/api/token";
-    private string? _clientId;
-    private string? _clientSecret;
+    private string? _clientId = null;
+    private string? _clientSecret = null;
 
     private int _retryCount = 0;
     private string _accessToken = string.Empty;
@@ -25,6 +25,8 @@ public sealed class SpotifyService
     private readonly IHttpClientFactory _httpClientFactory;
 
     #endregion Private Members
+
+    public bool Initialized => !string.IsNullOrEmpty(_clientId) && !string.IsNullOrEmpty(_clientSecret);
 
     #region Constructors / Destructors
 
@@ -67,20 +69,10 @@ public sealed class SpotifyService
     /// <summary>
     /// Sets the client id and client secret using predefined environment variables.
     /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
     private void GetClientCredentials()
     {
-        try
-        {
-            _clientId = Environment.GetEnvironmentVariable("API_CLIENT_ID");
-            _clientSecret = Environment.GetEnvironmentVariable("API_CLIENT_SECRET");
-
-            if (string.IsNullOrEmpty(_clientId) || string.IsNullOrEmpty(_clientSecret)) throw new Exception(); 
-        }
-        catch
-        {
-            throw new InvalidOperationException("No credentials found!");
-        }
+        _clientId = Environment.GetEnvironmentVariable("SPOTIFY_API_CLIENT_ID");
+        _clientSecret = Environment.GetEnvironmentVariable("SPOTIFY_API_CLIENT_SECRET");
     }
 
     /// <summary>
@@ -91,6 +83,9 @@ public sealed class SpotifyService
     /// <exception cref="InvalidOperationException">If the maximum number of retries is succeded.</exception>
     private async Task<string> GetAccessTokenAsync()
     {
+        if (string.IsNullOrEmpty(_clientId) || string.IsNullOrEmpty(_clientSecret)) 
+            return string.Empty;
+
         var authenticationHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", _clientId, _clientSecret)));
 
         var client = _httpClientFactory.CreateClient();
