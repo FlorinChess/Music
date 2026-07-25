@@ -57,7 +57,18 @@ public sealed class SettingsViewModel : BaseViewModel, INavigation
         }
     }
 
-    private bool _isMetadataAutocompleteEnabled = Properties.Settings.Default.MetadataAutocompleteEnabled;
+    private bool _isMetadataAutocompleteActivated;
+    public bool IsMetadataAutocompleteActivated
+    {
+        get => _isMetadataAutocompleteActivated;
+        set
+        {
+            _isMetadataAutocompleteActivated = value;
+            OnPropertyChanged(nameof(IsMetadataAutocompleteActivated));
+        }
+    }
+
+    private bool _isMetadataAutocompleteEnabled;
     public bool IsMetadataAutocompleteEnabled
     {
         get => _isMetadataAutocompleteEnabled;
@@ -109,12 +120,15 @@ public sealed class SettingsViewModel : BaseViewModel, INavigation
         RemoveMusicFolderCommand = new RelayCommand(_ => RemoveMusicFolder());
         OpenEqualizerCommand = _serviceProvider.GetRequiredService<MusicPlayerViewModel>().OpenEqualizerCommand;
 
-        if (IsMetadataAutocompleteEnabled == true)
+        PlaceholderVisibility = MusicFolders.Count == 0;
+
+        IsMetadataAutocompleteEnabled = musicMetadataService.Initialized;
+        IsMetadataAutocompleteActivated = IsMetadataAutocompleteEnabled && Properties.Settings.Default.MetadataAutocompleteEnabled;
+
+        if (IsMetadataAutocompleteActivated)
         {
             _musicMetadataService.AddMusicFiles(trackStore.AvailableTracks.Select(t => t.FilePath));
         }
-
-        PlaceholderVisibility = MusicFolders.Count == 0;
     }
 
     #region Private Methods
@@ -242,7 +256,7 @@ public sealed class SettingsViewModel : BaseViewModel, INavigation
     public override void Dispose()
     {
         Properties.Settings.Default.AutoplayEnabled = IsAutoPlayEnabled;
-        Properties.Settings.Default.MetadataAutocompleteEnabled = IsMetadataAutocompleteEnabled;
+        Properties.Settings.Default.MetadataAutocompleteEnabled = IsMetadataAutocompleteActivated;
         Properties.Settings.Default.Save();
         base.Dispose();
     }

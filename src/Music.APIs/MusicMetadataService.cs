@@ -20,6 +20,8 @@ public sealed class MusicMetadataService
         _service = service;
     }
 
+    public bool Initialized => _service.Initialized;
+
     public static IEnumerable<string> GetMusicFilesWithoutMetadata(string directory) 
     {
         try

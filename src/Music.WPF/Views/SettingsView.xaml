@@ -97,7 +97,8 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <CheckBox 
-                        IsChecked="{Binding IsMetadataAutocompleteEnabled, FallbackValue=False}"
+                        IsChecked="{Binding IsMetadataAutocompleteActivated, FallbackValue=False}"
+                        IsEnabled="{Binding IsMetadataAutocompleteEnabled, FallbackValue=False}"
                         Style="{StaticResource SwitchCheckBox}"
                         TabIndex="10"
                         VerticalContentAlignment="Center"
