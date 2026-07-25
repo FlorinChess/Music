@@ -61,12 +61,12 @@ public sealed class PlaylistPersistenceService : IPersistenceService
         }
     }
 
-    public void Add(string name, string dateCreated, string imagePath, List<string> trackFilePaths)
+    public void Add(string name, DateOnly dateCreated, string imagePath, List<string> trackFilePaths)
     {
         _rootObject.Playlists.Add(new Playlist()
         {
             Name = name,
-            DateCreatedString = dateCreated,
+            DateCreated = dateCreated,
             ImagePath = imagePath,
             TracksFilePaths = trackFilePaths
         });

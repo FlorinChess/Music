@@ -171,7 +171,7 @@ public sealed class MainViewModel : BaseViewModel
                 var currentPlaylist = trackStore.AvailablePlaylists[i];
 
                 playlistPersistenceService.Add(currentPlaylist.Name, 
-                    currentPlaylist.DateCreated.ToString(), 
+                    currentPlaylist.DateCreated, 
                     currentPlaylist.ImagePath, 
                     currentPlaylist.Tracks.Select(t => t.FilePath).ToList());
             }

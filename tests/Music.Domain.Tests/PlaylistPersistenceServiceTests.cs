@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Music.WPF.Models;
+using Music.Domain.DataModels;
 
 namespace Music.Domain.Tests;
 
@@ -22,7 +22,7 @@ internal sealed class PlaylistPersistenceServiceTests
 
         var testExpectedResultFilePath = Path.Combine(Environment.CurrentDirectory, "test_playlists_expected.xml");
         _playlistPersistenceService.SaveFilePath = testExpectedResultFilePath;
-        _playlistPersistenceService.Add("testName", "01/01/2010", string.Empty,
+        _playlistPersistenceService.Add("testName", new DateOnly(2010, 1, 1), string.Empty,
         [
             @"D:\Music\Test1.mp3",
             @"D:\Music\Test2.mp3",
@@ -43,19 +43,19 @@ internal sealed class PlaylistPersistenceServiceTests
     public void Parse_ValidPlaylistFile_ReturnObjectsList()
     {
         // Arrange
-        var playlist1 = new PlaylistModel()
+        var playlist1 = new Playlist()
         {
             Name = "testName",
             DateCreated = new DateOnly(2010, 1, 1),
             ImagePath = string.Empty,
-            Tracks =
+            TracksFilePaths =
             [
-                new() { FilePath = @"D:\Music\Test1.mp3" },
-                new() { FilePath = @"D:\Music\Test2.mp3" },
+                @"D:\Music\Test1.mp3",
+                @"D:\Music\Test2.mp3",
             ]
         };
 
-        var playlists = new List<PlaylistModel> { playlist1 };
+        var playlists = new List<Playlist> { playlist1 };
 
         // Read from the test file, not the actual save file
         _playlistPersistenceService.SaveFilePath = Path.Combine(Environment.CurrentDirectory, "test_playlists.xml");
@@ -65,26 +65,7 @@ internal sealed class PlaylistPersistenceServiceTests
 
         // Assert
         result.Should().NotBeNull();
-
-        var resultingPlaylists = new List<PlaylistModel>();
-
-        for (int i = 0; i < result?.Playlists.Count; i++)
-        {
-            var currentPlaylist = result.Playlists[i];
-
-            resultingPlaylists.Add(new PlaylistModel()
-            {
-                Name = currentPlaylist.Name,
-                DateCreated = DateOnly.Parse(currentPlaylist.DateCreatedString),
-                ImagePath = currentPlaylist.ImagePath,
-            });
-
-            for (int j = 0; j < currentPlaylist.TracksFilePaths.Count; j++)
-            {
-                resultingPlaylists[i].Tracks.Add(new TrackModel() { FilePath = currentPlaylist.TracksFilePaths[j] });
-            }
-        }
-
-        resultingPlaylists.Should().BeEquivalentTo(playlists);
+        result.Playlists.Should().HaveCount(1);
+        result.Playlists.Should().BeEquivalentTo(playlists);
     }
 }

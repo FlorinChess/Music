@@ -184,7 +184,7 @@ public sealed partial class App : Application
             playlists.Add(new PlaylistModel()
             {
                 Name = currentPlaylist.Name,
-                DateCreated = DateOnly.Parse(currentPlaylist.DateCreatedString),
+                DateCreated = currentPlaylist.DateCreated,
                 ImagePath = currentPlaylist.ImagePath,
             });
 

@@ -8,5 +8,5 @@ public sealed record Root
 {
     [XmlArray("Playlists")]
     [XmlArrayItem("Playlist")]
-    public List<Playlist> Playlists { get; set; } = new();
+    public List<Playlist> Playlists { get; set; } = [];
 }
