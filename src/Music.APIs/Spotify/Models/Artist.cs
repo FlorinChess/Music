@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Music.APIs.Spotify.Models;
 
 public sealed record Artist
 {
-    [JsonProperty(PropertyName = "id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
 
-    [JsonProperty(PropertyName = "name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 }

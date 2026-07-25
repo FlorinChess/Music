@@ -1,15 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Music.APIs.Spotify.Models;
 
 public sealed record Image
 {
-    [JsonProperty(PropertyName = "url")]
+    [JsonPropertyName("url")]
     public string Url { get; set; }
 
-    [JsonProperty(PropertyName = "height")]
+    [JsonPropertyName("height")]
     public int Height { get; set; }
 
-    [JsonProperty(PropertyName = "width")]
+    [JsonPropertyName("width")]
     public int Width { get; set; }
 }

@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Music.APIs.Spotify.Models;
 
 public sealed record ApiResponse
 {
-    [JsonProperty(PropertyName = "tracks")]
+    [JsonPropertyName("tracks")]
     public Tracks Tracks { get; set; }
 }

@@ -1,10 +1,10 @@
 ﻿using Music.APIs.Extensions;
 using Music.APIs.Spotify.Models;
-using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Timers;
 using System.Web;
 
@@ -105,7 +105,7 @@ public sealed class SpotifyService
 
         var response = client.PostAsync(TOKEN_URL, content).Result;
         var json = await response.Content.ReadAsStringAsync();
-        var token = JsonConvert.DeserializeObject<SpotifyToken>(json);
+        var token = JsonSerializer.Deserialize<SpotifyToken>(json);
 
         if (token is not null && token.ExpiresIn > 0)
         {
@@ -182,7 +182,7 @@ public sealed class SpotifyService
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            var trackModel = JsonConvert.DeserializeObject<ApiResponse>(content);
+            var trackModel = JsonSerializer.Deserialize<ApiResponse>(content);
 
             if (trackModel is null || trackModel.Tracks is null)
                 throw new Exception("Could not deserialize json reponse.");
