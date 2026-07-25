@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Windows.Data;
@@ -10,10 +8,11 @@ namespace Music.Common.Converters;
 
 public sealed class FilePathToImageConverter : IValueConverter
 {
-    private const string DEFAULT_ALBUM_ICON = "pack://application:,,,/Music.WPF;component/Icons/default_album_icon.png";
+    public const string DEFAULT_ALBUM_ICON = "pack://application:,,,/Music.WPF;component/Icons/default_album_icon.png";
+
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is string filePath && !string.IsNullOrEmpty(filePath))
+        if (value is string filePath && !string.IsNullOrEmpty(filePath) && File.Exists(filePath))
         {
             if (filePath.EndsWith(".png") || filePath.EndsWith(".jpg") || filePath.EndsWith(".jpeg"))
             {
@@ -43,7 +42,9 @@ public sealed class FilePathToImageConverter : IValueConverter
             }
         }
 
-       return new BitmapImage(new Uri(DEFAULT_ALBUM_ICON));
+        var image = new BitmapImage(new Uri(DEFAULT_ALBUM_ICON));
+        image.Freeze();
+        return image;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
